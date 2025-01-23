@@ -1,0 +1,31 @@
+mingri:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    host: localhost
+    port: 3306
+    database: scaffold
+    username: root
+    password: 123456
+  redis:
+    host: localhost
+    port: 6379
+    password: 123456
+    database: 1
+  alioss:
+    endpoint: oss-cn-hangzhou.aliyuncs.com
+    access-key-id:
+    access-key-secret:
+    bucket-name:
+  mail:
+    from: 3116430062@qq.com
+    password: ulyezclhetqhdhab
+    host: smtp.qq.com
+    port: 465
+    user: 3116430062@qq.com
+    expireTime: 180 #3分钟
+  jwt:
+    secret-key: csd_admin
+    expire-time: 7200000
+    token-name: token
+
+
