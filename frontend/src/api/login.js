@@ -8,7 +8,7 @@ export default {
     return Http.get('/api/v1/login/public-key')
   },
   login(param) {
-    return Http.post('/api/v1/login', param)
+    return Http.post('/api/v1/user/login', param)
   },
   register(param) {
     return Http.post('/api/v1/user/register', param)

@@ -14,17 +14,16 @@ import com.mingri.enumeration.LimitKeyType;
 import com.mingri.properties.JwtProperties;
 import com.mingri.result.Result;
 import com.mingri.service.ISysUserService;
+import com.mingri.utils.CacheUtil;
 import com.mingri.utils.JwtUtil;
 import com.mingri.result.PageResult;
-import com.mingri.vo.SysInfoVO;
+import com.mingri.vo.SysUserInfoVO;
 import com.mingri.vo.SysUserLoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -48,6 +47,8 @@ public class SysUserController {
     private ISysUserService iSysUserService;
     @Autowired
     private JwtProperties jwtProperties;
+    @Autowired
+    private CacheUtil cacheUtil;
 
 
     /**
@@ -72,10 +73,14 @@ public class SysUserController {
                 jwtProperties.getExpireTime(),
                 claims);
 
+        cacheUtil.putUserSessionCache(String.valueOf(loginUser.getSysUser().getId()), token);
+
         SysUserLoginVO userLoginVO = SysUserLoginVO.builder()
                 .id(loginUser.getSysUser().getId())
                 .userName(loginUser.getUsername())
-                .name(loginUser.getSysUser().getNickName())
+                .userType(loginUser.getSysUser().getUserType())
+                .email(loginUser.getSysUser().getEmail())
+                .avatar(loginUser.getSysUser().getAvatar())
                 .token(token)
                 .build();
 
@@ -119,11 +124,11 @@ public class SysUserController {
     @ApiOperation("用户分页查询")
 //    @Cacheable(cacheNames = "userPageCache")
 // @PreAuthorize("hasAnyAuthority('admin')")
-    public PageResult<SysInfoVO> page(@RequestBody PageQuery query) {
+    public PageResult<SysUserInfoVO> page(@RequestBody PageQuery query) {
         // 1. 分页查询
         Page<SysUser> result = iSysUserService.page(query.toMpPage("update_time", false));
         // 2. 封装并返回
-        return PageResult.of(result, SysInfoVO.class);
+        return PageResult.of(result, SysUserInfoVO.class);
     }
 
 

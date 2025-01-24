@@ -28,14 +28,15 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         this.strictInsertFill(metaObject, "createTime", LocalDateTime.class, now);
-        log.info("创建人：{}",currentId);
         this.strictInsertFill(metaObject, "createBy", Long.class, currentId);
+        this.strictInsertFill(metaObject, "updateTime", LocalDateTime.class, now);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         this.strictUpdateFill(metaObject, "updatedTime", LocalDateTime.class, now);
         this.strictUpdateFill(metaObject, "updateBy", Long.class, currentId);
+        this.strictUpdateFill(metaObject, "loginTime", LocalDateTime.class, now);
     }
 
 }

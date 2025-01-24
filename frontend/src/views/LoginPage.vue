@@ -101,7 +101,7 @@ const onLogin = () => {
     return
   }
   logging.value = true
-  LoginApi.login({ name: username.value, email: password.value })
+  LoginApi.login({ userName: username.value, password: password.value })
     .then((res) => {
       if (res.code === 0) {
         localStorage.setItem('x-token', res.data.token)
@@ -111,6 +111,7 @@ const onLogin = () => {
           email: res.data.email,
           avatar: res.data.avatar,
         })
+        alert("登录成功")
         router.push('/')
       } else {
         showToast(res.msg, true)

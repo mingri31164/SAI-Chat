@@ -15,6 +15,7 @@ import com.mingri.mapper.SysMenuMapper;
 import com.mingri.mapper.SysUserMapper;
 import com.mingri.service.ISysUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mingri.utils.CacheUtil;
 import com.mingri.utils.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -30,10 +31,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * <p>
@@ -55,6 +54,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private PasswordEncoder passwordEncoder;
     @Autowired
     private SysMenuMapper sysMenuMapper;
+
 
     /**
      * 用户登录（md5）
@@ -188,6 +188,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             // 把完整的用户信息存入 Redis，其中 userid 作为 key
             redisUtils.set(RedisConstant.USER_INFO_PREFIX +
                     loginUser.getSysUser().getId().toString(), loginUser);
+
+            SysUser sysUser = loginUser.getSysUser().setLoginTime(LocalDateTime.now());
+            updateById(sysUser);
+
             return loginUser;
 
         } catch (AuthenticationException e) {

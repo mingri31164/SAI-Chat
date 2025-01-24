@@ -2,6 +2,7 @@ package com.mingri.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
@@ -59,6 +60,10 @@ public class SysUser implements Serializable {
 
     @ApiModelProperty(value = "用户类型（0管理员，1普通用户）")
     private Integer userType;
+
+    @ApiModelProperty(value = "创建人的用户id")
+    @TableField(value = "login_time",fill = FieldFill.UPDATE)
+    private LocalDateTime loginTime;
 
     @ApiModelProperty(value = "创建人的用户id")
     @TableField(value = "create_By",fill = FieldFill.INSERT)

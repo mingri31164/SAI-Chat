@@ -68,7 +68,10 @@ public class UrlLimitAspect {
         }
         // 获取并增加计数
         AtomicInteger count = requestCountCache.get(key, k -> new AtomicInteger(0));
-        int currentCount = count.incrementAndGet();
+        int currentCount = 0;
+        if (count != null) {
+            currentCount = count.incrementAndGet();
+        }
         if (currentCount > urlLimit.maxRequests()) {
             // 记录违规
             stats.setViolationCount(stats.getViolationCount() + 1);
