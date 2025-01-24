@@ -1,5 +1,6 @@
 package com.mingri.vo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -21,8 +22,9 @@ import lombok.NoArgsConstructor;
 @ApiModel(description = "用户登录返回的数据格式")
 public class SysUserLoginVO {
 
+    @TableField("id")
     @ApiModelProperty("主键值")
-    private Long id;
+    private Long userId;
 
     @ApiModelProperty("用户名")
     private String userName;

@@ -4,6 +4,7 @@ package com.mingri.controller.user;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mingri.annotation.UrlLimit;
 import com.mingri.constant.JwtClaimsConstant;
+import com.mingri.dto.SysUpdateDTO;
 import com.mingri.dto.SysUserDTO;
 import com.mingri.dto.SysUserLoginDTO;
 import com.mingri.dto.SysUserRegisterDTO;
@@ -27,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -76,7 +78,7 @@ public class SysUserController {
         cacheUtil.putUserSessionCache(String.valueOf(loginUser.getSysUser().getId()), token);
 
         SysUserLoginVO userLoginVO = SysUserLoginVO.builder()
-                .id(loginUser.getSysUser().getId())
+                .userId(loginUser.getSysUser().getId())
                 .userName(loginUser.getUsername())
                 .userType(loginUser.getSysUser().getUserType())
                 .email(loginUser.getSysUser().getEmail())
@@ -116,47 +118,39 @@ public class SysUserController {
 
 
     /**
-     * 用户分页查询
-     * @param query
-     * @return
-     */
-    @PostMapping("/page")
-    @ApiOperation("用户分页查询")
-//    @Cacheable(cacheNames = "userPageCache")
-// @PreAuthorize("hasAnyAuthority('admin')")
-    public PageResult<SysUserInfoVO> page(@RequestBody PageQuery query) {
-        // 1. 分页查询
-        Page<SysUser> result = iSysUserService.page(query.toMpPage("update_time", false));
-        // 2. 封装并返回
-        return PageResult.of(result, SysUserInfoVO.class);
-    }
-
-
-    /**
-     * 根据id查询用户信息
-     * @param id
-     * @return
-     */
-    @GetMapping("/{id}")
-    @ApiOperation("根据id查询用户信息")
-    public Result<SysUser> getById(@PathVariable Long id){
-        SysUser sysUser = iSysUserService.getById(id);
-        return Result.success(sysUser);
-    }
-
-    /**
      * 编辑用户信息
-     * @param userDTO
+     * @param sysUpdateDTO
      * @return
      */
-    @PutMapping
+    @PutMapping("/update")
     @ApiOperation("编辑用户信息")
-    public Result update(@RequestBody SysUserDTO userDTO){
-        log.info("编辑用户信息：{}", userDTO);
-        SysUser sysUser = new SysUser();
-        BeanUtils.copyProperties(userDTO, sysUser);
-        iSysUserService.updateById(sysUser);
+    public Result update(@RequestBody SysUpdateDTO sysUpdateDTO){
+        log.info("编辑用户信息：{}", sysUpdateDTO);
+        iSysUserService.updateUser(sysUpdateDTO);
         return Result.success();
+    }
+
+
+
+//    @UrlLimit
+    @GetMapping("/list")
+    public Object listUser() {
+        List<SysUserInfoVO> result = iSysUserService.listUser();
+        return Result.success(result);
+    }
+
+//    @UrlLimit
+    @GetMapping("/list/map")
+    public Object listMapUser() {
+        Map<String, SysUserInfoVO> result = iSysUserService.listMapUser();
+        return Result.success(result);
+    }
+
+//    @UrlLimit
+    @GetMapping("/online/web")
+    public Object onlineWeb() {
+        List<String> result = iSysUserService.onlineWeb();
+        return Result.success(result);
     }
 
 }

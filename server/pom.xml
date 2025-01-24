@@ -138,10 +138,11 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>
+
         <dependency>
             <groupId>io.netty</groupId>
-            <artifactId>netty-codec</artifactId>
-            <version>4.1.111.Final</version>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.108.Final</version>
         </dependency>
 
         <dependency>

@@ -1,22 +1,29 @@
 package com.mingri.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.mingri.constant.MailConstant;
 import com.mingri.constant.MessageConstant;
 import com.mingri.constant.RedisConstant;
+import com.mingri.context.BaseContext;
+import com.mingri.dto.SysUpdateDTO;
 import com.mingri.dto.SysUserLoginDTO;
 import com.mingri.dto.SysUserRegisterDTO;
 import com.mingri.entity.LoginUser;
 import com.mingri.entity.SysUser;
 import com.mingri.enumeration.UserStatus;
+import com.mingri.exception.BaseException;
 import com.mingri.exception.EmailErrorException;
 import com.mingri.exception.LoginFailedException;
 import com.mingri.exception.RegisterFailedException;
 import com.mingri.mapper.SysMenuMapper;
 import com.mingri.mapper.SysUserMapper;
+import com.mingri.result.Result;
 import com.mingri.service.ISysUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mingri.service.WebSocketService;
 import com.mingri.utils.CacheUtil;
 import com.mingri.utils.RedisUtils;
+import com.mingri.vo.SysUserInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +38,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -54,51 +62,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private PasswordEncoder passwordEncoder;
     @Autowired
     private SysMenuMapper sysMenuMapper;
-
-
-    /**
-     * 用户登录（md5）
-     *
-     * @return
-     */
-//    public User login(UserLoginDTO userLoginDTO) {
-//        String username = userLoginDTO.getUsername();
-//        String password = userLoginDTO.getPassword();
-//
-//        //1、根据用户名查询数据库中的数据
-//        User user = userMapper.getByUsername(username);
-//
-//        //2、处理各种异常情况（用户名不存在、密码不对、账号被锁定）
-//        if (user == null) {
-//            //账号不存在
-//            throw new AccountNotFoundException(MessageConstant.ACCOUNT_NOT_FOUND);
-//        }
-//
-//        //TODO 后续将账号不存在和密码错误归为一种异常
-//        //密码比对
-//        //对前端传过来的明文密码进行md5加密处理
-//        password = DigestUtils.md5DigestAsHex(password.getBytes());
-//        if (!password.equals(user.getPassword())) {
-//            //密码错误
-//            throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
-//        }
-//
-//        if (user.getStatus() == StatusConstant.DISABLE) {
-//            //账号被锁定
-//            throw new AccountLockedException(MessageConstant.ACCOUNT_LOCKED);
-//        }
-//
-//        //3、返回实体对象
-//        return user;
-//    }
+    @Autowired
+    private WebSocketService webSocketService;
 
 
     public void register(SysUserRegisterDTO sysUserRegisterDTO) {
 
         //邮箱重复处理
-        if (lambdaQuery().eq(SysUser::getEmail, sysUserRegisterDTO.getEmail()).exists()) {
-            throw new RegisterFailedException(MessageConstant.EMAIL_EXIST);
-        }
+//        if (lambdaQuery().eq(SysUser::getEmail, sysUserRegisterDTO.getEmail()).exists()) {
+//            throw new RegisterFailedException(MessageConstant.EMAIL_EXIST);
+//        }
         // 根据邮箱生成Redis键名
         String redisKey = MailConstant.CAPTCHA_CODE_KEY_PRE + sysUserRegisterDTO.getEmail();
         // 尝试从Redis获取现有的验证码
@@ -219,4 +192,71 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         String key = RedisConstant.USER_INFO_PREFIX + userid.toString();
         redisUtils.del(key);
     }
+
+    @Override
+    public SysUser getUserByNameOrEmail(String name, String email) {
+        return null;
+    }
+
+
+    @Override
+    public SysUserInfoVO getUserById(String userId) {
+        return baseMapper.getUserById(userId);
+    }
+
+    @Override
+    public List<SysUserInfoVO> listUser() {
+        return baseMapper.listUser();
+    }
+
+    @Override
+    public List<String> onlineWeb() {
+        return webSocketService.getOnlineUser();
+    }
+
+    @Override
+    public Map<String, SysUserInfoVO> listMapUser() {
+        return baseMapper.listMapUser();
+    }
+
+    @Override
+    public void online(String userId) {
+
+    }
+
+    @Override
+    public void offline(String userId) {
+
+    }
+
+    @Override
+    public void deleteExpiredUsers(LocalDate expirationDate) {
+
+    }
+
+    @Override
+    public void updateUserBadge(String id) {
+
+    }
+
+    @Override
+    public void initBotUser() {
+
+    }
+
+    @Override
+    public boolean updateUser(SysUpdateDTO sysUpdateDTO) {
+        SysUser user = lambdaQuery().eq(SysUser::getUserName, sysUpdateDTO.getName()).one();
+        if (user != null) {
+            if (!user.getId().equals(BaseContext.getCurrentId()))
+                throw new BaseException(MessageConstant.ACCOUNT_EXIST);
+        } else {
+            user = getById(BaseContext.getCurrentId());
+        }
+        user.setUserName(sysUpdateDTO.getName());
+        user.setAvatar(sysUpdateDTO.getAvatar());
+        return updateById(user);
+    }
+
+
 }

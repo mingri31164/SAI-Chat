@@ -111,7 +111,6 @@ const onLogin = () => {
           email: res.data.email,
           avatar: res.data.avatar,
         })
-        alert("登录成功")
         router.push('/')
       } else {
         showToast(res.msg, true)
@@ -147,7 +146,6 @@ const onRegister = () => {
     email: email.value, emailCode: code.value})
     .then((res) => {
       if (res.code === 0) {
-        showToast('注册成功，请登录', false)
         isLogin.value = true
       } else {
         showToast(res.msg, true)
@@ -171,7 +169,7 @@ const getCode = () => {
   LoginApi.getCode({ email: email.value })
     .then((res) => {
       if (res.code === 0) {
-        showToast('验证码已发送，请注意查收', true)
+        console.log("验证码已发送，请注意查收")
       } else {
         showToast(res.msg, true)
       }
