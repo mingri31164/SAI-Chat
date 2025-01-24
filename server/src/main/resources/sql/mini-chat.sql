@@ -5,7 +5,7 @@
  Source Server Type    : MySQL
  Source Server Version : 80031 (8.0.31)
  Source Host           : localhost:3306
- Source Schema         : scaffold
+ Source Schema         : mini-chat
 
  Target Server Type    : MySQL
  Target Server Version : 80031 (8.0.31)
@@ -98,6 +98,8 @@ CREATE TABLE `sys_user`  (
   `sex` int NULL DEFAULT NULL COMMENT '用户性别（0男，1女，2未知）',
   `avatar` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '头像',
   `user_type` int NOT NULL DEFAULT 1 COMMENT '用户类型（0管理员，1普通用户）',
+  `badge`       TEXT         DEFAULT NULL,
+  `login_time`  timestamp(3) DEFAULT NULL,
   `create_by` bigint NULL DEFAULT NULL COMMENT '创建人的用户id',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_by` bigint NULL DEFAULT NULL COMMENT '更新人',
@@ -109,9 +111,9 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'admin', '管理员', '$10$hyoc837yPl9cF8/kuUh8b.IEVfkWxNSdGAXis2XGeMtdRJ37pwjsO', 0, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, 0);
-INSERT INTO `sys_user` VALUES (2, 'huanf', 'test', '$2a$10$hyoc837yPl9cF8/kuUh8b.IEVfkWxNSdGAXis2XGeMtdRJ37pwjsO', 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0);
-INSERT INTO `sys_user` VALUES (10, 'test', 'NULL', '$2a$10$FztHBAOhiak.IEn1i6q0WuVT7YZLhFA7v8FvvDAQms1wjRcoMxK0q', 0, '3116430062@qq.com', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `sys_user` VALUES (1, 'admin', '管理员', '$10$hyoc837yPl9cF8/kuUh8b.IEVfkWxNSdGAXis2XGeMtdRJ37pwjsO', 0, NULL,NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `sys_user` VALUES (2, 'huanf', 'test', '$2a$10$hyoc837yPl9cF8/kuUh8b.IEVfkWxNSdGAXis2XGeMtdRJ37pwjsO', 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `sys_user` VALUES (10, 'test', 'NULL', '$2a$10$FztHBAOhiak.IEn1i6q0WuVT7YZLhFA7v8FvvDAQms1wjRcoMxK0q', 0, '3116430062@qq.com', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -127,5 +129,51 @@ CREATE TABLE `sys_user_role`  (
 -- Records of sys_user_role
 -- ----------------------------
 INSERT INTO `sys_user_role` VALUES (2, 1);
+
+
+
+CREATE TABLE IF NOT EXISTS `chat_group`
+(
+    `id`          VARCHAR(255) NOT NULL,
+    `name`        VARCHAR(255) NOT NULL,
+    `avatar`      TEXT DEFAULT NULL,
+    `create_time` timestamp(3) NOT NULL,
+    `update_time` timestamp(3) NOT NULL,
+    PRIMARY KEY (`id`)
+);
+
+
+CREATE TABLE IF NOT EXISTS `chat_list`
+(
+    `id`           VARCHAR(255) NOT NULL,
+    `user_id`      VARCHAR(255) NOT NULL,
+    `target_id`    VARCHAR(255) NOT NULL,
+    `target_info`  TEXT         NOT NULL,
+    `unread_count` INT          DEFAULT 0,
+    `last_message` TEXT         DEFAULT NULL,
+    `type`         VARCHAR(255) DEFAULT NULL,
+    `create_time`  timestamp(3) NOT NULL,
+    `update_time`  timestamp(3) NOT NULL,
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `message`
+(
+    `id`            VARCHAR(255) NOT NULL,
+    `from_id`       VARCHAR(255) NOT NULL,
+    `to_id`         VARCHAR(255) NOT NULL,
+    `from_info`     TEXT         NOT NULL,
+    `message`       TEXT         DEFAULT NULL,
+    `reference_msg` TEXT         DEFAULT NULL,
+    `at_user`       TEXT         DEFAULT NULL,
+    `is_show_time`  TINYINT(1) DEFAULT 0,
+    `type`          VARCHAR(255) DEFAULT NULL,
+    `source`        VARCHAR(255) DEFAULT NULL,
+    `create_time`   timestamp(3) NOT NULL,
+    `update_time`   timestamp(3) NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX           `idx_message_from_id_to_id` (`from_id`, `to_id`)
+);
+
 
 SET FOREIGN_KEY_CHECKS = 1;

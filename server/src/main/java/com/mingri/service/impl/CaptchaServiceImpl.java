@@ -65,7 +65,7 @@ public class CaptchaServiceImpl implements CommonService {
      * 判断邮件配置是否完整
      */
     private void validateEmailProperties() {
-        log.info("正在验证邮件配置是否完整...：{}",emailProperties);
+//        log.info("正在验证邮件配置是否完整...：{}",emailProperties);
         if (emailProperties.getUser() == null || emailProperties.getPassword() == null || emailProperties.getFrom() == null || emailProperties.getHost() == null || emailProperties.getPort() == null) {
             throw new EmailErrorException(MessageConstant.EMAIL_VERIFICATION_CODE_CONFIGURATION_EXCEPTION);
         }

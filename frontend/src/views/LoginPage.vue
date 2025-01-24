@@ -1,11 +1,7 @@
 <template>
   <div class="login-container">
     <div class="operations">
-      <icon-button
-        @click="() => openUrl('https://space.bilibili.com/135427028/channel/series')"
-        icon="icon-bilibili"
-      />
-      <icon-button @click="() => openUrl('https://github.com/linyu-im')" icon="icon-github" />
+<!--      <icon-button @click="() => openUrl('https://github.com/linyu-im')" icon="icon-github" />-->
       <icon-button
         v-if="themeStore.theme === 'light'"
         @click="(e) => toggleDark(e, 'dark')"
@@ -21,34 +17,12 @@
       <img alt="" :src="`/poster-${themeStore.theme}.png`" class="poster-img" draggable="false" />
       <img class="logo" alt="" :src="`/title-${themeStore.theme}.png`" draggable="false" />
       <div class="login-content">
-        <div v-if="!isVerifySuccess" class="login-box">
-          <div class="title">
-            <div
-              class="text-[28px] text-[rgb(var(--text-color))] font-[600] leading-[28px] mb-[10px]"
-            >
-              Linyu在线聊天群
-            </div>
-            <div class="text-[18px] text-[rgba(var(--text-color),0.7)] leading-[20px]">
-              欢迎使用林语mini
-            </div>
-          </div>
-          <div class="info">
-            <linyu-input
-              v-model:value="password"
-              placeholder="请输入群聊密码"
-              type="password"
-              @keydown.enter="onVerifyPassword"
-            />
-          </div>
-          <div @click="onVerifyPassword" :class="['login-button', { logging: logging }]">
-            {{ !logging ? '验 证' : '登 录 中' }}
-          </div>
-        </div>
-        <div v-if="isVerifySuccess" class="login-box">
-          <div class="title">
+        <div v-if="isLogin" class="login-box">
+          <div class="title" style="position: relative">
             <div class="text-[28px] text-[rgb(var(--text-color))] font-[600] leading-[28px]">
-              填写个人信息
+              登录
             </div>
+            <p class="login-switch" @click="loginSwitch" style="position: absolute; right: 0; cursor: pointer;">还没有账号?去注册-></p>
           </div>
           <div class="info">
             <linyu-input
@@ -57,15 +31,34 @@
               placeholder="用户名"
               @keydown.enter="onLogin"
             />
-            <linyu-input v-model:value="email" placeholder="邮箱" @keydown.enter="onLogin" />
+            <linyu-input v-model:value="password" placeholder="密码" @keydown.enter="onLogin" />
           </div>
           <div @click="onLogin" :class="['login-button', { logging: logging }]">
-            {{ !logging ? '进 入' : '请 等 待' }}
+            {{ !logging ? '登 录' : '请 等 待' }}
           </div>
         </div>
-        <div class="web-info">
-          <div class="text-[rgba(var(--text-color),0.7)]">Author : Heath</div>
-          <div class="text-[rgba(var(--text-color),0.7)]">QQ群 : 729158695</div>
+
+        <div v-if="!isLogin" class="register-box">
+          <div class="title" style="position: relative">
+            <div class="text-[28px] text-[rgb(var(--text-color))] font-[600] leading-[28px]">
+              注册
+            </div>
+            <p class="login-switch" @click="loginSwitch" style="position: absolute; right: 0; cursor: pointer;">已有账号?去登录-></p>
+          </div>
+          <div class="info">
+            <linyu-input v-model:value="username" class="mb-[10px]" placeholder="用户名" @keydown.enter="onRegister"/>
+            <linyu-input v-model:value="password" class="mb-[10px]" placeholder="密码" @keydown.enter="onRegister"/>
+            <linyu-input v-model:value="email" class="mb-[10px]" placeholder="邮箱" @keydown.enter="onRegister"/>
+            <linyu-input v-model:value="code" class="mb-[10px]" style="width: 70%;"
+                         placeholder="邮箱验证码" @keydown.enter="onRegister"/>
+            <div @click="getCode" :class="['getCode-button', { logging: logging }]">
+              {{ !logging ? '获取验证码' : '请 等 待' }}
+            </div>
+
+          </div>
+          <div @click="onRegister" :class="['register-button', { logging: logging }]">
+            {{ !logging ? '注 册' : '请 等 待' }}
+          </div>
         </div>
       </div>
     </div>
@@ -79,54 +72,24 @@ import LinyuInput from '@/components/LinyuInput.vue'
 import { toggleDark } from '@/utils/theme.js'
 import IconButton from '@/components/LinyuIconButton.vue'
 import { useToast } from '@/components/ToastProvider.vue'
-import { useRoute, useRouter } from 'vue-router'
 import LoginApi from '@/api/login.js'
-import { JSEncrypt } from 'jsencrypt'
 import { useUserInfoStore } from '@/stores/useUserInfoStore.js'
+import router from "@/router/index.js";
 
 const themeStore = useThemeStore()
 const userInfoStore = useUserInfoStore()
-const router = useRouter()
-const route = useRoute()
 
 const logging = ref(false)
-const isVerifySuccess = ref(false)
-const password = ref(route.query.p)
 const username = ref('')
+const password = ref('')
 const email = ref('')
+const code = ref('')
 const showToast = useToast()
+const isLogin = ref(true)
 
-const openUrl = (url) => {
-  window.open(url, '_blank')
-}
-const onVerifyPassword = async () => {
-  if (!password.value) {
-    showToast('密码不能为空~', true)
-    return
-  }
-  let keyData = await LoginApi.publicKey()
-  if (keyData.code !== 0) {
-    return
-  }
-  logging.value = true
-  const encrypt = new JSEncrypt()
-  encrypt.setPublicKey(keyData.data)
-  const encryptedPassword = encrypt.encrypt(password.value)
-  LoginApi.verify({ password: encryptedPassword })
-    .then((res) => {
-      if (res.code === 0) {
-        localStorage.setItem('x-token', res.data)
-        isVerifySuccess.value = true
-      } else {
-        showToast(res.msg, true)
-      }
-    })
-    .catch((res) => {
-      showToast(res.message, true)
-    })
-    .finally(() => {
-      logging.value = false
-    })
+
+const loginSwitch = () => {
+  isLogin.value = !isLogin.value
 }
 const onLogin = () => {
   if (!username.value) {
@@ -138,7 +101,7 @@ const onLogin = () => {
     return
   }
   logging.value = true
-  LoginApi.login({ name: username.value, email: email.value })
+  LoginApi.login({ name: username.value, email: password.value })
     .then((res) => {
       if (res.code === 0) {
         localStorage.setItem('x-token', res.data.token)
@@ -149,6 +112,65 @@ const onLogin = () => {
           avatar: res.data.avatar,
         })
         router.push('/')
+      } else {
+        showToast(res.msg, true)
+      }
+    })
+    .catch((res) => {
+      showToast(res.message, true)
+    })
+    .finally(() => {
+      logging.value = false
+    })
+}
+
+const onRegister = () => {
+  if (!username.value) {
+    showToast('用户名不能为空~', true)
+    return
+  }
+  if (!password.value) {
+    showToast('密码不能为空~', true)
+    return
+  }
+  if (!email.value) {
+    showToast('邮箱不能为空~', true)
+    return
+  }
+  if (!code.value) {
+    showToast('邮箱验证码不能为空~', true)
+    return
+  }
+  logging.value = true
+  LoginApi.register({ userName: username.value, password: password.value,
+    email: email.value, emailCode: code.value})
+    .then((res) => {
+      if (res.code === 0) {
+        showToast('注册成功，请登录', false)
+        isLogin.value = true
+      } else {
+        showToast(res.msg, true)
+      }
+    })
+    .catch((res) => {
+      showToast(res.msg, true)
+    })
+    .finally(() => {
+      logging.value = false
+    })
+}
+
+
+const getCode = () => {
+  if (!email.value) {
+    showToast('邮箱不能为空~', true)
+    return
+  }
+  logging.value = true
+  LoginApi.getCode({ email: email.value })
+    .then((res) => {
+      if (res.code === 0) {
+        showToast('验证码已发送，请注意查收', true)
       } else {
         showToast(res.msg, true)
       }
@@ -186,6 +208,13 @@ const onLogin = () => {
     display: flex;
     background-image: var(--scrren-grid-bg-color);
     background-size: 50px 50px;
+  }
+
+  .login-switch{
+    cursor: pointer;
+  }
+  .login-switch:hover{
+    color: #4c9bff;
   }
 
   .poster-img {
@@ -264,6 +293,81 @@ const onLogin = () => {
         width: 100%;
         height: 50px;
         font-size: 24px;
+        font-weight: 600;
+        color: #ffffff;
+        background-color: rgb(var(--primary-color));
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+
+        &.logging,
+        &:hover {
+          background-color: rgba(76, 155, 255, 0.8);
+        }
+      }
+    }
+
+
+    .register-box {
+      width: 600px;
+      height: 500px;
+      border-radius: 10px;
+      background-image: linear-gradient(
+        130deg,
+        rgba(var(--background-color), 0.3),
+        rgba(var(--background-color), 0.5)
+      );
+      backdrop-filter: blur(10px);
+      border: rgba(var(--background-color), 0.5) 3px solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 60px 60px;
+
+      @media screen and (max-width: 1000px) {
+        width: 95%;
+        padding: 60px 20px;
+      }
+
+      .title {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .info {
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      .register-button {
+        width: 100%;
+        height: 50px;
+        font-size: 24px;
+        font-weight: 600;
+        color: #ffffff;
+        background-color: rgb(var(--primary-color));
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+
+        &.logging,
+        &:hover {
+          background-color: rgba(76, 155, 255, 0.8);
+        }
+      }
+      .getCode-button {
+        position: absolute;
+        right: 10%;
+        bottom: 30%;
+        width: 22%;
+        height: 50px;
+        font-size: 20px;
         font-weight: 600;
         color: #ffffff;
         background-color: rgb(var(--primary-color));

@@ -143,6 +143,12 @@
             <artifactId>netty-codec</artifactId>
             <version>4.1.111.Final</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

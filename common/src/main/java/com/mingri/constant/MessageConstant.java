@@ -6,6 +6,7 @@ package com.mingri.constant;
 public class MessageConstant {
 
     public static final String PASSWORD_ERROR = "密码错误";
+    public static final String EMAIL_EXIST = "该邮箱已被注册";
     public static final String ACCOUNT_EXIST = "账号已存在";
     public static final String LOGIN_ERROR = "账号或密码错误";
     public static final String ACCOUNT_LOCKED = "账号被锁定";
@@ -25,5 +26,5 @@ public class MessageConstant {
     public static final String TOKEN_ERROR = "token校验失败";
     public static final String AUTHENTICATION_FAILED = "用户认证失败，请重新登录";
     public static final String PERMISSION_NOT_EXIST = "没有权限";
-
+    public static final String ACCESS_FREQUENCY_LIMIT_EXCEEDED = "访问过于频繁，您已被封禁~";
 }

@@ -3,7 +3,7 @@ mingri:
     driver-class-name: com.mysql.cj.jdbc.Driver
     host: localhost
     port: 3306
-    database: scaffold
+    database: mini-chat
     username: root
     password: 123456
   redis:

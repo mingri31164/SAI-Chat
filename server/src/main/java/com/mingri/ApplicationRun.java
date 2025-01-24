@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 @Slf4j
-@CrossOrigin("*")
 @SpringBootApplication
 @EnableCaching//开发缓存注解功能
 @EnableTransactionManagement //开启注解方式的事务管理

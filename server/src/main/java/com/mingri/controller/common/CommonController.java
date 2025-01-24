@@ -23,7 +23,7 @@ import java.util.UUID;
  * 通用接口
  */
 @RestController
-@RequestMapping("/common")
+@RequestMapping("/api/v1/common")
 @Api(tags = "通用接口")
 @Slf4j
 public class CommonController {
@@ -70,7 +70,7 @@ public class CommonController {
      * @Date: 2025/1/20 0:01
      **/
         @ApiOperation("发送邮箱验证码")
-        @GetMapping("/email-captcha")
+        @GetMapping("/get-code")
         public Result<String> sendEmailCaptcha(String email) {
             commonService.sendEmailCaptcha(email);
             return Result.success("发送成功");

@@ -2,6 +2,7 @@ package com.mingri.controller.user;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.mingri.annotation.UrlLimit;
 import com.mingri.constant.JwtClaimsConstant;
 import com.mingri.dto.SysUserDTO;
 import com.mingri.dto.SysUserLoginDTO;
@@ -9,6 +10,7 @@ import com.mingri.dto.SysUserRegisterDTO;
 import com.mingri.entity.LoginUser;
 import com.mingri.entity.PageQuery;
 import com.mingri.entity.SysUser;
+import com.mingri.enumeration.LimitKeyType;
 import com.mingri.properties.JwtProperties;
 import com.mingri.result.Result;
 import com.mingri.service.ISysUserService;
@@ -39,7 +41,7 @@ import java.util.Map;
 @RestController
 @Slf4j
 @Api(tags = "用户相关接口")
-@RequestMapping("/sys-user")
+@RequestMapping("/api/v1/user")
 public class SysUserController {
 
     @Autowired
@@ -53,6 +55,8 @@ public class SysUserController {
      * @param userLoginDTO
      * @return
      */
+
+    @UrlLimit(keyType = LimitKeyType.IP)
     @ApiOperation("用户登录")
     @PostMapping("/login")
     public Result<SysUserLoginVO> login(@RequestBody SysUserLoginDTO userLoginDTO) {

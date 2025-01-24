@@ -16,6 +16,7 @@ import com.mingri.mapper.SysUserMapper;
 import com.mingri.service.ISysUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mingri.utils.RedisUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,6 +44,7 @@ import java.util.Objects;
  * @since 2025-01-22
  */
 @Service
+@Slf4j
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService, UserDetailsService {
 
     @Autowired
@@ -93,10 +95,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     public void register(SysUserRegisterDTO sysUserRegisterDTO) {
 
-        //TODO 邮箱重复处理
-//        if (userMapper.existsByEmail(userRegisterDTO.getEmail())) {
-//            throw new RegisterFailedException(MessageConstant.ACCOUNT_EXIST);
-//        }
+        //邮箱重复处理
+        if (lambdaQuery().eq(SysUser::getEmail, sysUserRegisterDTO.getEmail()).exists()) {
+            throw new RegisterFailedException(MessageConstant.EMAIL_EXIST);
+        }
         // 根据邮箱生成Redis键名
         String redisKey = MailConstant.CAPTCHA_CODE_KEY_PRE + sysUserRegisterDTO.getEmail();
         // 尝试从Redis获取现有的验证码
@@ -129,6 +131,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         //设置账号的状态，默认正常状态 0表示正常 1表示锁定
         sysUser.setStatus(UserStatus.NORMAL);
 
+        redisUtils.del(redisKey);
         save(sysUser);
     }
 

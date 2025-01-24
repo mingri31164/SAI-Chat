@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8848
 
 spring:
   application:
@@ -95,9 +95,9 @@ dynamic:
       config:
 #        enable: true
         # redis host
-        host: 127.0.0.1
+        host: ${mingri.redis.host}
         # redis port
-        port: 6379
-        password: 123456
+        port: ${mingri.redis.port}
+        password: ${mingri.redis.password}
 
 

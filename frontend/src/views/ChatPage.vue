@@ -104,12 +104,14 @@
             <!--              ]"-->
             <!--              @click="(card) => handlerCardClick(card)"-->
             <!--            />-->
-            <img
-              src="/ad.png"
-              alt=""
-              class="rounded cursor-pointer"
-              @click="() => handlerCardClick({ key: 'ad' })"
-            />
+
+<!--            左下角标识-->
+<!--            <img-->
+<!--              src="/ad.png"-->
+<!--              alt=""-->
+<!--              class="rounded cursor-pointer"-->
+<!--              @click="() => handlerCardClick({ key: 'ad' })"-->
+<!--            />-->
           </div>
         </div>
         <!-- 遮罩层 -->
