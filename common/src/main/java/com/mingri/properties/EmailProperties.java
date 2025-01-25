@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
  * @Version: 1.0
  */
 
+@Data
 @Component
 @ConfigurationProperties(prefix = "captcha.email")
-@Data
 public class EmailProperties {
     /**
      * 邮箱地址（注意：如果使用foxmail邮箱，此处user为qq号）

@@ -6,6 +6,7 @@ import com.mingri.dto.user.SysUpdateDTO;
 import com.mingri.dto.user.SysUserLoginDTO;
 import com.mingri.dto.user.SysUserRegisterDTO;
 import com.mingri.entity.LoginUser;
+import com.mingri.entity.SysUser;
 import com.mingri.properties.JwtProperties;
 import com.mingri.result.Result;
 import com.mingri.service.ISysUserService;
@@ -57,24 +58,24 @@ public class SysUserController {
     public Result<SysUserLoginVO> login(@RequestBody SysUserLoginDTO userLoginDTO) {
         log.info("用户登录：{}", userLoginDTO);
 
-        LoginUser loginUser = iSysUserService.login(userLoginDTO);
+        SysUser loginUser = iSysUserService.login(userLoginDTO);
 
         //登录成功后，生成jwt令牌
         Map<String, Object> claims = new HashMap<>();
-        claims.put(JwtClaimsConstant.USER_ID, loginUser.getSysUser().getId());
+        claims.put(JwtClaimsConstant.USER_ID, loginUser.getId());
         String token = JwtUtil.createJWT(
                 jwtProperties.getSecretKey(),
                 jwtProperties.getExpireTime(),
                 claims);
 
-        cacheUtil.putUserSessionCache(String.valueOf(loginUser.getSysUser().getId()), token);
+        cacheUtil.putUserSessionCache(String.valueOf(loginUser.getId()), token);
 
         SysUserLoginVO userLoginVO = SysUserLoginVO.builder()
-                .userId(loginUser.getSysUser().getId())
-                .userName(loginUser.getUsername())
-                .userType(loginUser.getSysUser().getUserType())
-                .email(loginUser.getSysUser().getEmail())
-                .avatar(loginUser.getSysUser().getAvatar())
+                .userId(loginUser.getId())
+                .userName(loginUser.getUserName())
+                .userType(loginUser.getUserType())
+                .email(loginUser.getEmail())
+                .avatar(loginUser.getAvatar())
                 .token(token)
                 .build();
 

@@ -1,6 +1,7 @@
 package com.mingri.service.impl;
 
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.toolkit.Db;
@@ -9,10 +10,7 @@ import com.mingri.context.BaseContext;
 import com.mingri.entity.ChatGroup;
 import com.mingri.entity.ChatList;
 import com.mingri.entity.Message;
-import com.mingri.entity.SysUser;
-import com.mingri.mapper.ChatGroupMapper;
 import com.mingri.mapper.ChatListMapper;
-import com.mingri.mapper.SysUserMapper;
 import com.mingri.service.IChatListService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mingri.service.ISysUserService;
@@ -20,7 +18,6 @@ import com.mingri.vo.SysUserInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,7 +32,7 @@ import java.util.List;
 public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> implements IChatListService {
 
     @Autowired
-    private SysUserMapper sysUserMapper;
+    private ISysUserService sysUserService;
 
     @Override
     public List<ChatList> privateList() {
@@ -79,7 +76,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
         if (targetChatList != null) {
             return targetChatList;
         }
-        SysUserInfoVO user = sysUserMapper.getUserById(targetId);
+        SysUserInfoVO user = sysUserService.getUserById(targetId);
         ChatList chatList = new ChatList();
         chatList.setId(IdUtil.simpleUUID());
         chatList.setUserId(userId);
@@ -91,6 +88,11 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
         return chatList;
     }
 
+    /**
+     * @Description: 是否已读
+     * @Author: mingri31164
+     * @Date: 2025/1/26 1:55
+     **/
     @Override
     public boolean read(String targetId) {
         String userId = String.valueOf(BaseContext.getCurrentId());
@@ -105,6 +107,46 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
     @Override
     public boolean delete(String chatListId) {
         return removeById(chatListId);
+    }
+
+    @Override
+    public boolean updateChatListPrivate(String targetId, Message message) {
+        String userId = String.valueOf(BaseContext.getCurrentId());
+        //更新对方聊天列表
+        updateChatList(targetId, userId, message);
+        //更新自己的聊天列表
+        return updateChatList(userId, targetId, message);
+    }
+
+    @Override
+    public boolean updateChatListGroup(Message message) {
+        LambdaUpdateWrapper<ChatList> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.set(ChatList::getLastMessage, JSONUtil.toJsonStr(message))
+                .eq(ChatList::getType, ChatListType.Group);
+        return update(updateWrapper);
+    }
+
+    public boolean updateChatList(String userId, String targetId, Message message) {
+        //判断聊天列表是否存在
+        LambdaQueryWrapper<ChatList> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(ChatList::getUserId, targetId)
+                .eq(ChatList::getTargetId, userId);
+        ChatList chatList = getOne(queryWrapper);
+        if (null == chatList) {
+            chatList = new ChatList();
+            chatList.setId(IdUtil.randomUUID());
+            chatList.setUserId(targetId);
+            chatList.setType(ChatListType.User);
+            chatList.setTargetId(userId);
+            chatList.setUnreadCount(1);
+            chatList.setTargetInfo(sysUserService.getUserById(userId));
+            chatList.setLastMessage(message);
+            return save(chatList);
+        } else {
+            chatList.setUnreadCount(chatList.getUnreadCount() + 1);
+            chatList.setLastMessage(message);
+            return updateById(chatList);
+        }
     }
 
 

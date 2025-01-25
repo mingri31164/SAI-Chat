@@ -14,6 +14,7 @@ import com.mingri.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.netty.channel.Channel;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
 
+@Slf4j
 @Service
 public class WebSocketService {
 
@@ -49,7 +51,7 @@ public class WebSocketService {
     public void online(Channel channel, String token) {
         try {
             Claims claims = JwtUtil.parseJWT(jwtProperties.getSecretKey(),token);
-            String userId = (String) claims.get(JwtClaimsConstant.USER_ID);
+            String userId = String.valueOf(Long.valueOf(claims.get(JwtClaimsConstant.USER_ID).toString()));
             String cacheToken = cacheUtil.getUserSessionCache(userId);
             if (!token.equals(cacheToken)) {
                 sendMsg(channel, Result.error(MessageConstant.LOGIN_IN_OTHER_PLACE), WsContentType.Msg);
@@ -103,6 +105,7 @@ public class WebSocketService {
     }
 
     public List<String> getOnlineUser() {
+        log.info("到这了2");
         return new ArrayList<>(Online_User.keySet());
     }
 

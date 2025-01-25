@@ -1,7 +1,12 @@
 package com.mingri.service;
 
+import com.mingri.dto.message.RecallDTO;
+import com.mingri.dto.message.RecordDTO;
+import com.mingri.dto.message.SendMessageDTO;
 import com.mingri.entity.Message;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +18,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IMessageService extends IService<Message> {
 
+    Message send(SendMessageDTO sendMessageDTO);
+
+    List<Message> record(RecordDTO recordDTO);
+
+    Message recall(RecallDTO recallDTO);
+
+    Message sendMessageToGroup(String userId, SendMessageDTO sendMessageDTO);
 }

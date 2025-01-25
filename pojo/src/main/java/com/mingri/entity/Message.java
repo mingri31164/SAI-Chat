@@ -25,7 +25,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("message")
+@TableName(value = "message",autoResultMap = true)
 @ApiModel(value="Message对象", description="")
 public class Message implements Serializable {
 

@@ -2,29 +2,35 @@ package com.mingri.service.impl;
 
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
-import com.mingri.constant.BadgeType;
-import com.mingri.constant.MailConstant;
-import com.mingri.constant.MessageConstant;
-import com.mingri.constant.RedisConstant;
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.mingri.constant.*;
 import com.mingri.context.BaseContext;
+import com.mingri.dto.message.NotifyDto;
 import com.mingri.dto.user.SysUpdateDTO;
 import com.mingri.dto.user.SysUserLoginDTO;
 import com.mingri.dto.user.SysUserRegisterDTO;
 import com.mingri.entity.LoginUser;
 import com.mingri.entity.SysUser;
 import com.mingri.enumeration.UserStatus;
+import com.mingri.enumeration.UserTypes;
 import com.mingri.exception.BaseException;
 import com.mingri.exception.EmailErrorException;
 import com.mingri.exception.LoginFailedException;
 import com.mingri.exception.RegisterFailedException;
 import com.mingri.mapper.SysMenuMapper;
 import com.mingri.mapper.SysUserMapper;
+import com.mingri.service.IChatListService;
 import com.mingri.service.ISysUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mingri.service.WebSocketService;
+import com.mingri.utils.CacheUtil;
 import com.mingri.utils.RedisUtils;
 import com.mingri.vo.SysUserInfoVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.xmlbeans.UserType;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -63,6 +69,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private SysMenuMapper sysMenuMapper;
     @Autowired
     private WebSocketService webSocketService;
+    @Autowired
+    private CacheUtil cacheUtil;
+    @Autowired
+    private IChatListService chatListService;
 
 
     public void register(SysUserRegisterDTO sysUserRegisterDTO) {
@@ -102,6 +112,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
         //设置账号的状态，默认正常状态 0表示正常 1表示锁定
         sysUser.setStatus(UserStatus.NORMAL);
+        sysUser.setBadge(Collections.singletonList("clover"));
 
         redisUtils.del(redisKey);
 
@@ -142,7 +153,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * @Date: 2025/1/21 18:33
      **/
 
-    public LoginUser login(SysUserLoginDTO userLoginDTO) {
+    public SysUser login(@NotNull SysUserLoginDTO userLoginDTO) {
         // 用户在登录页面输入的用户名和密码
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userLoginDTO.getUserName(), userLoginDTO.getPassword());
@@ -154,22 +165,24 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             // 认证成功后，提取 LoginUser
             LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
 
+            SysUser sysUser = loginUser.getSysUser();
             // 检查用户状态
-            if (loginUser.getSysUser().getStatus().equals(UserStatus.FREEZE)) {
+            if (sysUser.getStatus().equals(UserStatus.FREEZE)) {
                 throw new LoginFailedException(MessageConstant.ACCOUNT_LOCKED);
             }
 
-            // 把完整的用户信息存入 Redis，其中 userid 作为 key
-            redisUtils.set(RedisConstant.USER_INFO_PREFIX +
-                    loginUser.getSysUser().getId().toString(), loginUser);
+            updateUserBadge(String.valueOf(sysUser.getId()));
 
-            updateUserBadge(String.valueOf(loginUser.getSysUser().getId()));
-
-            // 更新用户登录时间
-            SysUser sysUser = loginUser.getSysUser().setLoginTime(new Date());
+            // 更新用户登录时间 和 等级荣誉
+            sysUser.setLoginTime(new Date());
+            updateUserBadge(String.valueOf(sysUser.getId()));
             updateById(sysUser);
 
-            return loginUser;
+            // 把完整的用户信息存入 Redis，其中 userid 作为 key
+            redisUtils.set(RedisConstant.USER_INFO_PREFIX +
+                    sysUser.getId().toString(), loginUser);
+
+            return sysUser;
 
         } catch (AuthenticationException e) {
             // 认证失败处理
@@ -198,12 +211,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public SysUser getUserByNameOrEmail(String name, String email) {
-        return null;
-    }
-
-
-    @Override
     public SysUserInfoVO getUserById(String userId) {
         return baseMapper.getUserById(userId);
     }
@@ -215,6 +222,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public List<String> onlineWeb() {
+        log.info("到这了1");
         return webSocketService.getOnlineUser();
     }
 
@@ -225,17 +233,31 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public void online(String userId) {
-
+        NotifyDto notifyDto = new NotifyDto();
+        notifyDto.setTime(new Date());
+        notifyDto.setType(NotifyType.Web_Online);
+        notifyDto.setContent(JSONUtil.toJsonStr(getUserById(userId)));
+        webSocketService.sendNotifyToGroup(notifyDto);
     }
 
     @Override
     public void offline(String userId) {
-
+        NotifyDto notifyDto = new NotifyDto();
+        notifyDto.setTime(new Date());
+        notifyDto.setType(NotifyType.Web_Offline);
+        notifyDto.setContent(JSONUtil.toJsonStr(getUserById(userId)));
+        //离线更新，已读列表（防止用户直接关闭浏览器等情况）
+        chatListService.read(cacheUtil.getUserReadCache(userId));
+        webSocketService.sendNotifyToGroup(notifyDto);
     }
 
     @Override
     public void deleteExpiredUsers(LocalDate expirationDate) {
-
+        LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.lt(SysUser::getLoginTime, expirationDate);
+        if (remove(queryWrapper)) {
+            log.info("---清理过期用户成功---");
+        }
     }
 
     @Override
@@ -279,7 +301,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public void initBotUser() {
-
+        SysUser doubao = getById("doubao");
+        if (doubao == null) {
+            SysUser robot = new SysUser();
+            robot.setId(0L);
+            robot.setUserName("豆包");
+            robot.setEmail(IdUtil.simpleUUID() + "@robot.com");
+            robot.setUserType(UserTypes.BOT);
+            save(robot);
+        }
     }
 
     @Override

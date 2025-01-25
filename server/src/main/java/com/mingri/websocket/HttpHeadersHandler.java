@@ -2,10 +2,12 @@ package com.mingri.websocket;
 
 import cn.hutool.core.net.url.UrlBuilder;
 import com.mingri.constant.JwtClaimsConstant;
+import com.mingri.properties.JwtProperties;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpHeaders;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import java.net.InetSocketAddress;
@@ -13,13 +15,16 @@ import java.util.Optional;
 
 public class HttpHeadersHandler extends ChannelInboundHandlerAdapter {
 
+    @Autowired
+    private JwtProperties jwtProperties;
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof FullHttpRequest) {
             FullHttpRequest request = (FullHttpRequest) msg;
             UrlBuilder urlBuilder = UrlBuilder.ofHttp(request.uri());
 
-            String token = Optional.ofNullable(urlBuilder.getQuery()).map(k -> k.get(JwtClaimsConstant.NAME)).map(CharSequence::toString).orElse("");
+            String token = Optional.ofNullable(urlBuilder.getQuery()).map(k -> k.get(jwtProperties.getTokenName())).map(CharSequence::toString).orElse("");
             NettyUtil.setAttr(ctx.channel(), NettyUtil.TOKEN, token);
 
             request.setUri(urlBuilder.getPath().toString());

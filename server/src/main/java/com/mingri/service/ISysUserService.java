@@ -28,7 +28,7 @@ public interface ISysUserService extends IService<SysUser> {
      * @param userLoginDTO
      * @return
      */
-    LoginUser login(SysUserLoginDTO userLoginDTO);
+    SysUser login(SysUserLoginDTO userLoginDTO);
 
 
     /**
@@ -42,8 +42,6 @@ public interface ISysUserService extends IService<SysUser> {
      * 用户退出
      */
     void logout();
-
-    SysUser getUserByNameOrEmail(String name, String email);
 
     SysUserInfoVO getUserById(String userId);
 

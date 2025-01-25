@@ -8,6 +8,7 @@ public class MessageConstant {
     public static final String PASSWORD_ERROR = "密码错误";
     public static final String EMAIL_EXIST = "该邮箱已被注册";
     public static final String ACCOUNT_EXIST = "账号已存在";
+    public static final String USER_NOT_EXIST = "用户不存在";
     public static final String LOGIN_ERROR = "账号或密码错误";
     public static final String ACCOUNT_LOCKED = "账号被锁定";
     public static final String UNKNOWN_ERROR = "未知错误";
@@ -29,4 +30,7 @@ public class MessageConstant {
     public static final String ACCESS_FREQUENCY_LIMIT_EXCEEDED = "访问过于频繁，您已被封禁~";
     public static final String LOGIN_IN_OTHER_PLACE = "已在其他地方登录";
     public static final String CONNECT_ERROR = "连接错误";
+    public static final String MESSAGE_NOT_EXIST = "消息不存在~";
+    public static final String ERROR_ONLY_SELF_RECALL = "仅能撤回自己的消息~~";
+    public static final String ERROR_EXPIRE_RECALL = "消息已超过2分钟，无法撤回~";
 }

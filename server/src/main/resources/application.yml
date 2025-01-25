@@ -101,3 +101,15 @@ dynamic:
         password: ${mingri.redis.password}
 
 
+mini-chat:
+  password: 1234 #群聊密码
+  limit: 100 #在线人数限制
+  name: Linyu在线聊天室 #群聊名称
+  expires: 7 #数据过期时间（天）
+  doubao: #豆包
+    api-key: apikey
+    count-limit: 5 #次数限制,0-不限制
+    length-limit: 50 #内容长度限制,0-不限制
+    model: ep-20241231132608-lbm7g
+
+

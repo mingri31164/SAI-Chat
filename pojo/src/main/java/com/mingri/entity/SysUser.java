@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.mingri.enumeration.UserStatus;
+import com.mingri.enumeration.UserTypes;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -25,7 +26,7 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("sys_user")
+@TableName(value = "sys_user",autoResultMap = true)
 @ApiModel(value="SysUser对象", description="用户表")
 public class SysUser implements Serializable {
 
@@ -61,8 +62,8 @@ public class SysUser implements Serializable {
     @TableField(value = "badge", typeHandler = JacksonTypeHandler.class)
     private List<String> badge;
 
-    @ApiModelProperty(value = "用户类型（0管理员，1普通用户）")
-    private Integer userType;
+    @ApiModelProperty(value = "用户类型（0管理员，1普通用户，2机器人）")
+    private UserTypes userType;
 
     @ApiModelProperty(value = "用户最新登录时间")
     @TableField(value = "login_time",fill = FieldFill.UPDATE)
