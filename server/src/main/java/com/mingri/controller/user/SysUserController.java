@@ -1,29 +1,21 @@
 package com.mingri.controller.user;
 
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.mingri.annotation.UrlLimit;
 import com.mingri.constant.JwtClaimsConstant;
-import com.mingri.dto.SysUpdateDTO;
-import com.mingri.dto.SysUserDTO;
-import com.mingri.dto.SysUserLoginDTO;
-import com.mingri.dto.SysUserRegisterDTO;
+import com.mingri.dto.user.SysUpdateDTO;
+import com.mingri.dto.user.SysUserLoginDTO;
+import com.mingri.dto.user.SysUserRegisterDTO;
 import com.mingri.entity.LoginUser;
-import com.mingri.entity.PageQuery;
-import com.mingri.entity.SysUser;
-import com.mingri.enumeration.LimitKeyType;
 import com.mingri.properties.JwtProperties;
 import com.mingri.result.Result;
 import com.mingri.service.ISysUserService;
 import com.mingri.utils.CacheUtil;
 import com.mingri.utils.JwtUtil;
-import com.mingri.result.PageResult;
 import com.mingri.vo.SysUserInfoVO;
 import com.mingri.vo.SysUserLoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,7 +51,7 @@ public class SysUserController {
      * @return
      */
 
-    @UrlLimit(keyType = LimitKeyType.IP)
+//    @UrlLimit(keyType = LimitKeyType.IP)
     @ApiOperation("用户登录")
     @PostMapping("/login")
     public Result<SysUserLoginVO> login(@RequestBody SysUserLoginDTO userLoginDTO) {

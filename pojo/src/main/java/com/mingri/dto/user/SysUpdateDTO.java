@@ -1,4 +1,4 @@
-package com.mingri.dto;
+package com.mingri.dto.user;
 
 import lombok.Data;
 

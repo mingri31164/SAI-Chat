@@ -1,4 +1,4 @@
-package com.mingri.dto;
+package com.mingri.dto.user;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,8 +9,8 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Data
-@ApiModel(description = "用户注册时传递的数据模型")
-public class SysUserRegisterDTO implements Serializable {
+@ApiModel(description = "用户登录时传递的数据模型")
+public class SysUserLoginDTO implements Serializable {
 
     @NotBlank(message = "用户名不能为空~")
     @ApiModelProperty("用户名")
@@ -20,15 +20,5 @@ public class SysUserRegisterDTO implements Serializable {
 //    @Size(min = 6, message = "密码长度必须至少为 6 位")
     @ApiModelProperty("密码")
     private String password;
-
-    @NotBlank(message = "邮箱不能为空")
-    @ApiModelProperty("邮箱")
-    private String email;
-
-    @NotBlank(message = "验证码不能为空")
-    @ApiModelProperty("邮箱验证码")
-    private String emailCode;
-
-
 
 }

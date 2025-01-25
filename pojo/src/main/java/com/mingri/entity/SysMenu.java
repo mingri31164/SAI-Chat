@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.Date;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -24,8 +26,6 @@ import lombok.experimental.Accessors;
 @TableName("sys_menu")
 @ApiModel(value="SysMenu对象", description="权限表")
 public class SysMenu implements Serializable {
-
-    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
@@ -57,15 +57,15 @@ public class SysMenu implements Serializable {
 
     @ApiModelProperty(value = "创建时间")
     @TableField(value = "create_time",fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
+    private Date createTime;
 
     @ApiModelProperty(value = "更新人")
     @TableField(value = "update_By",fill = FieldFill.UPDATE)
     private Long updateBy;
 
     @ApiModelProperty(value = "更新时间")
-    @TableField(value = "update_time",fill = FieldFill.UPDATE)
-    private LocalDateTime updateTime;
+    @TableField(value = "update_time",fill = FieldFill.INSERT_UPDATE)
+    private Date updateTime;
 
     @ApiModelProperty(value = "是否删除（0未删除 1已删除）")
     private Integer delFlag;

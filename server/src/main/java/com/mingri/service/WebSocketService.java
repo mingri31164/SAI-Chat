@@ -2,9 +2,10 @@ package com.mingri.service;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.mingri.constant.JwtClaimsConstant;
 import com.mingri.constant.MessageConstant;
 import com.mingri.constant.WsContentType;
-import com.mingri.dto.NotifyDto;
+import com.mingri.dto.message.NotifyDto;
 import com.mingri.entity.Message;
 import com.mingri.properties.JwtProperties;
 import com.mingri.result.Result;
@@ -48,7 +49,7 @@ public class WebSocketService {
     public void online(Channel channel, String token) {
         try {
             Claims claims = JwtUtil.parseJWT(jwtProperties.getSecretKey(),token);
-            String userId = (String) claims.get("userId");
+            String userId = (String) claims.get(JwtClaimsConstant.USER_ID);
             String cacheToken = cacheUtil.getUserSessionCache(userId);
             if (!token.equals(cacheToken)) {
                 sendMsg(channel, Result.error(MessageConstant.LOGIN_IN_OTHER_PLACE), WsContentType.Msg);

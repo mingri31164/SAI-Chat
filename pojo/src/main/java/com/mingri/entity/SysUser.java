@@ -2,16 +2,17 @@ package com.mingri.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.List;
 
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.mingri.enumeration.UserStatus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import java.util.Date;
 
 /**
  * <p>
@@ -27,8 +28,6 @@ import lombok.experimental.Accessors;
 @TableName("sys_user")
 @ApiModel(value="SysUser对象", description="用户表")
 public class SysUser implements Serializable {
-
-    private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "主键")
     @TableId(value = "id", type = IdType.AUTO)
@@ -58,12 +57,16 @@ public class SysUser implements Serializable {
     @ApiModelProperty(value = "头像")
     private String avatar;
 
+    @ApiModelProperty("用户荣誉")
+    @TableField(value = "badge", typeHandler = JacksonTypeHandler.class)
+    private List<String> badge;
+
     @ApiModelProperty(value = "用户类型（0管理员，1普通用户）")
     private Integer userType;
 
-    @ApiModelProperty(value = "创建人的用户id")
+    @ApiModelProperty(value = "用户最新登录时间")
     @TableField(value = "login_time",fill = FieldFill.UPDATE)
-    private LocalDateTime loginTime;
+    private Date loginTime;
 
     @ApiModelProperty(value = "创建人的用户id")
     @TableField(value = "create_By",fill = FieldFill.INSERT)
@@ -71,15 +74,15 @@ public class SysUser implements Serializable {
 
     @ApiModelProperty(value = "创建时间")
     @TableField(value = "create_time",fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
+    private Date createTime;
 
     @ApiModelProperty(value = "更新人")
     @TableField(value = "update_By",fill = FieldFill.UPDATE)
     private Long updateBy;
 
     @ApiModelProperty(value = "更新时间")
-    @TableField(value = "update_time",fill = FieldFill.UPDATE)
-    private LocalDateTime updateTime;
+    @TableField(value = "update_time",fill = FieldFill.INSERT_UPDATE)
+    private Date updateTime;
 
     @ApiModelProperty(value = "删除标志（0代表未删除，1代表已删除）")
     private Integer delFlag;

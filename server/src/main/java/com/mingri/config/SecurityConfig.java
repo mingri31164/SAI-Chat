@@ -51,7 +51,7 @@ public class SecurityConfig  {
 				.and()
 				.authorizeRequests()
 				.antMatchers("/api/v1/user/**",
-						"/api/v1/common",
+						"/api/v1/common/**",
 						"/v2/api-docs",
 						"/swagger-resources/configuration/ui",
 						"/swagger-resources",

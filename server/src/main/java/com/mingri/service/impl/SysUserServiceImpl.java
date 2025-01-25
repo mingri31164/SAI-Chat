@@ -1,13 +1,15 @@
 package com.mingri.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
+import com.mingri.constant.BadgeType;
 import com.mingri.constant.MailConstant;
 import com.mingri.constant.MessageConstant;
 import com.mingri.constant.RedisConstant;
 import com.mingri.context.BaseContext;
-import com.mingri.dto.SysUpdateDTO;
-import com.mingri.dto.SysUserLoginDTO;
-import com.mingri.dto.SysUserRegisterDTO;
+import com.mingri.dto.user.SysUpdateDTO;
+import com.mingri.dto.user.SysUserLoginDTO;
+import com.mingri.dto.user.SysUserRegisterDTO;
 import com.mingri.entity.LoginUser;
 import com.mingri.entity.SysUser;
 import com.mingri.enumeration.UserStatus;
@@ -17,11 +19,9 @@ import com.mingri.exception.LoginFailedException;
 import com.mingri.exception.RegisterFailedException;
 import com.mingri.mapper.SysMenuMapper;
 import com.mingri.mapper.SysUserMapper;
-import com.mingri.result.Result;
 import com.mingri.service.ISysUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mingri.service.WebSocketService;
-import com.mingri.utils.CacheUtil;
 import com.mingri.utils.RedisUtils;
 import com.mingri.vo.SysUserInfoVO;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -105,6 +104,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         sysUser.setStatus(UserStatus.NORMAL);
 
         redisUtils.del(redisKey);
+
+        log.info("注册时间：{}",sysUser.getUpdateTime());
         save(sysUser);
     }
 
@@ -162,7 +163,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             redisUtils.set(RedisConstant.USER_INFO_PREFIX +
                     loginUser.getSysUser().getId().toString(), loginUser);
 
-            SysUser sysUser = loginUser.getSysUser().setLoginTime(LocalDateTime.now());
+            updateUserBadge(String.valueOf(loginUser.getSysUser().getId()));
+
+            // 更新用户登录时间
+            SysUser sysUser = loginUser.getSysUser().setLoginTime(new Date());
             updateById(sysUser);
 
             return loginUser;
@@ -236,7 +240,41 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public void updateUserBadge(String id) {
-
+        SysUser user = getById(id);
+        if (user == null) return;
+        List<String> badges = user.getBadge();
+        if (badges == null) {
+            badges = new ArrayList<>();
+        }
+        boolean isUpdate = false;
+        // 是否是第一个用户
+        if (count() == 1) {
+            if (!badges.contains(BadgeType.Crown)) {
+                badges.add(BadgeType.Crown);
+                isUpdate = true;
+            }
+        }
+        // 根据用户创建时间发放徽章
+        long diffInDays = DateUtil.between(user.getCreateTime(), new Date(), DateUnit.DAY);
+        if (diffInDays >= 0 && diffInDays <= 7) {
+            if (!badges.contains(BadgeType.Clover)) {
+                badges.add(BadgeType.Clover);
+                isUpdate = true;
+            }
+        } else if (diffInDays > 7) {
+            if (badges.contains(BadgeType.Clover)) {
+                badges.remove(BadgeType.Clover);
+                isUpdate = true;
+            }
+            if (!badges.contains(BadgeType.Diamond)) {
+                badges.add(BadgeType.Diamond);
+                isUpdate = true;
+            }
+        }
+        if (isUpdate) {
+            user.setBadge(badges);
+            updateById(user);
+        }
     }
 
     @Override

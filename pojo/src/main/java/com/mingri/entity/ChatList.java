@@ -1,10 +1,13 @@
 package com.mingri.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.util.Date;
+
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
+import com.mingri.vo.SysUserInfoVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -13,7 +16,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author mingri31164
@@ -26,8 +29,6 @@ import lombok.experimental.Accessors;
 @ApiModel(value="ChatList对象", description="")
 public class ChatList implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     @TableId(value = "id", type = IdType.AUTO)
     private String id;
 
@@ -35,17 +36,23 @@ public class ChatList implements Serializable {
 
     private String targetId;
 
-    private String targetInfo;
+    @TableField(value = "target_info", typeHandler = JacksonTypeHandler.class)
+    private SysUserInfoVO targetInfo;
 
     private Integer unreadCount;
 
-    private String lastMessage;
+    @TableField(value = "last_message", typeHandler = JacksonTypeHandler.class)
+    private Message lastMessage;
 
     private String type;
 
-    private LocalDateTime createTime;
+    @ApiModelProperty(value = "创建时间")
+    @TableField(value = "create_time",fill = FieldFill.INSERT)
+    private Date createTime;
 
-    private LocalDateTime updateTime;
+    @ApiModelProperty(value = "更新时间")
+    @TableField(value = "update_time",fill = FieldFill.INSERT_UPDATE)
+    private Date updateTime;
 
 
 }
