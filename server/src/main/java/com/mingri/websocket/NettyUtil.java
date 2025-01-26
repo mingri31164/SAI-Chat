@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class NettyUtil {
 
     public static AttributeKey<String> IP = AttributeKey.valueOf("x-ip");
-    public static AttributeKey<String> TOKEN = AttributeKey.valueOf("token");
+    public static AttributeKey<String> TOKEN = AttributeKey.valueOf("x-token");
 
     public static <T> void setAttr(Channel channel, AttributeKey<T> attributeKey, T data) {
         Attribute<T> attr = channel.attr(attributeKey);

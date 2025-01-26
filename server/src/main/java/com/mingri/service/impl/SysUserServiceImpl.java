@@ -6,6 +6,8 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.mingri.constant.*;
+import com.mingri.constant.type.BadgeType;
+import com.mingri.constant.type.NotifyType;
 import com.mingri.context.BaseContext;
 import com.mingri.dto.message.NotifyDto;
 import com.mingri.dto.user.SysUpdateDTO;
@@ -29,7 +31,6 @@ import com.mingri.utils.CacheUtil;
 import com.mingri.utils.RedisUtils;
 import com.mingri.vo.SysUserInfoVO;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.xmlbeans.UserType;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -222,7 +223,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public List<String> onlineWeb() {
-        log.info("到这了1");
         return webSocketService.getOnlineUser();
     }
 
@@ -307,7 +307,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             robot.setId(0L);
             robot.setUserName("豆包");
             robot.setEmail(IdUtil.simpleUUID() + "@robot.com");
-            robot.setUserType(UserTypes.BOT);
+            robot.setUserType(UserTypes.bot);
             save(robot);
         }
     }

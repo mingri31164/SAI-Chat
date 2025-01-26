@@ -3,6 +3,8 @@ package com.mingri.controller;
 
 import com.mingri.annotation.UrlLimit;
 import com.mingri.dto.chatList.CreateDTO;
+import com.mingri.dto.chatList.DeleteDTO;
+import com.mingri.dto.chatList.ReadDTO;
 import com.mingri.entity.ChatList;
 import com.mingri.result.Result;
 import com.mingri.service.IChatListService;
@@ -54,15 +56,15 @@ public class ChatListController {
 
 //    @UrlLimit
     @PostMapping("/read")
-    public Object read(String targetId) {
-        boolean result = chatListService.read(targetId);
+    public Object read(@RequestBody @Valid ReadDTO readDTO) {
+        boolean result = chatListService.read(readDTO.getTargetId());
         return Result.success(result);
     }
 
 //    @UrlLimit
     @PostMapping("/delete")
-    public Object delete(String chatListId) {
-        boolean result = chatListService.delete(chatListId);
+    public Object delete(@RequestBody @Valid DeleteDTO deleteDTO) {
+        boolean result = chatListService.delete(deleteDTO.getChatListId());
         return Result.success(result);
     }
 

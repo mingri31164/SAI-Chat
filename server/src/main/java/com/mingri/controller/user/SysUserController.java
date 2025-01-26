@@ -73,7 +73,7 @@ public class SysUserController {
         SysUserLoginVO userLoginVO = SysUserLoginVO.builder()
                 .userId(loginUser.getId())
                 .userName(loginUser.getUserName())
-                .userType(loginUser.getUserType())
+                .type(loginUser.getUserType())
                 .email(loginUser.getEmail())
                 .avatar(loginUser.getAvatar())
                 .token(token)

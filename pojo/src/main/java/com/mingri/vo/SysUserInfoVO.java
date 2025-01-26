@@ -1,5 +1,6 @@
 package com.mingri.vo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.mingri.enumeration.UserTypes;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -22,13 +23,15 @@ public class SysUserInfoVO implements Serializable {
     private Long id;
 
     @ApiModelProperty("用户名")
-    private String userName;
+    @TableField(value = "user_name")
+    private String name;
 
     @ApiModelProperty("头像")
     private String avatar;
 
     @ApiModelProperty("用户类型（0管理员，1普通用户，2机器人）")
-    private UserTypes userType;
+    @TableField(value = "user_type")
+    private UserTypes type;
 
     @ApiModelProperty("用户荣誉")
     private List<String> badge;

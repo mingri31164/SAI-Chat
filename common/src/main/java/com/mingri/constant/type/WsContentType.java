@@ -1,4 +1,4 @@
-package com.mingri.constant;
+package com.mingri.constant.type;
 
 import lombok.Data;
 

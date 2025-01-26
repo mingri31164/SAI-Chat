@@ -26,6 +26,6 @@ mingri:
   jwt:
     secret-key: csd_admin
     expire-time: 7200000
-    token-name: token
+    token-name: x-token
 
 

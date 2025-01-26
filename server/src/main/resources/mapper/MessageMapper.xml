@@ -8,6 +8,8 @@
         <result property="toId" column="to_id"/>
         <result property="fromInfo" column="from_info"
                 typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
+        <result property="referenceMsg" column="reference_msg"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
         <result property="message" column="message"/>
         <result property="isShowTime" column="is_show_time" />
         <result property="type" column="type"/>

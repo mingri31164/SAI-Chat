@@ -1,4 +1,4 @@
-package com.mingri.constant;
+package com.mingri.constant.type;
 
 public class MessageType {
     //文本

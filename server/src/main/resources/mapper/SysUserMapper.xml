@@ -3,8 +3,9 @@
 <mapper namespace="com.mingri.mapper.SysUserMapper">
     <resultMap id="UserDtoResultMap" type="com.mingri.vo.SysUserInfoVO">
         <result property="id" column="id"/>
-        <result property="userName" column="user_name"/>
+        <result property="name" column="user_name"/>
         <result property="avatar" column="avatar"/>
+        <result property="type" column="user_type"/>
         <result property="badge" column="badge"
                 typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
     </resultMap>

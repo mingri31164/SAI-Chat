@@ -1,6 +1,7 @@
 package com.mingri.vo;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.mingri.enumeration.UserTypes;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -36,8 +37,9 @@ public class SysUserLoginVO {
     @ApiModelProperty("头像")
     private String avatar;
 
+    @TableField("user_type")
     @ApiModelProperty("用户类型（0管理员，1普通用户，2机器人）")
-    private UserTypes userType;
+    private UserTypes type;
 
     @ApiModelProperty("jwt令牌")
     private String token;

@@ -15,7 +15,7 @@
     </div>
     <div class="login-bg">
       <img alt="" :src="`/poster-${themeStore.theme}.png`" class="poster-img" draggable="false" />
-      <img class="logo" alt="" :src="`/title-${themeStore.theme}.png`" draggable="false" />
+<!--      <img class="logo" alt="" :src="`/title-${themeStore.theme}.png`" draggable="false" />-->
       <div class="login-content">
         <div v-if="isLogin" class="login-box">
           <div class="title" style="position: relative">
@@ -106,7 +106,7 @@ const onLogin = () => {
       if (res.code === 0) {
         localStorage.setItem('x-token', res.data.token)
         userInfoStore.setUserInfo({
-          userId: res.data.userId,
+          userId: res.data.userId.toString(),
           userName: res.data.userName,
           email: res.data.email,
           avatar: res.data.avatar,

@@ -27,9 +27,16 @@
           <div class="chat-list-title">
             <div class="relative flex">
               消息列表
-              <linyu-label class="absolute">v{{ version }}</linyu-label>
+<!--              <linyu-label class="absolute">v{{ version }}</linyu-label>-->
             </div>
+
             <div class="close-btn" @click="showLeft = false">×</div>
+          </div>
+          <div
+            v-if="privateChatList?.length > 0"
+            class="text-[rgba(var(--text-color),0.7)] font-[600] mb-[5px]"
+          >
+            群聊
           </div>
           <div
             class="chat-list-item black"
@@ -104,8 +111,7 @@
             <!--              ]"-->
             <!--              @click="(card) => handlerCardClick(card)"-->
             <!--            />-->
-
-<!--            左下角标识-->
+<!--            左下角图标-->
 <!--            <img-->
 <!--              src="/ad.png"-->
 <!--              alt=""-->
@@ -271,7 +277,7 @@
                 v-for="(item, index) in userList"
                 class="online-list-item"
                 :key="item.id"
-                :class="{ odd: index % 2 === 0 }"
+                :class="{ odd: index % 2 === 0, highlight: String(item.id) === userInfoStore.userId }"
               >
                 <div class="online-item-content">
                   <div class="w-[40px] h-[40px] relative">
@@ -296,7 +302,7 @@
                 </div>
                 <div class="online-item-operation ml-[20px]">
                   <linyu-text-button
-                    v-if="item.id !== userInfoStore.userId && item.type !== UserType.Bot"
+                    v-if="String(item.id) !== userInfoStore.userId && item.type !== UserType.Bot"
                     text="私聊"
                     @click="
                       () => {
@@ -585,7 +591,7 @@ onMounted(async () => {
     chatShowAreaRef.value.addEventListener('scroll', handleScroll)
   }
   onGetGroupChat()
-  onGetPrivateChatList()
+  await onGetPrivateChatList()
   await onGetUserListMap()
   await onGetOnlineWeb()
   targetId.value = '1'
@@ -863,6 +869,11 @@ const onCreatePrivateChat = (id) => {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+
+  .highlight {
+    background-color: rgba(255, 255, 0, 0.3); /* 高亮背景色 */
+    border: 1px solid yellow; /* 边框颜色 */
+  }
 
   .chat-bg {
     width: 100%;

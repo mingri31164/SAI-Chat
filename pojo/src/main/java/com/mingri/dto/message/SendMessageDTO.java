@@ -1,6 +1,6 @@
 package com.mingri.dto.message;
 
-import com.mingri.constant.MessageType;
+import com.mingri.constant.type.MessageType;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

@@ -5,7 +5,7 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.toolkit.Db;
-import com.mingri.constant.ChatListType;
+import com.mingri.constant.type.ChatListType;
 import com.mingri.context.BaseContext;
 import com.mingri.entity.ChatGroup;
 import com.mingri.entity.ChatList;
@@ -15,6 +15,7 @@ import com.mingri.service.IChatListService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mingri.service.ISysUserService;
 import com.mingri.vo.SysUserInfoVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,8 @@ import java.util.List;
  * @author mingri31164
  * @since 2025-01-24
  */
+
+@Slf4j
 @Service
 public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> implements IChatListService {
 
@@ -58,9 +61,9 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
             chat.setTargetId("1");
             ChatGroup group = Db.lambdaQuery(ChatGroup.class).eq(ChatGroup::getId, "1").one();
             SysUserInfoVO userDto = new SysUserInfoVO();
-            userDto.setId(1L);
-            userDto.setUserName("1L");
-            userDto.setAvatar(null);
+            userDto.setId(Long.valueOf(group.getId()));
+            userDto.setName(group.getName());
+            userDto.setAvatar(group.getAvatar());
             chat.setTargetInfo(userDto);
             save(chat);
         }

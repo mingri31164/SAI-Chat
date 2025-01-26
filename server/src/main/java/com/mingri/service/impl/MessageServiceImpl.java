@@ -5,15 +5,15 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import com.baomidou.mybatisplus.extension.toolkit.Db;
 import com.mingri.constant.*;
+import com.mingri.constant.type.MessageType;
+import com.mingri.constant.type.TextContentType;
 import com.mingri.context.BaseContext;
 import com.mingri.dto.message.RecallDTO;
 import com.mingri.dto.message.RecordDTO;
 import com.mingri.dto.message.SendMessageDTO;
 import com.mingri.dto.message.TextMessageContent;
 import com.mingri.entity.Message;
-import com.mingri.entity.SysUser;
 import com.mingri.enumeration.UserTypes;
 import com.mingri.exception.BaseException;
 import com.mingri.mapper.MessageMapper;
@@ -26,6 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.github.houbb.sensitive.word.bs.SensitiveWordBs;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -61,11 +64,6 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
 
     @Override
     public Message send(SendMessageDTO sendMessageDTO) {
-        SysUser tarUser = Db.lambdaQuery(SysUser.class).eq(SysUser::getId, sendMessageDTO.getTargetId()).one();
-        if (null == tarUser){
-            throw new BaseException(MessageConstant.USER_NOT_EXIST);
-        }
-
         if (MessageSource.Group.equals(sendMessageDTO.getSource())) {
             return sendMessageToGroup(sendMessageDTO);
         } else {
@@ -77,6 +75,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         String userId = String.valueOf(BaseContext.getCurrentId());
         List<Message> messages = messageMapper.record(userId, recordDTO.getTargetId(),
                 recordDTO.getIndex(), recordDTO.getNum());
+        chatListService.read(recordDTO.getTargetId());
         cacheUtil.putUserReadCache(userId, recordDTO.getTargetId());
         return messages;
     }
@@ -92,12 +91,15 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
             throw new BaseException(MessageConstant.ERROR_ONLY_SELF_RECALL);
         }
 
-        Date createTime = message.getCreateTime();
-        log.info("消息创建时间:{}", createTime);
-        log.info("当前时间:{}", new Date());
-        log.info("距离消息发出已经有:{}", DateUtil.between(message.getCreateTime(), new Date(), DateUnit.MINUTE));
-
-        if (DateUtil.between(message.getCreateTime(), new Date(), DateUnit.MINUTE) > 2) {
+        Date createDateTime = message.getCreateTime();
+        // 将 Date 转换为 LocalDateTime
+        LocalDateTime createTime = createDateTime.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+        Duration duration  = Duration.between(createTime, LocalDateTime.now());
+        long minutes = duration.toMinutes();
+        log.info("时间相差：{}", minutes);
+        if (minutes > 2) {
             throw new BaseException(MessageConstant.ERROR_EXPIRE_RECALL);
         }
         //撤回自己的消息
@@ -160,7 +162,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
                     sb.append(content.getContent());
                 } else {
                     SysUserInfoVO userDto = JSONUtil.toBean(content.getContent(), SysUserInfoVO.class);
-                    if (UserTypes.BOT.equals(userDto.getUserType())) {
+                    if (UserTypes.bot.equals(userDto.getType())) {
                         botUserRef.set(JSONUtil.toBean(content.getContent(), SysUserInfoVO.class));
                     }
                 }

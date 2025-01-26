@@ -1,4 +1,4 @@
-package com.mingri.constant;
+package com.mingri.constant.type;
 
 public class NotifyType {
     //web用户上线

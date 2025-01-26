@@ -4,7 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.mingri.constant.JwtClaimsConstant;
 import com.mingri.constant.MessageConstant;
-import com.mingri.constant.WsContentType;
+import com.mingri.constant.type.WsContentType;
 import com.mingri.dto.message.NotifyDto;
 import com.mingri.entity.Message;
 import com.mingri.properties.JwtProperties;
@@ -105,7 +105,6 @@ public class WebSocketService {
     }
 
     public List<String> getOnlineUser() {
-        log.info("到这了2");
         return new ArrayList<>(Online_User.keySet());
     }
 

@@ -18,7 +18,8 @@
             {{ msgStore.userListMap.get(props.msg.fromId).name }}
           </div>
           <div class="mgs-ip ml-[2px] mr-[2px]">
-            [{{ props.msg.fromInfo.ipOwnership ?? '未知' }}]
+<!--            [{{ props.msg.fromInfo.ipOwnership ?? '未知' }}]-->
+            [成员]
           </div>
           <!--用户徽章-->
           <div v-for="(item, index) in props.user.badge" :key="index" class="flex">

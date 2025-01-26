@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum UserTypes {
 
-    ADMIN(0, "admin"),
-    USER(1, "user"),
-    BOT(2, "bot");
+    admin(0, "admin"),
+    user(1, "user"),
+    bot(2, "bot");
 
     @EnumValue
     private final Integer code;
