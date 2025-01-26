@@ -21,6 +21,11 @@ spring:
     password: ${mingri.redis.password}
     database: ${mingri.redis.database}
 
+  ai:
+    openai:
+      api-key: ${mingri.openai.api-key}
+      base-url: ${mingri.openai.base-url}
+
 
 #mybatis:
 #  #mapper配置文件
@@ -104,7 +109,7 @@ dynamic:
 mini-chat:
   password: 1234 #群聊密码
   limit: 100 #在线人数限制
-  name: Linyu在线聊天室 #群聊名称
+  name: 聊天室 #群聊名称
   expires: 7 #数据过期时间（天）
   doubao: #豆包
     api-key: apikey

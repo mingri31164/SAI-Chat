@@ -19,7 +19,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +46,7 @@ public class SysUserController {
     private JwtProperties jwtProperties;
     @Autowired
     private CacheUtil cacheUtil;
+
 
 
     /**
@@ -145,5 +148,7 @@ public class SysUserController {
         List<String> result = iSysUserService.onlineWeb();
         return Result.success(result);
     }
+
+
 
 }

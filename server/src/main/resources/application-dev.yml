@@ -27,5 +27,8 @@ mingri:
     secret-key: csd_admin
     expire-time: 7200000
     token-name: x-token
+  openai:
+    api-key: sk-qGXAAEMyG5J7Gfzh5298A39214D243E59799Db210fBfE2Db
+    base-url: https://api.xiaoai.plus
 
 

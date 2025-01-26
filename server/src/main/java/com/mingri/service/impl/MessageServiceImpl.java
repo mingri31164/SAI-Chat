@@ -96,6 +96,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         LocalDateTime createTime = createDateTime.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
+        log.info("当前时间：{} + {}",createTime,LocalDateTime.now());
         Duration duration  = Duration.between(createTime, LocalDateTime.now());
         long minutes = duration.toMinutes();
         log.info("时间相差：{}", minutes);
@@ -130,6 +131,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         //更新私聊列表
         chatListService.updateChatListPrivate(sendMessageDTO.getTargetId(), message);
         webSocketService.sendMsgToUser(message, String.valueOf(userId), sendMessageDTO.getTargetId());
+        chatListService.read(sendMessageDTO.getTargetId());
         return message;
     }
 
@@ -139,6 +141,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         //更新群聊列表
         chatListService.updateChatListGroup(message);
         webSocketService.sendMsgToGroup(message);
+        chatListService.read(sendMessageDTO.getTargetId());
         return message;
     }
 

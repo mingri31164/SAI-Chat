@@ -52,7 +52,7 @@
               <div class="flex items-center mb-[5px]">
                 <div class="chat-content-name">{{ groupChat?.targetInfo?.name }}</div>
                 <linyu-dot-hint
-                  v-if="groupChat?.unreadCount > 0 && targetId !== groupChat.targetId"
+                  v-if="groupChat?.unreadCount > 0 && String(targetId) !== String(groupChat.targetId)"
                   :text="groupChat?.unreadCount"
                 />
               </div>
@@ -71,7 +71,7 @@
             <div
               v-for="item in privateChatList"
               :key="item.id"
-              :class="['chat-list-item', targetId === item.targetId ? 'blue' : 'white']"
+              :class="['chat-list-item', String(targetId) === String(item.targetId) ? 'blue' : 'white']"
               @click="
                 () => {
                   targetId = item.targetId
@@ -85,7 +85,7 @@
                 <div class="flex items-center mb-[5px]">
                   <div class="chat-content-name">{{ item.targetInfo.name }}</div>
                   <linyu-dot-hint
-                    v-if="item?.unreadCount > 0 && targetId !== item.targetId"
+                    v-if="item?.unreadCount > 0 && String(targetId) !== String(item.targetId)"
                     :text="item.unreadCount"
                   />
                 </div>
@@ -94,7 +94,7 @@
                 </div>
               </div>
               <linyu-text-button
-                v-if="targetId === item.targetId"
+                v-if="String(targetId) === String(item.targetId)"
                 text="移除"
                 class="ml-[10px]"
                 @click="() => onDeleteChatList(item.id)"
