@@ -31,6 +31,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -95,6 +96,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         if (DateUtil.between(message.getCreateTime(), new Date(), DateUnit.MINUTE) > 2) {
             throw new BaseException(MessageConstant.ERROR_EXPIRE_RECALL);
         }
+
         //撤回自己的消息
         message.setType(MessageType.Recall);
         message.setMessage("");
@@ -179,7 +181,8 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         if (null == previousMessage) {
             message.setIsShowTime(true);
         } else {
-            message.setIsShowTime(DateUtil.between(new Date(), previousMessage.getUpdateTime(), DateUnit.MINUTE) > 5);
+            message.setIsShowTime(DateUtil.between
+                    (new Date(), previousMessage.getUpdateTime(), DateUnit.MINUTE) > 5);
         }
         if (StrUtil.isNotBlank(sendMessageDTO.getReferenceMsgId())) {
             Message referenceMessage = getById(sendMessageDTO.getReferenceMsgId());

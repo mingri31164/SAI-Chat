@@ -23,6 +23,11 @@ public class ExpiredClearTask {
     int expirationDays;
 
 
+    /**
+     * @Description: 过期消息处理
+     * @Author: mingri31164
+     * @Date: 2025/1/27 19:38
+     **/
     @Scheduled(cron = "0 0 0 * * ?")
     public void deleteExpiredContent() {
         LocalDate expirationDate = LocalDate.now().minusDays(expirationDays);

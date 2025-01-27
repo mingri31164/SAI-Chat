@@ -1,5 +1,7 @@
 package com.mingri.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mingri.json.JacksonObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 //                .excludePathPatterns("/user/login")
 //                .excludePathPatterns("/user/register");//指定不需要被拦截器拦截的路径
 //    }
+
 
     /**
      * 通过knife4j生成接口文档
