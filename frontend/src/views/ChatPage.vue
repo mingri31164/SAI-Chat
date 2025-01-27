@@ -763,7 +763,6 @@ const onSendMsg = (msg) => {
       if (res.code === 0) {
         msgRecord.value.push(res.data)
         recordIndex++
-        ChatListApi.read({ targetId: targetId.value })
         scrollToBottom()
       }
     })
@@ -861,7 +860,6 @@ const onCreatePrivateChat = (id) => {
       currentSelectTarget.value = res.data
       await onGetPrivateChatList()
       targetId.value = id
-      ChatListApi.read({ targetId: id })
     }
   })
 }

@@ -24,7 +24,7 @@ public class HttpHeadersHandler extends ChannelInboundHandlerAdapter {
             FullHttpRequest request = (FullHttpRequest) msg;
             UrlBuilder urlBuilder = UrlBuilder.ofHttp(request.uri());
 
-            String token = Optional.ofNullable(urlBuilder.getQuery()).map(k -> k.get(jwtProperties.getTokenName())).map(CharSequence::toString).orElse("");
+            String token = Optional.ofNullable(urlBuilder.getQuery()).map(k -> k.get("x-token")).map(CharSequence::toString).orElse("");
             NettyUtil.setAttr(ctx.channel(), NettyUtil.TOKEN, token);
 
             request.setUri(urlBuilder.getPath().toString());

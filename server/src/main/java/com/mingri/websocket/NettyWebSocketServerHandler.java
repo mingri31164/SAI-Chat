@@ -70,6 +70,7 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        log.error("websocket error", cause);
         //异常关闭
         ctx.channel().close();
     }

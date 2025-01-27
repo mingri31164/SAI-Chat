@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @EnableCaching//开发缓存注解功能
 @EnableTransactionManagement //开启注解方式的事务管理
 @Configurable
+@EnableAsync
 public class ApplicationRun {
     public static void main(String[] args) {
         SpringApplication.run(ApplicationRun.class, args);

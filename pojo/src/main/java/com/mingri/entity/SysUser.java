@@ -68,7 +68,6 @@ public class SysUser implements Serializable {
     private UserTypes userType;
 
     @ApiModelProperty(value = "用户最新登录时间")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS")
     @TableField(value = "login_time",fill = FieldFill.UPDATE)
     private Date loginTime;
 
@@ -77,7 +76,6 @@ public class SysUser implements Serializable {
     private Long createBy;
 
     @ApiModelProperty(value = "创建时间")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS")
     @TableField(value = "create_time",fill = FieldFill.INSERT)
     private Date createTime;
 
@@ -86,7 +84,6 @@ public class SysUser implements Serializable {
     private Long updateBy;
 
     @ApiModelProperty(value = "更新时间")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS")
     @TableField(value = "update_time",fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 

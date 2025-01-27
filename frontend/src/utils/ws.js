@@ -57,7 +57,6 @@ function connect(tokenStr) {
   try {
     const wsIp = import.meta.env.VITE_WS_URL
     ws = new WebSocket(wsIp + '/ws?x-token=' + token)
-
     ws.onopen = () => {
       console.log('Connected to server')
       clearTimer()

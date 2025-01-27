@@ -55,6 +55,7 @@ import { MessageType } from '@/constant/messageType.js'
 import TextMsg from '@/components/Msg/MsgContent/TextMsg.vue'
 import { TextContentType } from '@/constant/textContentType.js'
 import CallMsg from '@/components/Msg/MsgContent/CallMsg.vue'
+import ChatListApi from "@/api/chatList.js";
 
 const showToast = useToast()
 const msgStore = useChatMsgStore()
