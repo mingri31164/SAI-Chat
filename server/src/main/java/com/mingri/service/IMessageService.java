@@ -6,6 +6,7 @@ import com.mingri.dto.message.SendMessageDTO;
 import com.mingri.entity.Message;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -23,6 +24,8 @@ public interface IMessageService extends IService<Message> {
     List<Message> record(RecordDTO recordDTO);
 
     Message recall(RecallDTO recallDTO);
+
+    void deleteExpiredMessages(LocalDate expirationDate);
 
     Message sendMessageToGroup(String userId, SendMessageDTO sendMessageDTO);
 }

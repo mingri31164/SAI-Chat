@@ -14,7 +14,7 @@ axios.interceptors.request.use((config) => {
 axios.interceptors.response.use(
   (response) => {
     const globalStore = useGlobalStore()
-    if (response.data.code === -1) {
+    if (response.data.code === 401) {
       globalStore.setGlobalDialog(true, '认证失效', '您的登录过期，请重新登录')
     }
     if (response.data.code === -3) {

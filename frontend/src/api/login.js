@@ -11,6 +11,6 @@ export default {
     return Http.get('/api/v1/common/get-code', param)
   },
   logout() {
-    return Http.get('/api/v1/user/logout')
+    return Http.post('/api/v1/user/logout')
   }
 }

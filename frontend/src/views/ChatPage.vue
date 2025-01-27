@@ -716,12 +716,16 @@ const closeMask = () => {
 }
 
 //退出登录
-const handlerLogout = () => {
-  LoginApi.logout()
-  localStorage.removeItem('x-token')
-  userInfoStore.clearUserInfo()
-  ws.disConnect()
-  router.push('/login')
+const handlerLogout = async () => {
+  await LoginApi.logout().then((res) => {
+    if (res.code === 0) {
+      localStorage.removeItem('x-token')
+      userInfoStore.clearUserInfo()
+      ws.disConnect()
+      router.push('/login')
+    }
+    else showToast(res.msg, true)
+  })
 }
 
 //获取群聊

@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.mingri.constant.*;
 import com.mingri.constant.type.MessageType;
 import com.mingri.constant.type.TextContentType;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 import com.github.houbb.sensitive.word.bs.SensitiveWordBs;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -90,16 +92,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
             throw new BaseException(MessageConstant.ERROR_ONLY_SELF_RECALL);
         }
 
-        Date createDateTime = message.getCreateTime();
-        // 将 Date 转换为 LocalDateTime
-        LocalDateTime createTime = createDateTime.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
-        log.info("当前时间：{} + {}",createTime,LocalDateTime.now());
-        Duration duration  = Duration.between(createTime, LocalDateTime.now());
-        long minutes = duration.toMinutes();
-        log.info("时间相差：{}", minutes);
-        if (minutes > 2) {
+        if (DateUtil.between(message.getCreateTime(), new Date(), DateUnit.MINUTE) > 2) {
             throw new BaseException(MessageConstant.ERROR_EXPIRE_RECALL);
         }
         //撤回自己的消息
@@ -114,6 +107,15 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
             webSocketService.sendMsgToUser(message, userId, message.getToId());
         }
         return message;    }
+
+    @Override
+    public void deleteExpiredMessages(LocalDate expirationDate) {
+        LambdaQueryWrapper<Message> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.lt(Message::getCreateTime, expirationDate);
+        if (remove(queryWrapper)) {
+            log.info("---清理过期消息成功---");
+        }
+    }
 
     @Override
     public Message sendMessageToGroup(String userId, SendMessageDTO sendMessageDTO) {

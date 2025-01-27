@@ -14,6 +14,7 @@ import com.mingri.utils.CacheUtil;
 import com.mingri.utils.JwtUtil;
 import com.mingri.vo.SysUserInfoVO;
 import com.mingri.vo.SysUserLoginVO;
+import io.netty.util.AttributeKey;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
