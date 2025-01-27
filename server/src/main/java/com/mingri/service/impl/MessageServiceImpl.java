@@ -75,7 +75,6 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         String userId = String.valueOf(BaseContext.getCurrentId());
         List<Message> messages = messageMapper.record(userId, recordDTO.getTargetId(),
                 recordDTO.getIndex(), recordDTO.getNum());
-        chatListService.read(recordDTO.getTargetId());
         cacheUtil.putUserReadCache(userId, recordDTO.getTargetId());
         return messages;
     }
@@ -131,7 +130,6 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         //更新私聊列表
         chatListService.updateChatListPrivate(sendMessageDTO.getTargetId(), message);
         webSocketService.sendMsgToUser(message, String.valueOf(userId), sendMessageDTO.getTargetId());
-        chatListService.read(sendMessageDTO.getTargetId());
         return message;
     }
 
@@ -141,7 +139,6 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         //更新群聊列表
         chatListService.updateChatListGroup(message);
         webSocketService.sendMsgToGroup(message);
-        chatListService.read(sendMessageDTO.getTargetId());
         return message;
     }
 

@@ -88,7 +88,6 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
         chatList.setTargetInfo(user);
         chatList.setLastMessage(new Message());
         save(chatList);
-        read(targetId);
         return chatList;
     }
 

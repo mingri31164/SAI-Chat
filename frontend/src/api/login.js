@@ -9,5 +9,8 @@ export default {
   },
   getCode(param){
     return Http.get('/api/v1/common/get-code', param)
+  },
+  logout() {
+    return Http.get('/api/v1/user/logout')
   }
 }

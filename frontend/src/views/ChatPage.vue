@@ -359,6 +359,7 @@ import ModifyUserInfo from '@/components/ModifyUserInfo.vue'
 import { useUserInfoStore } from '@/stores/useUserInfoStore.js'
 import LinyuLoading from '@/components/LinyuLoading.vue'
 import ChatSkeleton from '@/components/ChatSkeleton.vue'
+import LoginApi from "@/api/login.js";
 
 let version = import.meta.env.VITE_LINYU_VERSION
 const themeStore = useThemeStore()
@@ -716,6 +717,7 @@ const closeMask = () => {
 
 //退出登录
 const handlerLogout = () => {
+  LoginApi.logout()
   localStorage.removeItem('x-token')
   userInfoStore.clearUserInfo()
   ws.disConnect()
@@ -757,6 +759,7 @@ const onSendMsg = (msg) => {
       if (res.code === 0) {
         msgRecord.value.push(res.data)
         recordIndex++
+        ChatListApi.read({ targetId: targetId.value })
         scrollToBottom()
       }
     })
@@ -854,6 +857,7 @@ const onCreatePrivateChat = (id) => {
       currentSelectTarget.value = res.data
       await onGetPrivateChatList()
       targetId.value = id
+      ChatListApi.read({ targetId: id })
     }
   })
 }
