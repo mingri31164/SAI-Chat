@@ -214,8 +214,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         //获取用户id
         Long userid = loginUser.getSysUser().getId();
 
-        //根据用户id，删除redis中的token值，注意我们的key是被 login: 拼接过的，所以下面写完整key的时候要带上 longin:
+        //根据用户id，删除redis中的loginUser，注意我们的key是被 login: 拼接过的，所以下面写完整key的时候要带上 longin:
         String key = RedisConstant.USER_INFO_PREFIX + userid.toString();
+        //删除cache中的token值
+        cacheUtil.clearUserSessionCache(userid.toString());
         redisUtils.del(key);
     }
 

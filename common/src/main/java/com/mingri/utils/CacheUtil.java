@@ -37,4 +37,16 @@ public class CacheUtil {
     public String getUserReadCache(String userId) {
         return userReadMsgCache.getIfPresent(userId);
     }
+    public void clearUserSessionCache(String username) {
+        userSessionCache.invalidate(username);
+    }
+
+    public void clearUserReadCache(String userId) {
+        userReadMsgCache.invalidate(userId);
+    }
+
+    public void clearAllCaches() {
+        userSessionCache.invalidateAll();
+        userReadMsgCache.invalidateAll();
+    }
 }
