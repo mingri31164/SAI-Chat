@@ -56,7 +56,6 @@ public class SysUserController {
      * @return
      */
 
-//    @UrlLimit(keyType = LimitKeyType.IP)
     @ApiOperation("用户登录")
     @PostMapping("/login")
     public Result<SysUserLoginVO> login(@RequestBody SysUserLoginDTO userLoginDTO) {
@@ -73,7 +72,6 @@ public class SysUserController {
                 claims);
 
         cacheUtil.putUserSessionCache(String.valueOf(loginUser.getId()), token);
-
         SysUserLoginVO userLoginVO = SysUserLoginVO.builder()
                 .userId(loginUser.getId())
                 .userName(loginUser.getUserName())
@@ -129,21 +127,19 @@ public class SysUserController {
 
 
 
-//    @UrlLimit
     @GetMapping("/list")
     public Object listUser() {
         List<SysUserInfoVO> result = iSysUserService.listUser();
         return Result.success(result);
     }
 
-//    @UrlLimit
     @GetMapping("/list/map")
     public Object listMapUser() {
         Map<String, SysUserInfoVO> result = iSysUserService.listMapUser();
         return Result.success(result);
     }
 
-//    @UrlLimit
+
     @GetMapping("/online/web")
     public Object onlineWeb() {
         List<String> result = iSysUserService.onlineWeb();

@@ -3,6 +3,7 @@ package com.mingri.service.impl;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.mingri.constant.*;
@@ -173,6 +174,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             if (sysUser.getStatus().equals(UserStatus.FREEZE)) {
                 throw new LoginFailedException(MessageConstant.ACCOUNT_LOCKED);
             }
+            // 验证是否在其他地方登录
+            String cacheToken = cacheUtil.getUserSessionCache(sysUser.getId().toString());
+            if (StrUtil.isNotBlank(cacheToken)){
+                throw new LoginFailedException(MessageConstant.LOGIN_IN_OTHER_PLACE);
+            }
 
             updateUserBadge(String.valueOf(sysUser.getId()));
 
@@ -249,6 +255,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         notifyDto.setType(NotifyType.Web_Offline);
         notifyDto.setContent(JSONUtil.toJsonStr(getUserById(userId)));
         //离线更新，已读列表（防止用户直接关闭浏览器等情况）
+        log.info("离线更新，已读列表");
         chatListService.read(cacheUtil.getUserReadCache(userId));
         webSocketService.sendNotifyToGroup(notifyDto);
     }

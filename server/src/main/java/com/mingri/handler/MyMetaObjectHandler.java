@@ -24,20 +24,21 @@ import java.util.Date;
 @Component
 public class MyMetaObjectHandler implements MetaObjectHandler {
 
-    //准备赋值的数据
-    Date now = new Date();
-    Long currentId = BaseContext.getCurrentId();
-
+    /**
+     * @Description: 此处时间不能先赋值再填充,否则会导致时间不变
+     * @Author: mingri31164
+     * @Date: 2025/1/28 13:13
+     **/
     @Override
     public void insertFill(MetaObject metaObject) {
-        this.setFieldValByName("createTime", now, metaObject);
-        this.setFieldValByName("updateTime", now, metaObject);
-        this.setFieldValByName("createBy", currentId, metaObject);
+        this.setFieldValByName("createTime", new Date(), metaObject);
+        this.setFieldValByName("updateTime", new Date(), metaObject);
+        this.setFieldValByName("createBy", BaseContext.getCurrentId(), metaObject);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        this.setFieldValByName("updateTime", now, metaObject);
+        this.setFieldValByName("updateTime", new Date(), metaObject);
     }
 
 

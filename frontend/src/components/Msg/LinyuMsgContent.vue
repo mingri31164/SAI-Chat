@@ -90,6 +90,7 @@ const onRecallMsg = () => {
     if (res.code !== 0) {
       showToast(res.msg, true)
     }
+    ChatListApi.read({ targetId: res.data.toId })
   })
 }
 

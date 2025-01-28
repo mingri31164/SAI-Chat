@@ -1,6 +1,8 @@
 package com.mingri.filter;
 
 
+import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
 import com.mingri.constant.JwtClaimsConstant;
 import com.mingri.constant.MessageConstant;
 import com.mingri.constant.RedisConstant;
@@ -8,11 +10,15 @@ import com.mingri.context.BaseContext;
 import com.mingri.entity.LoginUser;
 import com.mingri.exception.LoginFailedException;
 import com.mingri.properties.JwtProperties;
+import com.mingri.result.Result;
+import com.mingri.utils.CacheUtil;
 import com.mingri.utils.JwtUtil;
 import com.mingri.utils.RedisUtils;
+import com.mingri.utils.WebUtils;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -37,6 +43,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private JwtProperties jwtProperties;
     @Autowired
     private RedisUtils redisUtils;
+    @Autowired
+    private CacheUtil cacheUtil;
 
     /**
      * @Description: 过滤器拦截请求
@@ -63,6 +71,18 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             Claims claims = JwtUtil.parseJWT(jwtProperties.getSecretKey(), token);
             userId = Long.valueOf(claims.get(JwtClaimsConstant.USER_ID).toString());
             log.info("当前用户的id：{}", userId);
+            // 验证是否在其他地方登录
+            String cacheToken = cacheUtil.getUserSessionCache(userId.toString());
+            if (StrUtil.isBlank(cacheToken)){
+                throw new LoginFailedException(MessageConstant.AUTHENTICATION_FAILED);
+            }
+            else if (!cacheToken.equals(token)){
+                Result<Object> error = Result.error
+                        (HttpStatus.FORBIDDEN.value(), MessageConstant.LOGIN_IN_OTHER_PLACE);
+                String json = JSON.toJSONString(error);
+                WebUtils.renderString(response,json);
+                return;
+            }
             BaseContext.setCurrentId(userId);
         } catch (Exception e) {
             // 解析失败

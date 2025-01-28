@@ -684,7 +684,7 @@ const onReadChatList = (id) => {
   }
   for (let i = 0; i < privateChatList.value.length; i++) {
     let chat = privateChatList.value[i]
-    if (id === chat.targetId) {
+    if (id === String(chat.targetId)) {
       chat.unreadCount = 0
       break
     }
@@ -763,6 +763,7 @@ const onSendMsg = (msg) => {
       if (res.code === 0) {
         msgRecord.value.push(res.data)
         recordIndex++
+        ChatListApi.read({ targetId: res.data.toId })
         scrollToBottom()
       }
     })
