@@ -53,8 +53,9 @@ public class SecurityConfig  {
 				sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 使用无状态会话
 				.and()
 				.authorizeRequests()
-				.antMatchers("/api/v1/user/login","/api/v1/user/register","/api/v1/file","/ws/**",
-						"/api/v1/common/**",
+				.antMatchers("/api/v1/user/login","/api/v1/user/register","/api/v1/file",
+						"/api/v1/file","/api/v1/common/**",
+						"/ws/**",
 						"/v2/api-docs",
 						"/swagger-resources/configuration/ui",
 						"/swagger-resources",

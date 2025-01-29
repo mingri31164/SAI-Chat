@@ -1,37 +1,41 @@
 package com.mingri.controller;
 
 import cn.hutool.json.JSONObject;
-import com.mingri.dto.file.*;
+import com.mingri.dto.call.*;
 import com.mingri.result.Result;
-import com.mingri.service.FileService;
+import com.mingri.service.CallService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
 /**
  * @Author: mingri31164
- * @CreateTime: 2025/1/28 22:28
- * @ClassName: FileController
+ * @CreateTime: 2025/1/29 21:24
+ * @ClassName: CallController
  * @Version: 1.0
  */
 
-@Api(tags = "文件传输接口")
+
+@Api(tags = "通话接口")
 @RestController
 @Slf4j
-@RequestMapping("/api/v1/file")
-public class FileController {
+@RequestMapping("/api/v1/call")
+public class CallController {
 
     @Resource
-    FileService fileService;
+    CallService callService;
 
     /**
      * 发送offer
      */
     @PostMapping("/offer")
     public Object offer(String userId, @RequestBody OfferDTO offerDTO) {
-        boolean result = fileService.offer(userId, offerDTO);
+        boolean result = callService.offer(userId, offerDTO);
         return result? Result.success():Result.error();
     }
 
@@ -40,7 +44,7 @@ public class FileController {
      */
     @PostMapping("/answer")
     public Object answer(String userId, @RequestBody AnswerDTO answerDTO) {
-        boolean result = fileService.answer(userId, answerDTO);
+        boolean result = callService.answer(userId, answerDTO);
         return result? Result.success():Result.error();
     }
 
@@ -49,16 +53,16 @@ public class FileController {
      */
     @PostMapping("/candidate")
     public Object candidate(String userId, @RequestBody CandidateDTO candidateDTO) {
-        boolean result = fileService.candidate(userId, candidateDTO);
+        boolean result = callService.candidate(userId, candidateDTO);
         return result? Result.success():Result.error();
     }
 
     /**
-     * 取消
+     * 挂断
      */
-    @PostMapping("/cancel")
-    public Object hangup(String userId, @RequestBody CancelDTO cancelDTO) {
-        boolean result = fileService.cancel(userId, cancelDTO);
+    @PostMapping("/hangup")
+    public Object hangup(String userId, @RequestBody HangupDTO hangupDTO) {
+        boolean result = callService.hangup(userId, hangupDTO);
         return result? Result.success():Result.error();
     }
 
@@ -67,16 +71,16 @@ public class FileController {
      */
     @PostMapping("/invite")
     public Object invite(@RequestBody InviteDTO inviteDTO) {
-        boolean result = fileService.invite(inviteDTO);
+        boolean result = callService.invite(inviteDTO);
         return result? Result.success():Result.error();
     }
 
     /**
-     * 同意
+     * 邀请
      */
     @PostMapping("/accept")
     public Object accept(String userId, @RequestBody AcceptDTO acceptDTO) {
-        boolean result = fileService.accept(userId, acceptDTO);
+        boolean result = callService.accept(userId, acceptDTO);
         return result? Result.success():Result.error();
     }
 

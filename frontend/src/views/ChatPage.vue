@@ -563,7 +563,7 @@ const handlerReceiveNotify = (data) => {
 const handlerVideoMsg = async (msg) => {
   if (msg.fromId === userInfoStore.userId) return
   if (msg.type === 'invite') {
-    const targetInfo = msgStore.userListMap.get(msg.fromId)
+    const targetInfo = msgStore.userListMap.get(String(msg.fromId))
     videoInfo.videoVisible = true
     videoInfo.videoTargetInfo = targetInfo
     videoInfo.videoIsSend = false
