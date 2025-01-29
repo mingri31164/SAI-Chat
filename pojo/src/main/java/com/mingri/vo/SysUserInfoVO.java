@@ -20,7 +20,8 @@ import java.util.List;
 public class SysUserInfoVO implements Serializable {
 
     @ApiModelProperty("主键值")
-    private Long id;
+    @TableField(value = "id")
+    private String id;
 
     @ApiModelProperty("用户名")
     @TableField(value = "user_name")

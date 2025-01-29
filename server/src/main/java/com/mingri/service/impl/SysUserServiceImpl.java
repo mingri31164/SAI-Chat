@@ -175,10 +175,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 throw new LoginFailedException(MessageConstant.ACCOUNT_LOCKED);
             }
             // 验证是否在其他地方登录
-            String cacheToken = cacheUtil.getUserSessionCache(sysUser.getId().toString());
-            if (StrUtil.isNotBlank(cacheToken)){
-                throw new LoginFailedException(MessageConstant.LOGIN_IN_OTHER_PLACE);
-            }
+//            String cacheToken = cacheUtil.getUserSessionCache(sysUser.getId().toString());
+//            if (StrUtil.isNotBlank(cacheToken)){
+//                throw new LoginFailedException(MessageConstant.LOGIN_IN_OTHER_PLACE);
+//            }
 
             updateUserBadge(String.valueOf(sysUser.getId()));
 

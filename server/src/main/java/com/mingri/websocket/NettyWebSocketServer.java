@@ -1,5 +1,7 @@
 package com.mingri.websocket;
 
+import com.mingri.context.BaseContext;
+import com.mingri.utils.CacheUtil;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -18,6 +20,7 @@ import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.NettyRuntime;
 import io.netty.util.concurrent.Future;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
@@ -26,6 +29,9 @@ import javax.annotation.PreDestroy;
 @Slf4j
 @Configuration
 public class NettyWebSocketServer {
+
+    @Autowired
+    private CacheUtil cacheUtil;
 
     public static final int Web_Socket_Port = 9800;
     public static final NettyWebSocketServerHandler Netty_Web_Socket_Server_Handler = new NettyWebSocketServerHandler();

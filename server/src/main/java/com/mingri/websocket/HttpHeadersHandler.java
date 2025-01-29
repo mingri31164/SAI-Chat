@@ -15,9 +15,6 @@ import java.util.Optional;
 
 public class HttpHeadersHandler extends ChannelInboundHandlerAdapter {
 
-    @Autowired
-    private JwtProperties jwtProperties;
-
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof FullHttpRequest) {

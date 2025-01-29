@@ -61,7 +61,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
             chat.setTargetId("1");
             ChatGroup group = Db.lambdaQuery(ChatGroup.class).eq(ChatGroup::getId, "1").one();
             SysUserInfoVO userDto = new SysUserInfoVO();
-            userDto.setId(Long.valueOf(group.getId()));
+            userDto.setId(group.getId());
             userDto.setName(group.getName());
             userDto.setAvatar(group.getAvatar());
             chat.setTargetInfo(userDto);

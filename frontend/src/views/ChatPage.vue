@@ -354,14 +354,12 @@ import VideoChat from '@/components/VideoChat.vue'
 import VideoApi from '@/api/video.js'
 import CallMsg from '@/components/Msg/MsgContent/CallMsg.vue'
 import FileTransfer from '@/components/FileTransfer.vue'
-import LinyuLabel from '@/components/LinyuLabel.vue'
 import ModifyUserInfo from '@/components/ModifyUserInfo.vue'
 import { useUserInfoStore } from '@/stores/useUserInfoStore.js'
 import LinyuLoading from '@/components/LinyuLoading.vue'
 import ChatSkeleton from '@/components/ChatSkeleton.vue'
 import LoginApi from "@/api/login.js";
 
-let version = import.meta.env.VITE_LINYU_VERSION
 const themeStore = useThemeStore()
 const msgStore = useChatMsgStore()
 const userInfoStore = useUserInfoStore()
@@ -431,7 +429,7 @@ const handlerSendFile = (event) => {
     fileInfo.fileIsSend = true
     fileInfo.file = files[0]
     FileApi.invite({
-      userId: fileInfo.fileTargetInfo.id,
+      userId: String(fileInfo.fileTargetInfo.id),
       fileInfo: { name: fileInfo.file.name, size: fileInfo.file.size },
     })
     event.target.value = ''
@@ -576,7 +574,7 @@ const handlerVideoMsg = async (msg) => {
 const handlerFileMsg = async (msg) => {
   if (msg.fromId === userInfoStore.userId) return
   if (msg.type === 'invite') {
-    const targetInfo = msgStore.userListMap.get(msg.fromId)
+    const targetInfo = msgStore.userListMap.get(String(msg.fromId))
     fileInfo.fileVisible = true
     fileInfo.fileTargetInfo = targetInfo
     fileInfo.fileIsSend = false
@@ -613,25 +611,6 @@ const scrollToBottom = () => {
   }
 }
 
-//卡片点击
-const handlerCardClick = (card) => {
-  switch (card.key) {
-    case 'bili':
-      window.open('https://space.bilibili.com/135427028/channel/series', '_blank')
-      break
-    case 'github':
-      window.open('https://github.com/linyu-im', '_blank')
-      break
-    case 'qq':
-      navigator.clipboard.writeText('729158695')
-      showToast('QQ群号，已复制到粘贴板~')
-      break
-    case 'ad':
-      navigator.clipboard.writeText('cershy1120')
-      showToast('联系VX，已复制到粘贴板~')
-      break
-  }
-}
 
 //获取聊天记录
 const onGetMsgRecord = () => {
