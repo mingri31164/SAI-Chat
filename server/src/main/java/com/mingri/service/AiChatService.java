@@ -31,7 +31,7 @@ public class AiChatService {
     @Resource
     DoubaoAiService doubaoAiService;
 
-    @Async("taskExecutor")
+    @Async("douBao")
     public void sendBotReply(String userId, String targetId, SysUserInfoVO botUser, String content) {
         SysUserInfoVO user = userService.getUserById(userId);
         // 创建消息

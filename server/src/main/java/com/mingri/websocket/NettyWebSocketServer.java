@@ -1,7 +1,9 @@
 package com.mingri.websocket;
 
 import com.mingri.context.BaseContext;
+import com.mingri.middleware.dynamic.thread.pool.sdk.domain.model.vo.RegistryEnumVO;
 import com.mingri.utils.CacheUtil;
+import com.mingri.utils.RedisUtils;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -32,6 +34,8 @@ public class NettyWebSocketServer {
 
     @Autowired
     private CacheUtil cacheUtil;
+    @Autowired
+    private RedisUtils redisUtils;
 
     public static final int Web_Socket_Port = 9800;
     public static final NettyWebSocketServerHandler Netty_Web_Socket_Server_Handler = new NettyWebSocketServerHandler();
