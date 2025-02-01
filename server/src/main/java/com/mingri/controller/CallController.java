@@ -1,6 +1,7 @@
 package com.mingri.controller;
 
 import cn.hutool.json.JSONObject;
+import com.mingri.annotation.UrlLimit;
 import com.mingri.dto.call.*;
 import com.mingri.result.Result;
 import com.mingri.service.CallService;
@@ -33,6 +34,7 @@ public class CallController {
     /**
      * 发送offer
      */
+    @UrlLimit
     @PostMapping("/offer")
     public Object offer(String userId, @RequestBody OfferDTO offerDTO) {
         boolean result = callService.offer(userId, offerDTO);
@@ -42,6 +44,7 @@ public class CallController {
     /**
      * 发送answer
      */
+    @UrlLimit
     @PostMapping("/answer")
     public Object answer(String userId, @RequestBody AnswerDTO answerDTO) {
         boolean result = callService.answer(userId, answerDTO);
@@ -51,6 +54,7 @@ public class CallController {
     /**
      * 发送candidate
      */
+    @UrlLimit
     @PostMapping("/candidate")
     public Object candidate(String userId, @RequestBody CandidateDTO candidateDTO) {
         boolean result = callService.candidate(userId, candidateDTO);
@@ -60,6 +64,7 @@ public class CallController {
     /**
      * 挂断
      */
+    @UrlLimit
     @PostMapping("/hangup")
     public Object hangup(String userId, @RequestBody HangupDTO hangupDTO) {
         boolean result = callService.hangup(userId, hangupDTO);
@@ -69,6 +74,7 @@ public class CallController {
     /**
      * 邀请
      */
+    @UrlLimit
     @PostMapping("/invite")
     public Object invite(@RequestBody InviteDTO inviteDTO) {
         boolean result = callService.invite(inviteDTO);
@@ -78,6 +84,7 @@ public class CallController {
     /**
      * 邀请
      */
+    @UrlLimit
     @PostMapping("/accept")
     public Object accept(String userId, @RequestBody AcceptDTO acceptDTO) {
         boolean result = callService.accept(userId, acceptDTO);

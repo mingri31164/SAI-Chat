@@ -33,4 +33,6 @@ public class MessageConstant {
     public static final String MESSAGE_NOT_EXIST = "消息不存在~";
     public static final String ERROR_ONLY_SELF_RECALL = "仅能撤回自己的消息~~";
     public static final String ERROR_EXPIRE_RECALL = "消息已超过2分钟，无法撤回~";
+    public static final String ACCESS_SPEED_LIMIT_EXCEEDED = "访问过快，请稍后再试~";
+
 }

@@ -1,7 +1,10 @@
 package com.mingri.controller.user;
 
 
+import com.mingri.annotation.UrlFree;
+import com.mingri.annotation.UrlLimit;
 import com.mingri.constant.JwtClaimsConstant;
+import com.mingri.constant.type.LimitKeyType;
 import com.mingri.dto.user.SysUpdateDTO;
 import com.mingri.dto.user.SysUserLoginDTO;
 import com.mingri.dto.user.SysUserRegisterDTO;
@@ -55,7 +58,7 @@ public class SysUserController {
      * @param userLoginDTO
      * @return
      */
-
+    @UrlLimit(keyType = LimitKeyType.IP)
     @ApiOperation("用户登录")
     @PostMapping("/login")
     public Result<SysUserLoginVO> login(@RequestBody SysUserLoginDTO userLoginDTO) {
@@ -91,6 +94,7 @@ public class SysUserController {
      * @Author: mingri31164
      * @Date: 2025/1/20 18:13
      **/
+    @UrlLimit(keyType = LimitKeyType.IP)
     @PostMapping("/register")
     @ApiOperation("用户注册")
     public Result register(@RequestBody SysUserRegisterDTO userRegisterDTO){
@@ -104,6 +108,7 @@ public class SysUserController {
      * 退出
      * @return
      */
+    @UrlLimit
     @ApiOperation("退出登录")
     @PostMapping("/logout")
     public Result<String> logout() {
@@ -117,6 +122,7 @@ public class SysUserController {
      * @param sysUpdateDTO
      * @return
      */
+    @UrlLimit
     @PutMapping("/update")
     @ApiOperation("编辑用户信息")
     public Result update(@RequestBody SysUpdateDTO sysUpdateDTO){
@@ -127,12 +133,14 @@ public class SysUserController {
 
 
 
+    @UrlLimit
     @GetMapping("/list")
     public Object listUser() {
         List<SysUserInfoVO> result = iSysUserService.listUser();
         return Result.success(result);
     }
 
+    @UrlLimit
     @GetMapping("/list/map")
     public Object listMapUser() {
         Map<String, SysUserInfoVO> result = iSysUserService.listMapUser();
@@ -140,6 +148,7 @@ public class SysUserController {
     }
 
 
+    @UrlLimit
     @GetMapping("/online/web")
     public Object onlineWeb() {
         List<String> result = iSysUserService.onlineWeb();

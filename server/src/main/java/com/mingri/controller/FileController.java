@@ -1,6 +1,8 @@
 package com.mingri.controller;
 
 import cn.hutool.json.JSONObject;
+import com.mingri.annotation.UrlLimit;
+import com.mingri.annotation.UrlResource;
 import com.mingri.dto.file.*;
 import com.mingri.result.Result;
 import com.mingri.service.FileService;
@@ -29,6 +31,7 @@ public class FileController {
     /**
      * 发送offer
      */
+    @UrlLimit
     @PostMapping("/offer")
     public Object offer(String userId, @RequestBody OfferDTO offerDTO) {
         boolean result = fileService.offer(userId, offerDTO);
@@ -38,6 +41,7 @@ public class FileController {
     /**
      * 发送answer
      */
+    @UrlLimit
     @PostMapping("/answer")
     public Object answer(String userId, @RequestBody AnswerDTO answerDTO) {
         boolean result = fileService.answer(userId, answerDTO);
@@ -47,6 +51,7 @@ public class FileController {
     /**
      * 发送candidate
      */
+    @UrlLimit
     @PostMapping("/candidate")
     public Object candidate(String userId, @RequestBody CandidateDTO candidateDTO) {
         boolean result = fileService.candidate(userId, candidateDTO);
@@ -56,6 +61,7 @@ public class FileController {
     /**
      * 取消
      */
+    @UrlLimit
     @PostMapping("/cancel")
     public Object hangup(String userId, @RequestBody CancelDTO cancelDTO) {
         boolean result = fileService.cancel(userId, cancelDTO);
@@ -65,6 +71,7 @@ public class FileController {
     /**
      * 邀请
      */
+    @UrlLimit
     @PostMapping("/invite")
     public Object invite(@RequestBody InviteDTO inviteDTO) {
         boolean result = fileService.invite(inviteDTO);
@@ -74,6 +81,7 @@ public class FileController {
     /**
      * 同意
      */
+    @UrlLimit
     @PostMapping("/accept")
     public Object accept(String userId, @RequestBody AcceptDTO acceptDTO) {
         boolean result = fileService.accept(userId, acceptDTO);

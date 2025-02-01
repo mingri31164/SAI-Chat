@@ -1,6 +1,7 @@
 package com.mingri.controller;
 
 
+import com.mingri.annotation.UrlLimit;
 import com.mingri.dto.message.RecallDTO;
 import com.mingri.dto.message.RecordDTO;
 import com.mingri.dto.message.SendMessageDTO;
@@ -35,18 +36,21 @@ public class MessageController {
     @Resource
     IMessageService messageService;
 
+    @UrlLimit(maxRequests = 100)
     @PostMapping("/send")
     public Object send(@RequestBody @Valid SendMessageDTO sendMessageDTO) {
         Message result = messageService.send(sendMessageDTO);
         return Result.success(result);
     }
 
+    @UrlLimit
     @PostMapping("/record")
     public Object record(@RequestBody @Valid RecordDTO recordDTO) {
         List<Message> result = messageService.record(recordDTO);
         return Result.success(result);
     }
 
+    @UrlLimit
     @PostMapping("/recall")
     public Object recall(@RequestBody @Valid RecallDTO recallDTO) {
         Message result = messageService.recall(recallDTO);

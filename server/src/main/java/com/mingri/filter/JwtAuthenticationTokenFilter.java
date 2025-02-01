@@ -11,10 +11,7 @@ import com.mingri.entity.LoginUser;
 import com.mingri.exception.LoginFailedException;
 import com.mingri.properties.JwtProperties;
 import com.mingri.result.Result;
-import com.mingri.utils.CacheUtil;
-import com.mingri.utils.JwtUtil;
-import com.mingri.utils.RedisUtils;
-import com.mingri.utils.WebUtils;
+import com.mingri.utils.*;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +27,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -45,6 +44,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private RedisUtils redisUtils;
     @Autowired
     private CacheUtil cacheUtil;
+    @Autowired
+    private UrlPermitUtil urlPermitUtil;
 
     /**
      * @Description: 过滤器拦截请求
@@ -57,7 +58,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         // 获取 token
         String token = request.getHeader(jwtProperties.getTokenName());
-
+        String url = request.getRequestURI();
         // 判空
         if (!StringUtils.hasText(token)) {
             // 如果没有令牌，直接放行
@@ -67,28 +68,54 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
         // 校验令牌
         Long userId;
-        try {
-            Claims claims = JwtUtil.parseJWT(jwtProperties.getSecretKey(), token);
-            userId = Long.valueOf(claims.get(JwtClaimsConstant.USER_ID).toString());
-            log.info("当前用户的id：{}", userId);
-            // 验证是否在其他地方登录
-            String cacheToken = cacheUtil.getUserSessionCache(userId.toString());
-            if (StrUtil.isBlank(cacheToken)){
-                throw new LoginFailedException(MessageConstant.AUTHENTICATION_FAILED);
+        if (!urlPermitUtil.isPermitUrl(url)){
+            try {
+                Claims claims = JwtUtil.parseJWT(jwtProperties.getSecretKey(), token);
+                userId = Long.valueOf(claims.get(JwtClaimsConstant.USER_ID).toString());
+                log.info("当前用户的id：{}", userId);
+                // 验证是否在其他地方登录
+                String cacheToken = cacheUtil.getUserSessionCache(userId.toString());
+                if (StrUtil.isBlank(cacheToken)){
+                    throw new LoginFailedException(MessageConstant.AUTHENTICATION_FAILED);
+                }
+                else if (!cacheToken.equals(token)){
+                    Result<Object> error = Result.error
+                            (HttpStatus.FORBIDDEN.value(), MessageConstant.LOGIN_IN_OTHER_PLACE);
+                    String json = JSON.toJSONString(error);
+                    WebUtils.renderString(response,json);
+                    return;
+                }
+                setUserInfo(claims, url, request, response);
+            } catch (Exception e) {
+                throw new LoginFailedException(MessageConstant.TOKEN_ERROR);
             }
-            else if (!cacheToken.equals(token)){
-                Result<Object> error = Result.error
-                        (HttpStatus.FORBIDDEN.value(), MessageConstant.LOGIN_IN_OTHER_PLACE);
-                String json = JSON.toJSONString(error);
-                WebUtils.renderString(response,json);
-                return;
+        } else {
+            if (StrUtil.isNotBlank(token)) {
+                try {
+                    Claims claims = JwtUtil.parseJWT(jwtProperties.getSecretKey(), token);
+                    setUserInfo(claims, url, request, response);
+                } catch (Exception e) {
+                }
             }
-            BaseContext.setCurrentId(userId);
-        } catch (Exception e) {
-            // 解析失败
-            throw new LoginFailedException(MessageConstant.TOKEN_ERROR);
         }
+        filterChain.doFilter(request, response);
+    }
 
+
+    public void setUserInfo(Claims claims, String url,
+                            HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+
+        // 设置用户信息
+        Map<String, Object> map = new HashMap<>();
+        claims.entrySet().stream().forEach(e -> map.put(e.getKey(), e.getValue()));
+        //验证角色是否有权限
+        String role = (String) map.get("role");
+        if (!urlPermitUtil.isRoleUrl(role, url)) {
+            throw new LoginFailedException(MessageConstant.PERMISSION_NOT_EXIST);
+        }
+        httpServletRequest.setAttribute("userinfo", map);
+
+        String userId = String.valueOf(Long.valueOf(claims.get(JwtClaimsConstant.USER_ID).toString()));
         // 从 Redis 中获取用户信息
         String redisKey = RedisConstant.USER_INFO_PREFIX + userId;
         LoginUser loginUser = (LoginUser) redisUtils.get(redisKey);
@@ -103,8 +130,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 new UsernamePasswordAuthenticationToken(loginUser,
                         null, loginUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
-        // 继续请求
-        filterChain.doFilter(request, response);
+        BaseContext.setCurrentId(Long.valueOf(userId));
     }
 }
