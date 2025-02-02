@@ -1,11 +1,17 @@
 mingri:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    host: localhost
-    port: 3306
-    database: mini-chat
-    username: root
-    password: 123456
+    master:
+      host:
+      port: 3339
+      database: mini-chat
+      username: root
+      password: 123456
+    slave:
+      host:
+      port: 3340
+      database: mini-chat
+      username: root
+      password: 123456
   redis:
     host: localhost
     port: 6379
@@ -18,7 +24,7 @@ mingri:
     bucket-name:
   mail:
     from: 3116430062@qq.com
-    password: ulyezclhetqhdhab
+    password:
     host: smtp.qq.com
     port: 465
     user: 3116430062@qq.com
@@ -27,8 +33,10 @@ mingri:
     secret-key: csd_admin
     expire-time: 7200000
     token-name: x-token
-  openai:
-    api-key: sk-qGXAAEMyG5J7Gfzh5298A39214D243E59799Db210fBfE2Db
-    base-url: https://api.xiaoai.plus
+  doubao:
+    api-key:
+    count-limit: 0
+    length-limit: 50
+    model: ep-20250130211307-qgfnq
 
 

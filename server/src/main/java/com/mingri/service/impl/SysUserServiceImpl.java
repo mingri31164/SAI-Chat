@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.mingri.constant.*;
 import com.mingri.constant.type.BadgeType;
@@ -222,11 +223,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    @DS("slave")
     public SysUserInfoVO getUserById(String userId) {
         return baseMapper.getUserById(userId);
     }
 
     @Override
+    @DS("slave")
     public List<SysUserInfoVO> listUser() {
         return baseMapper.listUser();
     }
@@ -237,6 +240,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    @DS("slave")
     public Map<String, SysUserInfoVO> listMapUser() {
         return baseMapper.listMapUser();
     }

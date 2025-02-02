@@ -12,11 +12,23 @@ spring:
   main:
     allow-circular-references: true
   datasource:
-    druid:
-      driver-class-name: ${mingri.datasource.driver-class-name}
-      url: jdbc:mysql://${mingri.datasource.host}:${mingri.datasource.port}/${mingri.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
-      username: ${mingri.datasource.username}
-      password: ${mingri.datasource.password}
+    dynamic:
+      primary: master
+      datasource:
+        master:
+          url: jdbc:mysql://${mingri.datasource.master.host}:${mingri.datasource.master.port}/${mingri.datasource.master.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+          username: ${mingri.datasource.master.username}
+          password: ${mingri.datasource.master.password}
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          hikari:
+            max-lifetime: 70000
+        slave:
+          url: jdbc:mysql://${mingri.datasource.slave.host}:${mingri.datasource.slave.port}/${mingri.datasource.slave.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+          username: ${mingri.datasource.slave.username}
+          password: ${mingri.datasource.slave.password}
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          hikari:
+            max-lifetime: 70000
 
   redis:
     host: ${mingri.redis.host}
@@ -24,10 +36,6 @@ spring:
     password: ${mingri.redis.password}
     database: ${mingri.redis.database}
 
-  ai:
-    openai:
-      api-key: ${mingri.openai.api-key}
-      base-url: ${mingri.openai.base-url}
 
 
 #mybatis:
@@ -110,14 +118,13 @@ dynamic:
 
 
 mini-chat:
-  password: 1234 #群聊密码
   limit: 100 #在线人数限制
   name: 聊天室 #群聊名称
   expires: 7 #数据过期时间（天）
   doubao: #豆包
-    api-key: acae9bb1-4380-49b6-83ae-f95c2ce34e09
-    count-limit: 0 #次数限制,0-不限制
-    length-limit: 50 #内容长度限制,0-不限制
-    model: ep-20250130211307-qgfnq
+    api-key: ${mingri.doubao.api-key}
+    count-limit: ${mingri.doubao.count-limit}
+    length-limit: ${mingri.doubao.length-limit}
+    model: ${mingri.doubao.model}
 
 

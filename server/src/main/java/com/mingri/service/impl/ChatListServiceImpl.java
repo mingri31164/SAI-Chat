@@ -2,6 +2,7 @@ package com.mingri.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.toolkit.Db;
@@ -38,6 +39,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
     private ISysUserService sysUserService;
 
     @Override
+    @DS("slave")
     public List<ChatList> privateList() {
         Long currentId = BaseContext.getCurrentId();
         LambdaQueryWrapper<ChatList> queryWrapper = new LambdaQueryWrapper<>();
@@ -47,6 +49,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
     }
 
     @Override
+    @DS("slave")
     public ChatList getGroup() {
         Long userId = BaseContext.getCurrentId();
         LambdaQueryWrapper<ChatList> queryWrapper = new LambdaQueryWrapper<>();
@@ -152,7 +155,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
         }
     }
 
-
+    @DS("slave")
     private ChatList getTargetChatList(String targetId) {
         String userId = String.valueOf(BaseContext.getCurrentId());
         LambdaQueryWrapper<ChatList> queryWrapper = new LambdaQueryWrapper<>();

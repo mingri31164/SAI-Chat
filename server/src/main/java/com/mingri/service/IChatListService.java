@@ -1,5 +1,6 @@
 package com.mingri.service;
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.mingri.entity.ChatList;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mingri.entity.Message;

@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.mingri.constant.*;
 import com.mingri.constant.type.MessageType;
@@ -74,6 +75,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         }    }
 
     @Override
+    @DS("slave")
     public List<Message> record(RecordDTO recordDTO) {
         String userId = String.valueOf(BaseContext.getCurrentId());
         List<Message> messages = messageMapper.record(userId, recordDTO.getTargetId(),
