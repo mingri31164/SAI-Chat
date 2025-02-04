@@ -1,7 +1,6 @@
 package com.mingri.dto.user;
 
 import lombok.Data;
-
 import java.io.Serializable;
 
 @Data

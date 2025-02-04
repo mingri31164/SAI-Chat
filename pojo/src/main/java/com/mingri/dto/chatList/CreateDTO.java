@@ -1,7 +1,6 @@
 package com.mingri.dto.chatList;
 
 import lombok.Data;
-
 import javax.validation.constraints.NotBlank;
 
 @Data

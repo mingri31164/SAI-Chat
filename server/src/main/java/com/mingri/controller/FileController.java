@@ -1,15 +1,12 @@
 package com.mingri.controller;
 
-import cn.hutool.json.JSONObject;
 import com.mingri.annotation.UrlLimit;
-import com.mingri.annotation.UrlResource;
 import com.mingri.dto.file.*;
 import com.mingri.result.Result;
 import com.mingri.service.FileService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 
 /**

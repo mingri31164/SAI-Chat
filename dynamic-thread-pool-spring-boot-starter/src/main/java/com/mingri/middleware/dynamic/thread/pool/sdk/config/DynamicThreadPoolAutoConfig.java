@@ -1,6 +1,5 @@
 package com.mingri.middleware.dynamic.thread.pool.sdk.config;
 
-import com.esotericsoftware.kryo.Kryo;
 import com.mingri.middleware.dynamic.thread.pool.sdk.domain.DynamicThreadPoolService;
 import com.mingri.middleware.dynamic.thread.pool.sdk.domain.IDynamicThreadPoolService;
 import com.mingri.middleware.dynamic.thread.pool.sdk.domain.model.entity.ThreadPoolConfigEntity;
@@ -13,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
 import org.redisson.api.RTopic;
 import org.redisson.codec.JsonJacksonCodec;
-import org.redisson.codec.Kryo5Codec;
-import org.redisson.codec.TypedJsonJacksonCodec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

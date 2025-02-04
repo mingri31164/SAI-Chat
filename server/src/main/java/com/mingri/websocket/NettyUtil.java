@@ -1,12 +1,9 @@
 package com.mingri.websocket;
 
-import com.mingri.constant.JwtClaimsConstant;
-import com.mingri.properties.JwtProperties;
 import io.netty.channel.Channel;
 import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 @Slf4j

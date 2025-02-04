@@ -1,7 +1,6 @@
 package com.mingri.vo;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.mingri.enumeration.UserTypes;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,12 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * @Author: mingri31164
- * @CreateTime: 2025/1/24 16:10
- * @ClassName: SysLoginVO
- * @Version: 1.0
- */
+
 
 @Data
 @Builder

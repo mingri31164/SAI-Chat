@@ -1,7 +1,5 @@
 package com.mingri.websocket;
 
-import com.mingri.context.BaseContext;
-import com.mingri.middleware.dynamic.thread.pool.sdk.domain.model.vo.RegistryEnumVO;
 import com.mingri.utils.CacheUtil;
 import com.mingri.utils.RedisUtils;
 import io.netty.bootstrap.ServerBootstrap;

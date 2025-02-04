@@ -3,12 +3,7 @@ package com.mingri.utils;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * @Author: mingri31164
- * @CreateTime: 2025/1/22 23:20
- * @ClassName: WebUtils
- * @Version: 1.0
- */
+
 public class WebUtils {
 
     /**

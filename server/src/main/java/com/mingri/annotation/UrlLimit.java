@@ -1,9 +1,6 @@
 package com.mingri.annotation;
 
-
-
 import com.mingri.constant.type.LimitKeyType;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

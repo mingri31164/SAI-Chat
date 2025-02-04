@@ -7,11 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @Description:
- * @Author: mingri31164
- * @Date: 2025/1/31 23:12
- **/
+
 @Component
 public class UrlPermitUtil {
     // 免验证Url

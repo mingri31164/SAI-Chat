@@ -15,12 +15,6 @@ import org.springframework.context.annotation.Configuration;
 import org.redisson.config.Config;
 
 
-/**
- * @Author: mingri31164
- * @CreateTime: 2024-10-22 21:55
- * @Description:
- * @Version: 1.0
- */
 @SpringBootApplication
 @Configurable
 public class DynamicThreadPoolApplication {

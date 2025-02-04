@@ -9,12 +9,6 @@ import org.springframework.stereotype.Component;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-/**
- * @Author: mingri31164
- * @CreateTime: 2025/1/19 23:30
- * @ClassName: RedisUtils
- * @Version: 1.0
- */
 @Component
 @AllArgsConstructor
 public class RedisUtils {

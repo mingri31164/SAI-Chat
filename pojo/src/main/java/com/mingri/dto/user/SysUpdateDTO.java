@@ -2,16 +2,9 @@ package com.mingri.dto.user;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-/**
- * @Author: mingri31164
- * @CreateTime: 2025/1/24 21:06
- * @ClassName: SysUpdateDTO
- * @Version: 1.0
- */
 
 @Data
 public class SysUpdateDTO {

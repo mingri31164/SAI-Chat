@@ -1,20 +1,12 @@
 package com.mingri.controller.hello;
 
-import com.mingri.constant.JwtClaimsConstant;
 import com.mingri.properties.JwtProperties;
 import com.mingri.utils.CacheUtil;
-import com.mingri.utils.JwtUtil;
-import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-/**
- * @author 35238
- * @date 2023/7/10 0010 22:25
- */
 
 @Slf4j
 @RestController

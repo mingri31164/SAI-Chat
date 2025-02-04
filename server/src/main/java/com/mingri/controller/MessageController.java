@@ -12,21 +12,12 @@ import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
-/**
- * <p>
- *  前端控制器
- * </p>
- *
- * @author mingri31164
- * @since 2025-01-24
- */
+
 
 @Api(tags = "消息操作相关接口")
 @RestController

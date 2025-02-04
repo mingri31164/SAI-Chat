@@ -1,15 +1,8 @@
 package com.mingri.middleware.dynamic.thread.pool.types;
 
 import lombok.*;
-
 import java.io.Serializable;
 
-/**
- * @Author: mingri31164
- * @CreateTime: 2024-10-22 22:00
- * @Description:
- * @Version: 1.0
- */
 @Data
 @Builder
 @NoArgsConstructor

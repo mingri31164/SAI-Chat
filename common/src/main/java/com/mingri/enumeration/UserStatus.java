@@ -3,13 +3,8 @@ package com.mingri.enumeration;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
-import lombok.Getter;
 
-/**
- * @Description: 用户禁用状态枚举
- * @Author: mingri31164
- * @Date: 2025/1/22 17:06
- **/
+
 
 public enum UserStatus {
 

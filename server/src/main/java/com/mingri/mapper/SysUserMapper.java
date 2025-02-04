@@ -7,18 +7,10 @@ import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
-
 import java.util.List;
 import java.util.Map;
 
-/**
- * <p>
- * 用户表 Mapper 接口
- * </p>
- *
- * @author mingri31164
- * @since 2025-01-22
- */
+
 
 @Mapper
 public interface SysUserMapper extends BaseMapper<SysUser> {

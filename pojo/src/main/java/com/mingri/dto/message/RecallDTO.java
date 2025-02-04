@@ -1,7 +1,6 @@
 package com.mingri.dto.message;
 
 import lombok.Data;
-
 import javax.validation.constraints.NotBlank;
 
 @Data

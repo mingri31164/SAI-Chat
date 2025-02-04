@@ -4,13 +4,7 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * @Author: mingri31164
- * @CreateTime: 2025/1/19 23:14
- * @ClassName: VerifyCodeUtil
- * @Version: 1.0
- * @Description: 验证码工具类
- */
+
 public class VerifyCodeUtil {
     //邮箱正则表达式
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z0-9]+$");

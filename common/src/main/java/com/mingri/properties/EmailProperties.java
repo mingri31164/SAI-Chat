@@ -4,12 +4,6 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-/**
- * @Author: mingri31164
- * @CreateTime: 2025/1/19 23:04
- * @ClassName: EmailProperties
- * @Version: 1.0
- */
 
 @Data
 @Component

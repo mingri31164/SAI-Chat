@@ -1,7 +1,6 @@
 package com.mingri.constant;
 
 import lombok.Data;
-
 import java.time.LocalDateTime;
 
 @Data

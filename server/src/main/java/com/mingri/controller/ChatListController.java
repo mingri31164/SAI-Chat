@@ -10,19 +10,11 @@ import com.mingri.result.Result;
 import com.mingri.service.IChatListService;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
-/**
- * <p>
- *  前端控制器
- * </p>
- *
- * @author mingri31164
- * @since 2025-01-24
- */
+
 
 @Api(tags = "消息列表接口")
 @RestController

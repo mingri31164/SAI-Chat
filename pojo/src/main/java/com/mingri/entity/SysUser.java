@@ -1,13 +1,9 @@
 package com.mingri.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.List;
-
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mingri.enumeration.UserStatus;
 import com.mingri.enumeration.UserTypes;
 import io.swagger.annotations.ApiModel;
@@ -17,14 +13,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import java.util.Date;
 
-/**
- * <p>
- * 用户表
- * </p>
- *
- * @author mingri31164
- * @since 2025-01-22
- */
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
