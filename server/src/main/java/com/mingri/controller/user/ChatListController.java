@@ -1,4 +1,4 @@
-package com.mingri.controller;
+package com.mingri.controller.user;
 
 
 import com.mingri.annotation.UrlLimit;

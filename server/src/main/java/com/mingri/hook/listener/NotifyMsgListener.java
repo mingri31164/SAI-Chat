@@ -1,0 +1,62 @@
+package com.mingri.hook.listener;
+
+import com.mingri.context.BaseContext;
+import com.mingri.entity.Message;
+import com.mingri.event.NotifyMsgEvent;
+import com.mingri.event.vo.PrivateChatVO;
+import com.mingri.service.IChatListService;
+import com.mingri.service.WebSocketService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+
+/**
+ * @Description: 消息事件监听器
+ * @Author: mingri31164
+ * @Date: 2025/2/6 22:30
+ **/
+@Component
+@Slf4j
+public class NotifyMsgListener<T> implements ApplicationListener<NotifyMsgEvent<T>> {
+    @Autowired
+    private IChatListService chatListService;
+    @Autowired
+    private WebSocketService webSocketService;
+
+
+    @Async
+    @SuppressWarnings("unchecked")
+    @Override
+    public void onApplicationEvent(NotifyMsgEvent<T> msgEvent) {
+        switch (msgEvent.getNotifyType()) {
+            case GROUP_CHAT:
+                updateChatListGroup((NotifyMsgEvent<Message>) msgEvent);
+                break;
+            case PRIVATE_CHAT:
+                updateChatListPrivate((NotifyMsgEvent<PrivateChatVO>) msgEvent);
+                break;
+            default:
+                // todo 系统消息
+        }
+    }
+
+    private void updateChatListGroup(NotifyMsgEvent<Message> msgEvent) {
+        Message message = msgEvent.getContent();
+        chatListService.updateChatListGroup(message);
+        webSocketService.sendMsgToGroup(message);
+    }
+
+
+    private void updateChatListPrivate(NotifyMsgEvent<PrivateChatVO> msgEvent) {
+        PrivateChatVO privateChatVO = msgEvent.getContent();
+        String userId = String.valueOf(BaseContext.getCurrentId());
+        String targetId = privateChatVO.getSendMessageDTO().getTargetId();
+        Message message = privateChatVO.getMessage();
+        chatListService.updateChatListPrivate(targetId, message);
+        webSocketService.sendMsgToUser(message, userId, targetId);
+    }
+
+
+}

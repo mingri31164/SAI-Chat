@@ -16,7 +16,10 @@ import com.mingri.dto.message.RecordDTO;
 import com.mingri.dto.message.SendMessageDTO;
 import com.mingri.dto.message.TextMessageContent;
 import com.mingri.entity.Message;
+import com.mingri.enumeration.NotifyTypeEnum;
 import com.mingri.enumeration.UserTypes;
+import com.mingri.event.NotifyMsgEvent;
+import com.mingri.event.vo.PrivateChatVO;
 import com.mingri.exception.BaseException;
 import com.mingri.mapper.MessageMapper;
 import com.mingri.service.*;
@@ -25,6 +28,7 @@ import com.mingri.utils.CacheUtil;
 import com.mingri.vo.SysUserInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import com.github.houbb.sensitive.word.bs.SensitiveWordBs;
 import java.time.LocalDate;
@@ -52,14 +56,17 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     private SensitiveWordBs sensitiveWordBs;
     @Autowired
     private AiChatService aiChatService;
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     @Override
     public Message send(SendMessageDTO sendMessageDTO) {
         if (MessageSource.Group.equals(sendMessageDTO.getSource())) {
-            return sendMessageToGroup(sendMessageDTO);
+            return sendMessageToGroup(BaseContext.getCurrentId().toString(),sendMessageDTO);
         } else {
             return sendMessageToUser(sendMessageDTO);
-        }    }
+        }
+    }
 
     @Override
     @DS("slave")
@@ -111,29 +118,22 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     @Override
     public Message sendMessageToGroup(String userId, SendMessageDTO sendMessageDTO) {
         Message message = sendMessage(String.valueOf(userId), sendMessageDTO , MessageSource.Group);
-        //更新群聊列表
-        chatListService.updateChatListGroup(message);
-        webSocketService.sendMsgToGroup(message);
+        NotifyMsgEvent<Message> sendMessageToGroupEvent =
+                new NotifyMsgEvent<>(this, NotifyTypeEnum.GROUP_CHAT, message);
+        eventPublisher.publishEvent(sendMessageToGroupEvent);
         return message;
     }
 
     private Message sendMessageToUser(SendMessageDTO sendMessageDTO) {
         String userId = String.valueOf(BaseContext.getCurrentId());
         Message message = sendMessage(userId, sendMessageDTO, MessageSource.User);
-        //更新私聊列表
-        chatListService.updateChatListPrivate(sendMessageDTO.getTargetId(), message);
-        webSocketService.sendMsgToUser(message, String.valueOf(userId), sendMessageDTO.getTargetId());
+        PrivateChatVO privateChatVO = new PrivateChatVO(sendMessageDTO,message);
+        NotifyMsgEvent<PrivateChatVO> sendMessageToGroupEvent =
+                new NotifyMsgEvent<>(this, NotifyTypeEnum.PRIVATE_CHAT, privateChatVO);
+        eventPublisher.publishEvent(sendMessageToGroupEvent);
         return message;
     }
 
-    private Message sendMessageToGroup(SendMessageDTO sendMessageDTO) {
-        String userId = String.valueOf(BaseContext.getCurrentId());
-        Message message = sendMessage(userId, sendMessageDTO, MessageSource.Group);
-        //更新群聊列表
-        chatListService.updateChatListGroup(message);
-        webSocketService.sendMsgToGroup(message);
-        return message;
-    }
 
     public Message sendMessage(String userId, SendMessageDTO sendMessageDTO, String source) {
         //获取上一条显示时间的消息

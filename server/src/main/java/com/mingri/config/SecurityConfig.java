@@ -1,7 +1,7 @@
 package com.mingri.config;
 
 
-import com.mingri.filter.JwtAuthenticationTokenFilter;
+import com.mingri.hook.filter.JwtAuthenticationTokenFilter;
 import com.mingri.handler.AccessDeniedHandlerImpl;
 import com.mingri.handler.AuthenticationEntryPointImpl;
 import org.springframework.beans.factory.annotation.Autowired;

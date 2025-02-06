@@ -71,7 +71,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     public void register(SysUserRegisterDTO sysUserRegisterDTO) {
 
-        //邮箱重复处理
+        // TODO 邮箱重复处理
 //        if (lambdaQuery().eq(SysUser::getEmail, sysUserRegisterDTO.getEmail()).exists()) {
 //            throw new RegisterFailedException(MessageConstant.EMAIL_EXIST);
 //        }
@@ -97,10 +97,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUser sysUser = new SysUser();
         //对象属性拷贝
         BeanUtils.copyProperties(sysUserRegisterDTO, sysUser);
-        //密码加密
-        //MD5加密
-//        user.setPassword(DigestUtils.md5DigestAsHex
-//                (user.getPassword().getBytes()));
 
         //passwordEncoder加密
         sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));

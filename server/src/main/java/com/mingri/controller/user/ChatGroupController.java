@@ -1,4 +1,4 @@
-package com.mingri.controller;
+package com.mingri.controller.user;
 
 
 import io.swagger.annotations.Api;
