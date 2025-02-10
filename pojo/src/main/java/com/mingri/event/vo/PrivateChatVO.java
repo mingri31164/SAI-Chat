@@ -3,6 +3,7 @@ package com.mingri.event.vo;
 import com.mingri.dto.message.SendMessageDTO;
 import com.mingri.entity.Message;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @Author: mingri31164
@@ -12,13 +13,16 @@ import lombok.Data;
  */
 
 @Data
+@NoArgsConstructor
 public class PrivateChatVO {
 
-    private SendMessageDTO sendMessageDTO;
+    private String userId;
+    private String targetId;
     private Message message;
 
-    public PrivateChatVO(SendMessageDTO sendMessageDTO, Message message) {
-        this.sendMessageDTO = sendMessageDTO;
+    public PrivateChatVO(String userId, String targetId, Message message) {
+        this.userId = userId;
+        this.targetId = targetId;
         this.message = message;
     }
 

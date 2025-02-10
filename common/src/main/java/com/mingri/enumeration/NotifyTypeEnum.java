@@ -9,9 +9,8 @@ import java.util.Map;
 @Getter
 public enum NotifyTypeEnum {
     GROUP_CHAT(1, "groupChat"),
-    PRIVATE_CHAT(2, "privateChat"),
-    REGISTER(3, "register"),
-    LOGIN(4, "login"),
+    REGISTER(2, "register"),
+    LOGIN(3, "login"),
     ;
 
 

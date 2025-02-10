@@ -35,6 +35,14 @@ spring:
     port: ${mingri.redis.port}
     password: ${mingri.redis.password}
     database: ${mingri.redis.database}
+    pool-size: 10
+    min-idle-size: 5
+    idle-timeout: 30000
+    connect-timeout: 5000
+    retry-attempts: 3
+    retry-interval: 1000
+    ping-interval: 60000
+    keep-alive: true
 
 
 

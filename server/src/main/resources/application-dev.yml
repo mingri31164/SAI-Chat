@@ -1,13 +1,13 @@
 mingri:
   datasource:
     master:
-      host: 139.9.51.109
+      host:
       port: 3339
       database: mini-chat
       username: root
       password: 123456
     slave:
-      host: 139.9.51.109
+      host:
       port: 3340
       database: mini-chat
       username: root
@@ -23,18 +23,18 @@ mingri:
     access-key-secret:
     bucket-name:
   mail:
-    from: 3116430062@qq.com
+    from: xxxx@qq.com
     password:
     host: smtp.qq.com
     port: 465
-    user: 3116430062@qq.com
+    user: xxxx@qq.com
     expireTime: 180 #3分钟
   jwt:
     secret-key: csd_admin
     expire-time: 7200000
     token-name: x-token
   doubao:
-    api-key: acae9bb1-4380-49b6-83ae-f95c2ce34e09
+    api-key:
     count-limit: 0
     length-limit: 50
     model: ep-20250130211307-qgfnq

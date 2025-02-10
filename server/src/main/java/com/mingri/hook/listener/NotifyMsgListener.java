@@ -26,16 +26,13 @@ public class NotifyMsgListener<T> implements ApplicationListener<NotifyMsgEvent<
     private WebSocketService webSocketService;
 
 
-    @Async
+    @Async("notify")
     @SuppressWarnings("unchecked")
     @Override
     public void onApplicationEvent(NotifyMsgEvent<T> msgEvent) {
         switch (msgEvent.getNotifyType()) {
             case GROUP_CHAT:
                 updateChatListGroup((NotifyMsgEvent<Message>) msgEvent);
-                break;
-            case PRIVATE_CHAT:
-                updateChatListPrivate((NotifyMsgEvent<PrivateChatVO>) msgEvent);
                 break;
             default:
                 // todo 系统消息
@@ -46,16 +43,6 @@ public class NotifyMsgListener<T> implements ApplicationListener<NotifyMsgEvent<
         Message message = msgEvent.getContent();
         chatListService.updateChatListGroup(message);
         webSocketService.sendMsgToGroup(message);
-    }
-
-
-    private void updateChatListPrivate(NotifyMsgEvent<PrivateChatVO> msgEvent) {
-        PrivateChatVO privateChatVO = msgEvent.getContent();
-        String userId = String.valueOf(BaseContext.getCurrentId());
-        String targetId = privateChatVO.getSendMessageDTO().getTargetId();
-        Message message = privateChatVO.getMessage();
-        chatListService.updateChatListPrivate(targetId, message);
-        webSocketService.sendMsgToUser(message, userId, targetId);
     }
 
 

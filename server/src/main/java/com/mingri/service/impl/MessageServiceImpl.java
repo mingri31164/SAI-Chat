@@ -126,11 +126,10 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
 
     private Message sendMessageToUser(SendMessageDTO sendMessageDTO) {
         String userId = String.valueOf(BaseContext.getCurrentId());
+        String targetId = sendMessageDTO.getTargetId();
         Message message = sendMessage(userId, sendMessageDTO, MessageSource.User);
-        PrivateChatVO privateChatVO = new PrivateChatVO(sendMessageDTO,message);
-        NotifyMsgEvent<PrivateChatVO> sendMessageToGroupEvent =
-                new NotifyMsgEvent<>(this, NotifyTypeEnum.PRIVATE_CHAT, privateChatVO);
-        eventPublisher.publishEvent(sendMessageToGroupEvent);
+        chatListService.updateChatListPrivate(targetId, message);
+        webSocketService.sendMsgToUser(message, userId, targetId);
         return message;
     }
 

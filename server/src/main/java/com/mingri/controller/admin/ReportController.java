@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
  * 数据统计相关接口
  */
 @RestController
-@RequestMapping("/admin/report")
+@RequestMapping("/api/v1/admin/report")
 @Api(tags = "数据统计相关接口")
 @Slf4j
 public class ReportController {

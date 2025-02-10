@@ -32,11 +32,11 @@
 
             <div class="close-btn" @click="showLeft = false">×</div>
           </div>
+          群聊
           <div
             v-if="privateChatList?.length > 0"
             class="text-[rgba(var(--text-color),0.7)] font-[600] mb-[5px]"
           >
-            群聊
           </div>
           <div
             class="chat-list-item black"

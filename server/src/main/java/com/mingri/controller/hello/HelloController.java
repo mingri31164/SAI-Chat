@@ -22,7 +22,6 @@ public class HelloController {
 //    @PreAuthorize("hasRole('user')") //内部拼接(ROLE_user)比对
 //    @PreAuthorize("@myEx.hasAuthority('system:dept:list')") //自定义权限校验
     public String hello(){
-
         return "欢迎，开始你新的学习旅程吧";
     }
 
