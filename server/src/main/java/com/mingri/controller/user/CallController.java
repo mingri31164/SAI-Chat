@@ -5,6 +5,7 @@ import com.mingri.dto.call.*;
 import com.mingri.result.Result;
 import com.mingri.service.CallService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,6 +35,7 @@ public class CallController {
      * 发送offer
      */
     @UrlLimit
+    @ApiOperation("发送WebRTC中的offer，用于发起通话请求")
     @PostMapping("/offer")
     public Object offer(String userId, @RequestBody OfferDTO offerDTO) {
         boolean result = callService.offer(userId, offerDTO);
@@ -44,6 +46,7 @@ public class CallController {
      * 发送answer
      */
     @UrlLimit
+    @ApiOperation("发送WebRTC中的answer，响应offer")
     @PostMapping("/answer")
     public Object answer(String userId, @RequestBody AnswerDTO answerDTO) {
         boolean result = callService.answer(userId, answerDTO);
@@ -54,6 +57,7 @@ public class CallController {
      * 发送candidate
      */
     @UrlLimit
+    @ApiOperation("发送WebRTC中的candidate，用于建立网络连接的候选地址信息")
     @PostMapping("/candidate")
     public Object candidate(String userId, @RequestBody CandidateDTO candidateDTO) {
         boolean result = callService.candidate(userId, candidateDTO);
@@ -64,6 +68,7 @@ public class CallController {
      * 挂断
      */
     @UrlLimit
+    @ApiOperation("挂断通话")
     @PostMapping("/hangup")
     public Object hangup(String userId, @RequestBody HangupDTO hangupDTO) {
         boolean result = callService.hangup(userId, hangupDTO);
@@ -74,6 +79,7 @@ public class CallController {
      * 邀请
      */
     @UrlLimit
+    @ApiOperation("邀请通话")
     @PostMapping("/invite")
     public Object invite(@RequestBody InviteDTO inviteDTO) {
         boolean result = callService.invite(inviteDTO);
@@ -81,9 +87,10 @@ public class CallController {
     }
 
     /**
-     * 邀请
+     * 接收
      */
     @UrlLimit
+    @ApiOperation("接受通话")
     @PostMapping("/accept")
     public Object accept(String userId, @RequestBody AcceptDTO acceptDTO) {
         boolean result = callService.accept(userId, acceptDTO);

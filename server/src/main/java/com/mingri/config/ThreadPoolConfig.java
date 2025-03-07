@@ -1,6 +1,5 @@
 package com.mingri.config;
 
-import com.mingri.middleware.dynamic.thread.pool.sdk.domain.model.vo.RegistryEnumVO;
 import com.mingri.properties.ThreadPoolConfigProperties;
 import com.mingri.utils.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -88,22 +87,5 @@ public class ThreadPoolConfig {
                 handler);
     }
 
-
-
-    @PreDestroy
-    public void destroy() {
-        if (threadPoolExecutor != null) {
-            threadPoolExecutor.shutdown();
-            try {
-                if (!threadPoolExecutor.awaitTermination(60, TimeUnit.SECONDS)) {
-                    threadPoolExecutor.shutdownNow();
-                    redisUtils.del(RegistryEnumVO.THREAD_POOL_CONFIG_PARAMETER_LIST_KEY.getKey());
-                }
-            } catch (InterruptedException e) {
-                threadPoolExecutor.shutdownNow();
-                Thread.currentThread().interrupt();
-            }
-        }
-    }
 
 }

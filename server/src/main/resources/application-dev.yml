@@ -13,9 +13,9 @@ mingri:
       username: root
       password: 123456
   redis:
-    host: localhost
+    host:
     port: 6379
-    password: 123456
+    password:
     database: 1
   alioss:
     endpoint: oss-cn-hangzhou.aliyuncs.com

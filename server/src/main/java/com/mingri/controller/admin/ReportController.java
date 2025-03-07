@@ -19,17 +19,17 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class ReportController {
 
-    @Autowired
-    private ReportService reportService;
-
-    /**
-     * 导出数据报表
-     * @param response
-     */
-    @GetMapping("/export")
-    @ApiOperation("导出数据报表")
-    public void export(HttpServletResponse response){
-        reportService.exportClockData(response);
-    }
+//    @Autowired
+//    private ReportService reportService;
+//
+//    /**
+//     * 导出数据报表
+//     * @param response
+//     */
+//    @GetMapping("/export")
+//    @ApiOperation("导出数据报表")
+//    public void export(HttpServletResponse response){
+//        reportService.exportClockData(response);
+//    }
 
 }

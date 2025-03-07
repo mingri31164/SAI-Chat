@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-    @Autowired
-    private JwtProperties jwtProperties;
-    @Autowired
-    private CacheUtil cacheUtil;
-    @RequestMapping("/hello")
-    @PreAuthorize("hasAuthority('system:dept:list')") //单个权限
-//    @PreAuthorize("hasAnyAuthority('user','admin')") //多个权限（只要有其中之一）
-//    @PreAuthorize("hasRole('user')") //内部拼接(ROLE_user)比对
-//    @PreAuthorize("@myEx.hasAuthority('system:dept:list')") //自定义权限校验
-    public String hello(){
-        return "欢迎，开始你新的学习旅程吧";
-    }
+//    @Autowired
+//    private JwtProperties jwtProperties;
+//    @Autowired
+//    private CacheUtil cacheUtil;
+//    @RequestMapping("/hello")
+//    @PreAuthorize("hasAuthority('system:dept:list')") //单个权限
+////    @PreAuthorize("hasAnyAuthority('user','admin')") //多个权限（只要有其中之一）
+////    @PreAuthorize("hasRole('user')") //内部拼接(ROLE_user)比对
+////    @PreAuthorize("@myEx.hasAuthority('system:dept:list')") //自定义权限校验
+//    public String hello(){
+//        return "欢迎，开始你新的学习旅程吧";
+//    }
 
 }

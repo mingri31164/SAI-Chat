@@ -32,6 +32,7 @@
         <jaxb-api>2.3.1</jaxb-api>
         <poi>3.16</poi>
         <jsqlparser.version>4.4</jsqlparser.version>
+        <java.version>17</java.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -127,4 +128,7 @@
 
         </dependencies>
     </dependencyManagement>
+
+
+
 </project>

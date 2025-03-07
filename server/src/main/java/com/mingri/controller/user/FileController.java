@@ -5,6 +5,7 @@ import com.mingri.dto.file.*;
 import com.mingri.result.Result;
 import com.mingri.service.FileService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -29,6 +30,7 @@ public class FileController {
      * 发送offer
      */
     @UrlLimit
+    @ApiOperation("发送WebRTC中的offer，发起文件传输")
     @PostMapping("/offer")
     public Object offer(String userId, @RequestBody OfferDTO offerDTO) {
         boolean result = fileService.offer(userId, offerDTO);
@@ -39,6 +41,7 @@ public class FileController {
      * 发送answer
      */
     @UrlLimit
+    @ApiOperation("发送WebRTC中的answer，响应offer")
     @PostMapping("/answer")
     public Object answer(String userId, @RequestBody AnswerDTO answerDTO) {
         boolean result = fileService.answer(userId, answerDTO);
@@ -49,6 +52,7 @@ public class FileController {
      * 发送candidate
      */
     @UrlLimit
+    @ApiOperation("发送WebRTC中的candidate，用于建立网络连接的候选地址信息")
     @PostMapping("/candidate")
     public Object candidate(String userId, @RequestBody CandidateDTO candidateDTO) {
         boolean result = fileService.candidate(userId, candidateDTO);
@@ -59,6 +63,7 @@ public class FileController {
      * 取消
      */
     @UrlLimit
+    @ApiOperation("取消文件传输")
     @PostMapping("/cancel")
     public Object hangup(String userId, @RequestBody CancelDTO cancelDTO) {
         boolean result = fileService.cancel(userId, cancelDTO);
@@ -69,6 +74,7 @@ public class FileController {
      * 邀请
      */
     @UrlLimit
+    @ApiOperation("邀请文件传输")
     @PostMapping("/invite")
     public Object invite(@RequestBody InviteDTO inviteDTO) {
         boolean result = fileService.invite(inviteDTO);
@@ -79,6 +85,7 @@ public class FileController {
      * 同意
      */
     @UrlLimit
+    @ApiOperation("接收文件传输")
     @PostMapping("/accept")
     public Object accept(String userId, @RequestBody AcceptDTO acceptDTO) {
         boolean result = fileService.accept(userId, acceptDTO);

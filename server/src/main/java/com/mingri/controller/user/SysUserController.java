@@ -39,7 +39,6 @@ public class SysUserController {
     private CacheUtil cacheUtil;
 
 
-
     /**
      * 登录
      * @param userLoginDTO
@@ -119,15 +118,8 @@ public class SysUserController {
     }
 
 
-
     @UrlLimit
-    @GetMapping("/list")
-    public Object listUser() {
-        List<SysUserInfoVO> result = iSysUserService.listUser();
-        return Result.success(result);
-    }
-
-    @UrlLimit
+    @ApiOperation("查询所有用户信息")
     @GetMapping("/list/map")
     public Object listMapUser() {
         Map<String, SysUserInfoVO> result = iSysUserService.listMapUser();
@@ -136,6 +128,7 @@ public class SysUserController {
 
 
     @UrlLimit
+    @ApiOperation("查询所有在线用户")
     @GetMapping("/online/web")
     public Object onlineWeb() {
         List<String> result = iSysUserService.onlineWeb();

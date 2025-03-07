@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Data
-@ApiModel(description = "用户注册时传递的数据模型")
+@ApiModel(description = "用户注册对象")
 public class SysUserRegisterDTO implements Serializable {
 
     @NotBlank(message = "用户名不能为空~")

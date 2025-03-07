@@ -1,6 +1,5 @@
 package com.mingri.controller.user;
 
-
 import com.mingri.annotation.UrlLimit;
 import com.mingri.dto.chatList.CreateDTO;
 import com.mingri.dto.chatList.DeleteDTO;
@@ -9,6 +8,7 @@ import com.mingri.entity.ChatList;
 import com.mingri.result.Result;
 import com.mingri.service.IChatListService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -26,6 +26,7 @@ public class ChatListController {
 
 
     @UrlLimit
+    @ApiOperation("获取私聊列表")
     @GetMapping("/list/private")
     public Object privateList() {
         List<ChatList> result = chatListService.privateList();
@@ -33,6 +34,7 @@ public class ChatListController {
     }
 
     @UrlLimit
+    @ApiOperation("获取群聊列表")
     @GetMapping("/group")
     public Object group() {
         ChatList result = chatListService.getGroup();
@@ -40,6 +42,7 @@ public class ChatListController {
     }
 
     @UrlLimit
+    @ApiOperation("建立私聊对话")
     @PostMapping("/create")
     public Object create(@RequestBody @Valid CreateDTO createDTO) {
         ChatList result = chatListService.create(createDTO.getTargetId());
@@ -47,6 +50,7 @@ public class ChatListController {
     }
 
     @UrlLimit
+    @ApiOperation("标记消息已读")
     @PostMapping("/read")
     public Object read(@RequestBody @Valid ReadDTO readDTO) {
         boolean result = chatListService.read(readDTO.getTargetId());
@@ -54,6 +58,7 @@ public class ChatListController {
     }
 
     @UrlLimit
+    @ApiOperation("删除私聊对话")
     @PostMapping("/delete")
     public Object delete(@RequestBody @Valid DeleteDTO deleteDTO) {
         boolean result = chatListService.delete(deleteDTO.getChatListId());

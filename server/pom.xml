@@ -6,18 +6,22 @@
         <artifactId>mini-chat</artifactId>
         <groupId>com.mingri</groupId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
-
+    <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>server</artifactId>
+    <properties>
+        <java.version>17</java.version>
+    </properties>
     <dependencies>
 
         <!-- 线程池组件（暂为线程池组件开关） -->
-        <dependency>
-            <groupId>com.mingri</groupId>
-            <artifactId>dynamic-thread-pool-spring-boot-starter</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.mingri</groupId>-->
+<!--            <artifactId>dynamic-thread-pool-spring-boot-starter</artifactId>-->
+<!--            <version>1.0-SNAPSHOT</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>com.mingri</groupId>
@@ -171,7 +175,22 @@
             <artifactId>dynamic-datasource-spring-boot3-starter</artifactId>
             <version>4.3.1</version>
         </dependency>
-
+<!--        <dependency>-->
+<!--            <groupId>com.mingri</groupId>-->
+<!--            <artifactId>dynamic-thread-pool-spring-boot-starter</artifactId>-->
+<!--            <version>1.0-SNAPSHOT</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
