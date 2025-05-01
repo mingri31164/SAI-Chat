@@ -31,7 +31,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
     private ISysUserService sysUserService;
 
     @Override
-    @DS("slave")
+    //@DS("slave")
     public List<ChatList> privateList() {
         Long currentId = BaseContext.getCurrentId();
         LambdaQueryWrapper<ChatList> queryWrapper = new LambdaQueryWrapper<>();
@@ -41,7 +41,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
     }
 
     @Override
-    @DS("slave")
+    //@DS("slave")
     public ChatList getGroup() {
         Long userId = BaseContext.getCurrentId();
         LambdaQueryWrapper<ChatList> queryWrapper = new LambdaQueryWrapper<>();
@@ -147,7 +147,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
         }
     }
 
-    @DS("slave")
+    //@DS("slave")
     private ChatList getTargetChatList(String targetId) {
         String userId = String.valueOf(BaseContext.getCurrentId());
         LambdaQueryWrapper<ChatList> queryWrapper = new LambdaQueryWrapper<>();
@@ -156,4 +156,5 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
                 .eq(ChatList::getType, ChatListType.User);
         return getOne(queryWrapper);
     }
+
 }

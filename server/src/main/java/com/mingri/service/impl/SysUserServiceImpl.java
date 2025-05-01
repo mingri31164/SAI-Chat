@@ -208,13 +208,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    @DS("slave")
+    //@DS("slave")
     public SysUserInfoVO getUserById(String userId) {
         return baseMapper.getUserById(userId);
     }
 
     @Override
-    @DS("slave")
+    //@DS("slave")
     public List<SysUserInfoVO> listUser() {
         return baseMapper.listUser();
     }
@@ -225,7 +225,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    @DS("slave")
+    //@DS("slave")
     public Map<String, SysUserInfoVO> listMapUser() {
         return baseMapper.listMapUser();
     }

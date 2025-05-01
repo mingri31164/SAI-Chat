@@ -65,4 +65,11 @@ public class ChatListController {
         return Result.success(result);
     }
 
+    @ApiOperation("新增群聊")
+    @PostMapping("/group/create")
+    public Object createGroup(@RequestBody @Valid CreateDTO createDTO) {
+        ChatList result = chatListService.create(createDTO.getTargetId());
+        return Result.success(result);
+    }
+
 }

@@ -108,6 +108,7 @@ const handlerFileMsg = (msg) => {
       break
     }
     case 'cancel': {
+      console.log(msg)
       showToast('对方已取消~', true)
       visible.value = false
       break

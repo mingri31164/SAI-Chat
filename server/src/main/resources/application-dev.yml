@@ -1,19 +1,19 @@
 mingri:
   datasource:
     master:
-      host:
+      host: 127.0.0.1
       port: 3339
       database: mini-chat
       username: root
       password: 123456
     slave:
-      host:
+      host: 127.0.0.1
       port: 3340
       database: mini-chat
       username: root
       password: 123456
   redis:
-    host:
+    host: 127.0.0.1
     port: 6379
     password:
     database: 1

@@ -1,6 +1,5 @@
 package com.mingri.event.vo;
 
-import com.mingri.dto.message.SendMessageDTO;
 import com.mingri.entity.Message;
 import lombok.Data;
 import lombok.NoArgsConstructor;

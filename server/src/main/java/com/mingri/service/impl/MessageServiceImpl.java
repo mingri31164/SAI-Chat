@@ -19,7 +19,6 @@ import com.mingri.entity.Message;
 import com.mingri.enumeration.NotifyTypeEnum;
 import com.mingri.enumeration.UserTypes;
 import com.mingri.event.NotifyMsgEvent;
-import com.mingri.event.vo.PrivateChatVO;
 import com.mingri.exception.BaseException;
 import com.mingri.mapper.MessageMapper;
 import com.mingri.service.*;
@@ -69,7 +68,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     }
 
     @Override
-    @DS("slave")
+    //@DS("slave")
     public List<Message> record(RecordDTO recordDTO) {
         String userId = String.valueOf(BaseContext.getCurrentId());
         List<Message> messages = messageMapper.record(userId, recordDTO.getTargetId(),

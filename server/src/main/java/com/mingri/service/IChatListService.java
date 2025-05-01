@@ -7,26 +7,8 @@ import java.util.List;
 
 
 public interface IChatListService extends IService<ChatList> {
-
-    /**
-     * @Description: 获取私聊列表
-     * @Author: mingri31164
-     * @Date: 2025/1/25 17:05
-     **/
     List<ChatList> privateList();
-
-    /**
-     * @Description: 获取群聊列表
-     * @Author: mingri31164
-     * @Date: 2025/1/25 17:05
-     **/
     ChatList getGroup();
-
-    /**
-     * @Description: 添加私聊对象
-     * @Author: mingri31164
-     * @Date: 2025/1/25 17:05
-     **/
     ChatList create(String targetId);
 
     boolean read(String targetId);

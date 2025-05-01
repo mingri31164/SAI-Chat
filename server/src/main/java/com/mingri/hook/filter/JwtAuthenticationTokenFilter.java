@@ -9,6 +9,7 @@ import com.mingri.constant.RedisConstant;
 import com.mingri.context.BaseContext;
 import com.mingri.entity.LoginUser;
 import com.mingri.exception.LoginFailedException;
+import com.mingri.exception.UserNotLoginException;
 import com.mingri.properties.JwtProperties;
 import com.mingri.result.Result;
 import com.mingri.utils.*;
@@ -74,7 +75,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 // 验证是否在其他地方登录
                 String cacheToken = cacheUtil.getUserSessionCache(userId.toString());
                 if (StrUtil.isBlank(cacheToken)){
-                    throw new LoginFailedException(MessageConstant.AUTHENTICATION_FAILED);
+                    throw new UserNotLoginException(MessageConstant.AUTHENTICATION_FAILED);
                 }
                 else if (!cacheToken.equals(token)){
                     Result<Object> error = Result.error
