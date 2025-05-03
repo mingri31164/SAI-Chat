@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IChatGroupMemberService extends IService<ChatGroupMember> {
 
+    boolean isMemberExists(String groupId, String inviteUserid);
 }

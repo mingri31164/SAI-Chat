@@ -2,9 +2,7 @@ package com.mingri.service;
 
 import com.mingri.entity.ChatGroup;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.vo.chatGroup.CreateChatGroupVo;
-import com.mingri.vo.chatGroup.DissolveChatGroupVo;
-import com.mingri.vo.chatGroup.UpdateChatGroupVo;
+import com.mingri.vo.chatGroup.*;
 
 import java.util.List;
 
@@ -43,4 +41,18 @@ public interface IChatGroupService extends IService<ChatGroup> {
      **/
     boolean isOwner(String groupId, String userId);
 
+    /**
+     * 邀请成员
+     **/
+    boolean inviteMember(String userId, InviteMemberVo inviteMemberVo);
+
+    /**
+     * 退出群聊
+     **/
+    boolean quitChatGroup(String userId, QuitChatGroupVo quitChatGroupVo);
+
+    /**
+     * 踢出群聊
+     **/
+    boolean kickChatGroup(String userId, KickChatGroupVo kickChatGroupVo);
 }

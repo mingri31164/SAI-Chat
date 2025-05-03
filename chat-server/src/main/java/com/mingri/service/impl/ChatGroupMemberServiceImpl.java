@@ -17,4 +17,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ChatGroupMemberServiceImpl extends ServiceImpl<ChatGroupMemberMapper, ChatGroupMember> implements IChatGroupMemberService {
 
+    @Override
+    public boolean isMemberExists(String groupId, String inviteUserid) {
+        return false;
+    }
 }

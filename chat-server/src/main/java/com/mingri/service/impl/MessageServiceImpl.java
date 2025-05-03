@@ -5,7 +5,6 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.mingri.constant.*;
 import com.mingri.constant.type.MessageType;
@@ -25,6 +24,7 @@ import com.mingri.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mingri.utils.CacheUtil;
 import com.mingri.vo.SysUserInfoVO;
+import com.mingri.vo.chatGroup.SendMsgVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -68,6 +68,17 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     }
 
     @Override
+    public Message sendMessage(String userId, String role, SendMsgVo sendMsgVo, String type) {
+//        TODO 消息发送方法重构
+//        if (MessageSource.Group.equals(sendMsgVo.getSource())) {
+//            return sendMessageToGroup(userId, sendMsgVo, type);
+//        } else {
+//            return sendMessageToUser(userId, sendMsgVo, type);
+//        }
+        return null;
+    }
+
+    @Override
     //@DS("slave")
     public List<Message> record(RecordDTO recordDTO) {
         String userId = BaseContext.getCurrentId();
@@ -93,7 +104,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         }
 
         //撤回自己的消息
-        message.setType(MessageType.Recall);
+        message.setType(MessageType.Retraction);
         message.setMessage("");
         updateById(message);
         if (MessageSource.Group.equals(message.getSource())) {

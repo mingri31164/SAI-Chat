@@ -1,12 +1,11 @@
 package com.mingri.controller.user;
 
 
+import cn.hutool.json.JSONObject;
 import com.mingri.entity.ChatGroup;
 import com.mingri.result.Result;
 import com.mingri.service.IChatGroupService;
-import com.mingri.vo.chatGroup.CreateChatGroupVo;
-import com.mingri.vo.chatGroup.DissolveChatGroupVo;
-import com.mingri.vo.chatGroup.UpdateChatGroupVo;
+import com.mingri.vo.chatGroup.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -65,6 +64,28 @@ public class ChatGroupController {
     }
 
 
+    @ApiOperation("成员邀请")
+    @PostMapping("/invite")
+    public Object inviteMember(String userId, @RequestBody InviteMemberVo inviteMemberVo) {
+        boolean result = chatGroupService.inviteMember(userId, inviteMemberVo);
+        return Result.success(result);
+    }
+
+
+    @ApiOperation("退出群聊")
+    @PostMapping("/quit")
+    public Object quitChatGroup(String userId, @RequestBody QuitChatGroupVo quitChatGroupVo) {
+        boolean result = chatGroupService.quitChatGroup(userId, quitChatGroupVo);
+        return Result.success(result);
+    }
+
+
+    @ApiOperation("踢出群聊")
+    @PostMapping("/kick")
+    public Object kickChatGroup(String userId, @RequestBody KickChatGroupVo kickChatGroupVo) {
+        boolean result = chatGroupService.kickChatGroup(userId, kickChatGroupVo);
+        return Result.success(result);
+    }
 
 
 }
