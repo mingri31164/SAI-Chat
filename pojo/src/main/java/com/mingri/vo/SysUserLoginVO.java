@@ -20,7 +20,7 @@ public class SysUserLoginVO {
 
     @TableField("id")
     @ApiModelProperty("主键值")
-    private Long userId;
+    private String userId;
 
     @ApiModelProperty("用户名")
     private String userName;

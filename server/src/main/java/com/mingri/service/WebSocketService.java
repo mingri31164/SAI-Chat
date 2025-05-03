@@ -51,7 +51,7 @@ public class WebSocketService {
     public void online(Channel channel, String token) {
         try {
             Claims claims = JwtUtil.parseJWT(jwtProperties.getSecretKey(),token);
-            String userId = String.valueOf(Long.valueOf(claims.get(JwtClaimsConstant.USER_ID).toString()));
+            String userId = claims.get(JwtClaimsConstant.USER_ID).toString();
             String cacheToken = cacheUtil.getUserSessionCache(userId);
             if (!token.equals(cacheToken)) {
                 sendMsg(channel, Result.error(MessageConstant.LOGIN_IN_OTHER_PLACE), WsContentType.Msg);

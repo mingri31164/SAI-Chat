@@ -55,6 +55,6 @@ public class AiChatService {
         sendMessageDTO.setSource(MessageSource.Group);
         sendMessageDTO.setMsgContent(msgContent.toJSONString(0));
         sendMessageDTO.setType(MessageType.Text);
-        messageService.sendMessageToGroup(String.valueOf(botUser.getId()), sendMessageDTO);
+        messageService.sendMessageToGroup(botUser.getId(), sendMessageDTO);
     }
 }

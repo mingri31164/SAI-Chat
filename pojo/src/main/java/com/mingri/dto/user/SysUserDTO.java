@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class SysUserDTO implements Serializable {
 
     @ApiModelProperty(value = "用户ID")
-    private Long id;
+    private String id;
 
     @ApiModelProperty(value = "用户昵称")
     private String nickName;

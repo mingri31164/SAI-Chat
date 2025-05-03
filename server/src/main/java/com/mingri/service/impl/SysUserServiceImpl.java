@@ -97,7 +97,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUser sysUser = new SysUser();
         //对象属性拷贝
         BeanUtils.copyProperties(sysUserRegisterDTO, sysUser);
-
+        sysUser.setId(IdUtil.simpleUUID());
         //passwordEncoder加密
         sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
         //设置账号的状态，默认正常状态 0表示正常 1表示锁定
@@ -118,6 +118,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      **/
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.debug("到这了333333");
         //根据用户名查询数据库中的数据
         SysUser sysUser = lambdaQuery().eq(SysUser::getUserName, username).one();
         if(Objects.isNull(sysUser)){
@@ -147,11 +148,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         // 用户在登录页面输入的用户名和密码
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userLoginDTO.getUserName(), userLoginDTO.getPassword());
-
         try {
             // 获取 AuthenticationManager 的 authenticate 方法来进行用户认证
             Authentication authenticate = authenticationManager.authenticate(authenticationToken);
-
             // 认证成功后，提取 LoginUser
             LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
 
@@ -166,16 +165,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 //                throw new LoginFailedException(MessageConstant.LOGIN_IN_OTHER_PLACE);
 //            }
 
-            updateUserBadge(String.valueOf(sysUser.getId()));
+            updateUserBadge(sysUser.getId());
 
             // 更新用户登录时间 和 等级荣誉
             sysUser.setLoginTime(new Date());
-            updateUserBadge(String.valueOf(sysUser.getId()));
+            updateUserBadge(sysUser.getId());
             updateById(sysUser);
 
             // 把完整的用户信息存入 Redis，其中 userid 作为 key
             redisUtils.set(RedisConstant.USER_INFO_PREFIX +
-                    sysUser.getId().toString(), loginUser);
+                    sysUser.getId(), loginUser);
 
             return sysUser;
 
@@ -198,7 +197,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         //loginUser是我们在domain目录写好的实体类
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         //获取用户id
-        Long userid = loginUser.getSysUser().getId();
+        String userid = loginUser.getSysUser().getId();
 
         //根据用户id，删除redis中的loginUser，注意我们的key是被 login: 拼接过的，所以下面写完整key的时候要带上 longin:
         String key = RedisConstant.USER_INFO_PREFIX + userid.toString();
@@ -304,7 +303,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUser doubao = getById("doubao");
         if (doubao == null) {
             SysUser robot = new SysUser();
-            robot.setId(0L);
+            robot.setId("mingri-doubao");
             robot.setUserName("豆包");
             robot.setEmail(IdUtil.simpleUUID() + "@robot.com");
             robot.setUserType(UserTypes.bot);

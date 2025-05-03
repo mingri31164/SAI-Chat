@@ -2,7 +2,7 @@ mingri:
   datasource:
     master:
       host: 127.0.0.1
-      port: 3339
+      port: 3306 #3339
       database: mini-chat
       username: root
       password: 123456

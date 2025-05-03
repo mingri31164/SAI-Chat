@@ -22,13 +22,13 @@ spring:
           driver-class-name: com.mysql.cj.jdbc.Driver
           hikari:
             max-lifetime: 70000
-        slave:
-          url: jdbc:mysql://${mingri.datasource.slave.host}:${mingri.datasource.slave.port}/${mingri.datasource.slave.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
-          username: ${mingri.datasource.slave.username}
-          password: ${mingri.datasource.slave.password}
-          driver-class-name: com.mysql.cj.jdbc.Driver
-          hikari:
-            max-lifetime: 70000
+#        slave:
+#          url: jdbc:mysql://${mingri.datasource.slave.host}:${mingri.datasource.slave.port}/${mingri.datasource.slave.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+#          username: ${mingri.datasource.slave.username}
+#          password: ${mingri.datasource.slave.password}
+#          driver-class-name: com.mysql.cj.jdbc.Driver
+#          hikari:
+#            max-lifetime: 70000
 
   redis:
     host: ${mingri.redis.host}

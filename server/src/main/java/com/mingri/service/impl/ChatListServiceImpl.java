@@ -33,7 +33,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
     @Override
     //@DS("slave")
     public List<ChatList> privateList() {
-        Long currentId = BaseContext.getCurrentId();
+        String currentId = BaseContext.getCurrentId();
         LambdaQueryWrapper<ChatList> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(ChatList::getUserId, currentId)
                 .eq(ChatList::getType, ChatListType.User);
@@ -43,7 +43,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
     @Override
     //@DS("slave")
     public ChatList getGroup() {
-        Long userId = BaseContext.getCurrentId();
+        String userId = BaseContext.getCurrentId();
         LambdaQueryWrapper<ChatList> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(ChatList::getUserId, userId)
                 .eq(ChatList::getType, ChatListType.Group);
@@ -52,7 +52,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
             chat = new ChatList();
             chat.setId(IdUtil.simpleUUID());
             chat.setType(ChatListType.Group);
-            chat.setUserId(String.valueOf(userId));
+            chat.setUserId(userId);
             chat.setTargetId("1");
             ChatGroup group = Db.lambdaQuery(ChatGroup.class).eq(ChatGroup::getId, "1").one();
             SysUserInfoVO userDto = new SysUserInfoVO();
@@ -67,7 +67,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
 
     @Override
     public ChatList create(String targetId) {
-        String userId = String.valueOf(BaseContext.getCurrentId());
+        String userId = BaseContext.getCurrentId();
         if (userId.equals(targetId))
             return null;
         ChatList targetChatList = getTargetChatList(targetId);
@@ -93,7 +93,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
      **/
     @Override
     public boolean read(String targetId) {
-        String userId = String.valueOf(BaseContext.getCurrentId());
+        String userId = BaseContext.getCurrentId();
         if (targetId == null) return false;
         LambdaUpdateWrapper<ChatList> updateWrapper = new LambdaUpdateWrapper();
         updateWrapper.set(ChatList::getUnreadCount, 0)
@@ -109,7 +109,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
 
     @Override
     public boolean updateChatListPrivate(String targetId, Message message) {
-        String userId = String.valueOf(BaseContext.getCurrentId());
+        String userId = BaseContext.getCurrentId();
         //更新对方聊天列表
         updateChatList(targetId, userId, message);
         //更新自己的聊天列表
@@ -149,7 +149,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
 
     //@DS("slave")
     private ChatList getTargetChatList(String targetId) {
-        String userId = String.valueOf(BaseContext.getCurrentId());
+        String userId = BaseContext.getCurrentId();
         LambdaQueryWrapper<ChatList> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(ChatList::getTargetId, targetId)
                 .eq(ChatList::getUserId, userId)

@@ -70,7 +70,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     @Override
     //@DS("slave")
     public List<Message> record(RecordDTO recordDTO) {
-        String userId = String.valueOf(BaseContext.getCurrentId());
+        String userId = BaseContext.getCurrentId();
         List<Message> messages = messageMapper.record(userId, recordDTO.getTargetId(),
                 recordDTO.getIndex(), recordDTO.getNum());
         cacheUtil.putUserReadCache(userId, recordDTO.getTargetId());
@@ -79,7 +79,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
 
     @Override
     public Message recall(RecallDTO recallDTO) {
-        String userId = String.valueOf(BaseContext.getCurrentId());
+        String userId = BaseContext.getCurrentId();
         Message message = getById(recallDTO.getMsgId());
         if (null == message) {
             throw new BaseException(MessageConstant.MESSAGE_NOT_EXIST);
@@ -116,7 +116,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
 
     @Override
     public Message sendMessageToGroup(String userId, SendMessageDTO sendMessageDTO) {
-        Message message = sendMessage(String.valueOf(userId), sendMessageDTO , MessageSource.Group);
+        Message message = sendMessage(userId, sendMessageDTO , MessageSource.Group);
         NotifyMsgEvent<Message> sendMessageToGroupEvent =
                 new NotifyMsgEvent<>(this, NotifyTypeEnum.GROUP_CHAT, message);
         eventPublisher.publishEvent(sendMessageToGroupEvent);
@@ -124,7 +124,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     }
 
     private Message sendMessageToUser(SendMessageDTO sendMessageDTO) {
-        String userId = String.valueOf(BaseContext.getCurrentId());
+        String userId = BaseContext.getCurrentId();
         String targetId = sendMessageDTO.getTargetId();
         Message message = sendMessage(userId, sendMessageDTO, MessageSource.User);
         chatListService.updateChatListPrivate(targetId, message);

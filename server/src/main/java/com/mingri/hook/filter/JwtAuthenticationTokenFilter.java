@@ -66,11 +66,12 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
 
         // 校验令牌
-        Long userId;
+        String userId;
         if (!urlPermitUtil.isPermitUrl(url)){
             try {
                 Claims claims = JwtUtil.parseJWT(jwtProperties.getSecretKey(), token);
-                userId = Long.valueOf(claims.get(JwtClaimsConstant.USER_ID).toString());
+                log.debug("当前用户的id：{}", claims.get(JwtClaimsConstant.USER_ID));
+                userId = claims.get(JwtClaimsConstant.USER_ID).toString();
                 log.info("当前用户的id：{}", userId);
                 // 验证是否在其他地方登录
                 String cacheToken = cacheUtil.getUserSessionCache(userId.toString());
@@ -114,7 +115,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
         httpServletRequest.setAttribute("userinfo", map);
 
-        String userId = String.valueOf(Long.valueOf(claims.get(JwtClaimsConstant.USER_ID).toString()));
+        String userId = claims.get(JwtClaimsConstant.USER_ID).toString();
         // 从 Redis 中获取用户信息
         String redisKey = RedisConstant.USER_INFO_PREFIX + userId;
         LoginUser loginUser = (LoginUser) redisUtils.get(redisKey);
@@ -129,6 +130,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 new UsernamePasswordAuthenticationToken(loginUser,
                         null, loginUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        BaseContext.setCurrentId(Long.valueOf(userId));
+        BaseContext.setCurrentId(userId);
     }
 }

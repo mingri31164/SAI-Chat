@@ -51,7 +51,6 @@ public class SysUserController {
         log.info("用户登录：{}", userLoginDTO);
 
         SysUser loginUser = iSysUserService.login(userLoginDTO);
-
         //登录成功后，生成jwt令牌
         Map<String, Object> claims = new HashMap<>();
         claims.put(JwtClaimsConstant.USER_ID, loginUser.getId());

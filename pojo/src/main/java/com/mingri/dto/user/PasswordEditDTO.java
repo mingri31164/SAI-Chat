@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class PasswordEditDTO implements Serializable {
 
     @ApiModelProperty(value = "用户ID")
-    private Long userId;
+    private String userId;
 
     @ApiModelProperty(value = "旧密码")
     private String oldPassword;
