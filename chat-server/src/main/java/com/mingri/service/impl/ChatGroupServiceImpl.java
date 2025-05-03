@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mingri.vo.chatGroup.CreateChatGroupVo;
 import com.mingri.vo.chatGroup.DissolveChatGroupVo;
 import com.mingri.vo.chatGroup.UpdateChatGroupVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +33,7 @@ import static com.mingri.constant.MessageConstant.ERROR_ONLY_OWNER_OPERATION;
  * @author mingri31164
  * @since 2025-05-03
  */
+@Slf4j
 @Service
 public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup> implements IChatGroupService {
 
@@ -68,6 +70,7 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
         chatGroup.setMemberNum(Optional.ofNullable(createChatGroupVo.getUsers()).map(ArrayList::size).orElse(0) + 1);
         chatGroup.setUserId(userId);
         chatGroup.setOwnerUserId(userId);
+        chatGroup.setNotice(createChatGroupVo.getNotice());
 //        TODO 设置群聊头像
 //        chatGroup.setAvatar(createChatGroupVo.getAvatar());
 

@@ -9,6 +9,7 @@ import com.mingri.vo.chatGroup.DissolveChatGroupVo;
 import com.mingri.vo.chatGroup.UpdateChatGroupVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -23,6 +24,7 @@ import java.util.List;
  * @since 2025-05-03
  */
 @Api(tags = "群聊接口")
+@Slf4j
 @RestController
 @RequestMapping("/chat-group")
 public class ChatGroupController {
@@ -61,6 +63,8 @@ public class ChatGroupController {
         boolean result = chatGroupService.dissolveChatGroup(userId, dissolveChatGroupVo);
         return Result.success(result);
     }
+
+
 
 
 }
