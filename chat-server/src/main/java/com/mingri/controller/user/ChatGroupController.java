@@ -1,7 +1,6 @@
 package com.mingri.controller.user;
 
 
-import cn.hutool.json.JSONObject;
 import com.mingri.entity.ChatGroup;
 import com.mingri.result.Result;
 import com.mingri.service.IChatGroupService;
@@ -32,9 +31,6 @@ public class ChatGroupController {
     private IChatGroupService chatGroupService;
 
 
-    /**
-     * 聊天群列表
-     */
     @ApiOperation("获取当前用户的群聊列表")
     @GetMapping("/list")
     public Object chatGroupList(String userId) {
@@ -42,9 +38,7 @@ public class ChatGroupController {
         return Result.success(result);
     }
 
-    /**
-     * 创建聊天群
-     */
+
     @ApiOperation("创建聊天群")
     @PostMapping("/create")
     public Object createChatGroup(String userId, @RequestBody CreateChatGroupVo createChatGroupVo) {
@@ -52,15 +46,21 @@ public class ChatGroupController {
         return Result.success(result);
     }
 
-    /**
-     * 更新群信息
-     */
+
+    @ApiOperation("更新群信息")
     @PostMapping("/update")
     public Object updateChatGroup(String userId, @RequestBody UpdateChatGroupVo updateChatGroupVo) {
         boolean result = chatGroupService.updateChatGroup(userId, updateChatGroupVo);
         return Result.success(result);
     }
 
+
+    @ApiOperation("解散群聊")
+    @PostMapping("/dissolve")
+    public Object dissolveChatGroup(String userId, @RequestBody DissolveChatGroupVo dissolveChatGroupVo) {
+        boolean result = chatGroupService.dissolveChatGroup(userId, dissolveChatGroupVo);
+        return Result.success(result);
+    }
 
 
 }

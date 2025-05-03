@@ -100,6 +100,28 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
         return chatGroupMemberService.update(updateWrapper);
     }
 
+    @Override
+    public boolean dissolveChatGroup(String userId, DissolveChatGroupVo dissolveChatGroupVo) {
+        if (!isOwner(dissolveChatGroupVo.getGroupId(), userId))
+            throw new ChatGroupOperationErrorException(ERROR_ONLY_OWNER_OPERATION);
+
+        LambdaQueryWrapper<ChatGroupMember> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(ChatGroupMember::getChatGroupId, dissolveChatGroupVo.getGroupId());
+        chatGroupMemberService.remove(queryWrapper);
+
+        // TODO 发送群消息
+
+        return removeById(dissolveChatGroupVo.getGroupId());
+    }
+
+
+    @Override
+    public boolean isOwner(String groupId, String userId) {
+        ChatGroup group = getById(groupId);
+        if (group.getOwnerUserId().equals(userId))
+            return true;
+        return false;
+    }
 
 
 }

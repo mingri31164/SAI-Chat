@@ -33,5 +33,14 @@ public interface IChatGroupService extends IService<ChatGroup> {
      **/
     boolean updateChatGroup(String userId, UpdateChatGroupVo updateChatGroupVo);
 
+    /**
+     * 解散群聊
+     **/
+    boolean dissolveChatGroup(String userId, DissolveChatGroupVo dissolveChatGroupVo);
+
+    /**
+     * 是否是群主
+     **/
+    boolean isOwner(String groupId, String userId);
 
 }
