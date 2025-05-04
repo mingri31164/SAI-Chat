@@ -1,6 +1,7 @@
 package com.mingri.service;
 
-import javax.servlet.http.HttpServletResponse;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface ReportService {
     /**

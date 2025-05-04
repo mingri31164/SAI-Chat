@@ -2,8 +2,8 @@ package com.mingri.dto.message;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import jakarta.validation.constraints.Max;
 import lombok.Data;
-import javax.validation.constraints.Max;
 
 @Data
 @ApiModel(value = "消息记录对象")

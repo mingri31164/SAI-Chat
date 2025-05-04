@@ -1,8 +1,9 @@
 package com.mingri.vo.chatGroup;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
+
 
 @Data
 public class UpdateChatGroupVo {

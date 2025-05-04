@@ -3,10 +3,9 @@ package com.mingri.dto.user;
 import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-
 
 @Data
 @ApiModel(value = "修改用户对象")
