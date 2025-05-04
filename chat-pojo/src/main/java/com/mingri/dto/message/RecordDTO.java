@@ -1,21 +1,21 @@
 package com.mingri.dto.message;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import lombok.Data;
 
 @Data
-@ApiModel(value = "消息记录对象")
+@Schema(description = "消息记录对象")
 public class RecordDTO {
 
-    @ApiModelProperty(value = "目标用户id")
+    @Schema(description = "目标用户id")
     private String targetId;
 
-    @ApiModelProperty(value = "消息起始下标")
+    @Schema(description = "消息起始下标")
     private int index;
 
-    @ApiModelProperty(value = "消息数量")
+    @Schema(description = "消息数量")
     @Max(100)
     private int num;
 }

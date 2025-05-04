@@ -4,3 +4,5 @@
 *.class
 *Test.java
 **/test/
+/frontend.zip
+/lib/*

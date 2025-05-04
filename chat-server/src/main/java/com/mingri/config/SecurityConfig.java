@@ -91,23 +91,22 @@ public class SecurityConfig  {
 						.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 使用无状态会话
 				)
 				.authorizeHttpRequests(auth -> auth
-								.anyRequest().permitAll() // 放行所有（测试）
-//						.requestMatchers(
-//								"/api/v1/user/login",
-//								"/api/v1/user/register",
-//								"/api/v1/file",
-//								"/api/v1/common/**",
-//								"/ws/**",
-//								"/v2/api-docs",
-//								"/swagger-resources/configuration/ui",
-//								"/swagger-resources",
-//								"/swagger-resources/configuration/security",
-//								"/doc.html",
-//								"/swagger-ui.html",
-//								"/webjars/**"
-//						).permitAll() // 允许匿名访问
-//						// .requestMatchers("/sys-user").hasAuthority("system:dept:list") // 需要特定权限
-//						.anyRequest().authenticated() // 其他请求需要认证
+//								.anyRequest().permitAll() // 放行所有（测试）
+						.requestMatchers(
+								"/api/v1/user/login",
+								"/api/v1/user/register",
+								"/api/v1/file",
+								"/api/v1/common/**",
+								"/ws/**",
+								//swagger3相关接口
+								"/v3/api-docs/**",
+								"/swagger-ui/**",
+								"/swagger-ui.html",
+								"/doc.html",
+								"/webjars/**"
+						).permitAll() // 允许匿名访问
+						// .requestMatchers("/sys-user").hasAuthority("system:dept:list") // 需要特定权限
+						.anyRequest().authenticated() // 其他请求需要认证
 				)
 				.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
 				.exceptionHandling(exception -> exception

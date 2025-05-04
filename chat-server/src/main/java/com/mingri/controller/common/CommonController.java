@@ -4,8 +4,7 @@ import com.mingri.constant.MessageConstant;
 import com.mingri.result.Result;
 import com.mingri.service.CommonService;
 import com.mingri.utils.AliOssUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,13 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.UUID;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 /**
  * 通用接口
  */
 @RestController
 @RequestMapping("/api/v1/common")
-@Api(tags = "公共接口")
+@Tag(name = "公共接口")
 @Slf4j
 public class CommonController {
 
@@ -37,7 +38,7 @@ public class CommonController {
      * @return
      */
     @PostMapping("/upload")
-    @ApiOperation("文件上传")
+    @Operation(summary = "文件上传")
     public Result<String> upload(MultipartFile file){
         log.info("文件上传：{}",file);
 
@@ -66,7 +67,7 @@ public class CommonController {
      * @Author: mingri31164
      * @Date: 2025/1/20 0:01
      **/
-        @ApiOperation("发送邮箱验证码")
+        @Operation(summary = "发送邮箱验证码")
         @GetMapping("/get-code")
         public Result<String> sendEmailCaptcha(String email) {
             commonService.sendEmailCaptcha(email);

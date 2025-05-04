@@ -1,30 +1,30 @@
 package com.mingri.dto.message;
 
 import com.mingri.constant.type.MessageType;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 
 @Data
-@ApiModel(value = "发送消息对象")
+@Schema(description = "发送消息对象")
 public class SendMessageDTO {
 
-    @ApiModelProperty(value = "目标用户ID")
+    @Schema(description = "目标用户ID")
     @NotBlank(message = "目标用户不能为空~")
     private String targetId;
 
-    @ApiModelProperty(value = "消息来源（group/user）")
+    @Schema(description = "消息来源（group/user）")
     private String source;
 
-    @ApiModelProperty(value = "消息类型")
+    @Schema(description = "消息类型")
     private String type = MessageType.Text;
 
-    @ApiModelProperty(value = "消息内容")
+    @Schema(description = "消息内容")
     @NotBlank(message = "消息内容不能为空~")
     private String msgContent;
 
-    @ApiModelProperty(value = "引用的消息ID，非引用消息则为null")
+    @Schema(description = "引用的消息ID，非引用消息则为null")
     private String referenceMsgId;
 }

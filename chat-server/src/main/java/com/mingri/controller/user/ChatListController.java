@@ -7,8 +7,8 @@ import com.mingri.dto.chatList.ReadDTO;
 import com.mingri.entity.ChatList;
 import com.mingri.result.Result;
 import com.mingri.service.IChatListService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -16,7 +16,7 @@ import java.util.List;
 
 
 
-@Api(tags = "消息列表接口")
+@Tag(name = "消息列表接口")
 @RestController
 @RequestMapping("/api/v1/chat-list")
 public class ChatListController {
@@ -26,7 +26,7 @@ public class ChatListController {
 
 
     @UrlLimit
-    @ApiOperation("获取私聊列表")
+    @Operation(summary = "获取私聊列表")
     @GetMapping("/list/private")
     public Object privateList() {
         List<ChatList> result = chatListService.privateList();
@@ -34,7 +34,7 @@ public class ChatListController {
     }
 
     @UrlLimit
-    @ApiOperation("获取群聊列表")
+    @Operation(summary = "获取群聊列表")
     @GetMapping("/group")
     public Object group() {
         ChatList result = chatListService.getGroup();
@@ -42,7 +42,7 @@ public class ChatListController {
     }
 
     @UrlLimit
-    @ApiOperation("建立私聊对话")
+    @Operation(summary = "建立私聊对话")
     @PostMapping("/create")
     public Object create(@RequestBody @Valid CreateDTO createDTO) {
         ChatList result = chatListService.create(createDTO.getTargetId());
@@ -50,7 +50,7 @@ public class ChatListController {
     }
 
     @UrlLimit
-    @ApiOperation("标记消息已读")
+    @Operation(summary = "标记消息已读")
     @PostMapping("/read")
     public Object read(@RequestBody @Valid ReadDTO readDTO) {
         boolean result = chatListService.read(readDTO.getTargetId());
@@ -58,14 +58,14 @@ public class ChatListController {
     }
 
     @UrlLimit
-    @ApiOperation("删除私聊对话")
+    @Operation(summary = "删除私聊对话")
     @PostMapping("/delete")
     public Object delete(@RequestBody @Valid DeleteDTO deleteDTO) {
         boolean result = chatListService.delete(deleteDTO.getChatListId());
         return Result.success(result);
     }
 
-    @ApiOperation("新增群聊")
+    @Operation(summary = "新增群聊")
     @PostMapping("/group/create")
     public Object createGroup(@RequestBody @Valid CreateDTO createDTO) {
         ChatList result = chatListService.create(createDTO.getTargetId());

@@ -1,13 +1,12 @@
 package com.mingri.dto.chatList;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-@ApiModel(value="是否已读对象")
+@Schema(description = "是否已读对象")
 public class ReadDTO {
 
-    @ApiModelProperty(value = "私聊对象的ID")
+    @Schema(description = "私聊对象的ID")
     private String targetId;
 }

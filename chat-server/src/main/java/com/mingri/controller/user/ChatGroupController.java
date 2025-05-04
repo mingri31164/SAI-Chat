@@ -1,13 +1,11 @@
 package com.mingri.controller.user;
 
-
-import cn.hutool.json.JSONObject;
 import com.mingri.entity.ChatGroup;
 import com.mingri.result.Result;
 import com.mingri.service.IChatGroupService;
 import com.mingri.vo.chatGroup.*;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,17 +20,17 @@ import java.util.List;
  * @author mingri31164
  * @since 2025-05-03
  */
-@Api(tags = "群聊接口")
+@Tag(name = "群聊接口")
 @Slf4j
 @RestController
-@RequestMapping("/chat-group")
+@RequestMapping("/api/v1/chat-group")
 public class ChatGroupController {
 
     @Resource
     private IChatGroupService chatGroupService;
 
 
-    @ApiOperation("获取当前用户的群聊列表")
+    @Operation(summary = "获取当前用户的群聊列表")
     @GetMapping("/list")
     public Object chatGroupList(String userId) {
         List<ChatGroup> result = chatGroupService.chatGroupList(userId);
@@ -40,7 +38,7 @@ public class ChatGroupController {
     }
 
 
-    @ApiOperation("创建聊天群")
+    @Operation(summary = "创建聊天群")
     @PostMapping("/create")
     public Object createChatGroup(String userId, @RequestBody CreateChatGroupVo createChatGroupVo) {
         boolean result = chatGroupService.createChatGroup(userId, createChatGroupVo);
@@ -48,7 +46,7 @@ public class ChatGroupController {
     }
 
 
-    @ApiOperation("更新群信息")
+    @Operation(summary = "更新群信息")
     @PostMapping("/update")
     public Object updateChatGroup(String userId, @RequestBody UpdateChatGroupVo updateChatGroupVo) {
         boolean result = chatGroupService.updateChatGroup(userId, updateChatGroupVo);
@@ -56,7 +54,7 @@ public class ChatGroupController {
     }
 
 
-    @ApiOperation("解散群聊")
+    @Operation(summary = "解散群聊")
     @PostMapping("/dissolve")
     public Object dissolveChatGroup(String userId, @RequestBody DissolveChatGroupVo dissolveChatGroupVo) {
         boolean result = chatGroupService.dissolveChatGroup(userId, dissolveChatGroupVo);
@@ -64,7 +62,7 @@ public class ChatGroupController {
     }
 
 
-    @ApiOperation("成员邀请")
+    @Operation(summary = "成员邀请")
     @PostMapping("/invite")
     public Object inviteMember(String userId, @RequestBody InviteMemberVo inviteMemberVo) {
         boolean result = chatGroupService.inviteMember(userId, inviteMemberVo);
@@ -72,7 +70,7 @@ public class ChatGroupController {
     }
 
 
-    @ApiOperation("退出群聊")
+    @Operation(summary = "退出群聊")
     @PostMapping("/quit")
     public Object quitChatGroup(String userId, @RequestBody QuitChatGroupVo quitChatGroupVo) {
         boolean result = chatGroupService.quitChatGroup(userId, quitChatGroupVo);
@@ -80,7 +78,7 @@ public class ChatGroupController {
     }
 
 
-    @ApiOperation("踢出群聊")
+    @Operation(summary = "踢出群聊")
     @PostMapping("/kick")
     public Object kickChatGroup(String userId, @RequestBody KickChatGroupVo kickChatGroupVo) {
         boolean result = chatGroupService.kickChatGroup(userId, kickChatGroupVo);

@@ -5,8 +5,8 @@ import java.io.Serializable;
 import java.util.Date;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.mingri.vo.SysUserInfoVO;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName(value = "chat_list", autoResultMap = true)
-@ApiModel(value="ChatList对象", description="")
+@Schema(description = "ChatList对象")
 public class ChatList implements Serializable {
 
     @TableId(value = "id", type = IdType.AUTO)
@@ -37,11 +37,11 @@ public class ChatList implements Serializable {
 
     private String type;
 
-    @ApiModelProperty(value = "创建时间")
+    @Schema(description = "创建时间")
     @TableField(value = "create_time",fill = FieldFill.INSERT)
     private Date createTime;
 
-    @ApiModelProperty(value = "更新时间")
+    @Schema(description = "更新时间")
     @TableField(value = "update_time",fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 

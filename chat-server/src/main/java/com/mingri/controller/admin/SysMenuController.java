@@ -1,12 +1,12 @@
 package com.mingri.controller.admin;
 
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@Api(tags = "权限相关接口")
+@Tag(name = "权限相关接口")
 @RequestMapping("/api/v1/sys-menu")
 public class SysMenuController {
 

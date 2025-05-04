@@ -1,6 +1,5 @@
 package com.mingri.controller.user;
 
-
 import com.mingri.annotation.UrlLimit;
 import com.mingri.constant.JwtClaimsConstant;
 import com.mingri.constant.type.LimitKeyType;
@@ -15,19 +14,19 @@ import com.mingri.utils.CacheUtil;
 import com.mingri.utils.JwtUtil;
 import com.mingri.vo.SysUserInfoVO;
 import com.mingri.vo.SysUserLoginVO;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 @RestController
 @Slf4j
-@Api(tags = "用户相关接口")
+@Tag(name = "用户相关接口")
 @RequestMapping("/api/v1/user")
 public class SysUserController {
 
@@ -45,7 +44,7 @@ public class SysUserController {
      * @return
      */
     @UrlLimit(keyType = LimitKeyType.IP)
-    @ApiOperation("用户登录")
+    @Operation(summary = "用户登录")
     @PostMapping("/login")
     public Result<SysUserLoginVO> login(@RequestBody SysUserLoginDTO userLoginDTO) {
         log.info("用户登录：{}", userLoginDTO);
@@ -81,7 +80,7 @@ public class SysUserController {
      **/
     @UrlLimit(keyType = LimitKeyType.IP)
     @PostMapping("/register")
-    @ApiOperation("用户注册")
+    @Operation(summary = "用户注册")
     public Result register(@RequestBody SysUserRegisterDTO userRegisterDTO){
         log.info("新增用户：{}",userRegisterDTO);
         iSysUserService.register(userRegisterDTO);
@@ -94,7 +93,7 @@ public class SysUserController {
      * @return
      */
     @UrlLimit
-    @ApiOperation("退出登录")
+    @Operation(summary = "退出登录")
     @PostMapping("/logout")
     public Result<String> logout() {
         iSysUserService.logout();
@@ -109,7 +108,7 @@ public class SysUserController {
      */
     @UrlLimit
     @PutMapping("/update")
-    @ApiOperation("编辑用户信息")
+    @Operation(summary = "编辑用户信息")
     public Result update(@RequestBody SysUpdateDTO sysUpdateDTO){
         log.info("编辑用户信息：{}", sysUpdateDTO);
         iSysUserService.updateUser(sysUpdateDTO);
@@ -118,7 +117,7 @@ public class SysUserController {
 
 
     @UrlLimit
-    @ApiOperation("查询所有用户信息")
+    @Operation(summary = "查询所有用户信息")
     @GetMapping("/list/map")
     public Object listMapUser() {
         Map<String, SysUserInfoVO> result = iSysUserService.listMapUser();
@@ -127,7 +126,7 @@ public class SysUserController {
 
 
     @UrlLimit
-    @ApiOperation("查询所有在线用户")
+    @Operation(summary = "查询所有在线用户")
     @GetMapping("/online/web")
     public Object onlineWeb() {
         List<String> result = iSysUserService.onlineWeb();

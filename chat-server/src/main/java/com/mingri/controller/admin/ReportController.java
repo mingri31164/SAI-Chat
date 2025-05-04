@@ -1,6 +1,6 @@
 package com.mingri.controller.admin;
 
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/admin/report")
-@Api(tags = "数据统计相关接口")
+@Tag(name = "数据统计相关接口")
 @Slf4j
 public class ReportController {
 
@@ -22,7 +22,7 @@ public class ReportController {
 //     * @param response
 //     */
 //    @GetMapping("/export")
-//    @ApiOperation("导出数据报表")
+//    @Operation(summary = "导出数据报表")
 //    public void export(HttpServletResponse response){
 //        reportService.exportClockData(response);
 //    }

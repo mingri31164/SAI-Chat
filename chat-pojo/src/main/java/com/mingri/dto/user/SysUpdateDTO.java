@@ -1,17 +1,17 @@
 package com.mingri.dto.user;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
-@ApiModel(value = "修改用户对象")
+@Schema(description = "修改用户对象")
 public class SysUpdateDTO {
 
-    @ApiModelProperty(value = "用户名")
+    @Schema(description = "用户名")
     @NotBlank(message = "用户名不能为空~")
     @Pattern(
             regexp = "^[a-zA-Z][a-zA-Z0-9]{2,15}$",
@@ -20,7 +20,7 @@ public class SysUpdateDTO {
     @TableField("user_name")
     private String name;
 
-    @ApiModelProperty(value = "头像")
+    @Schema(description = "头像")
     private String avatar;
 
 }
