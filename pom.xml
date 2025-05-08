@@ -18,6 +18,7 @@
         <module>chat-pojo</module>
         <module>chat-server</module>
         <module>chat-ai</module>
+        <module>event-spring-boot-starter</module>
     </modules>
     <properties>
         <mybaits-plus.version>3.5.3.1</mybaits-plus.version>
@@ -172,7 +173,6 @@
                 <artifactId>org.eclipse.jgit</artifactId>
                 <version>5.13.0.202109080827-r</version>
             </dependency>
-
 
         </dependencies>
     </dependencyManagement>
