@@ -36,6 +36,7 @@
         <jsqlparser.version>4.4</jsqlparser.version>
         <java.version>17</java.version>
         <spring-ai.version>0.8.1</spring-ai.version>
+        <hutool-all.version>5.8.20</hutool-all.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -173,6 +174,12 @@
                 <groupId>org.eclipse.jgit</groupId>
                 <artifactId>org.eclipse.jgit</artifactId>
                 <version>5.13.0.202109080827-r</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool-all.version}</version>
             </dependency>
 
         </dependencies>
