@@ -5,7 +5,7 @@ import com.mingri.annotation.UrlLimit;
 import com.mingri.dto.message.RecallDTO;
 import com.mingri.dto.message.RecordDTO;
 import com.mingri.dto.message.SendMessageDTO;
-import com.mingri.entity.Message;
+import com.mingri.entity.chat.Message;
 import com.mingri.result.Result;
 import com.mingri.service.IMessageService;
 import io.swagger.v3.oas.annotations.Operation;

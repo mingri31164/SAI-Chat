@@ -1,8 +1,8 @@
 package com.mingri.mapper;
 
-import com.mingri.entity.SysUser;
+import com.mingri.entity.sys.SysUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mingri.vo.SysUserInfoVO;
+import com.mingri.vo.sys.SysUserInfoVO;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.ResultMap;

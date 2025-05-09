@@ -3,7 +3,7 @@
 <mapper namespace="com.mingri.mapper.ChatGroupMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.mingri.entity.ChatGroup">
+    <resultMap id="BaseResultMap" type="com.mingri.entity.chat.ChatGroup">
         <id column="id" property="id" />
         <result column="avatar" property="avatar" />
         <result column="user_id" property="userId" />

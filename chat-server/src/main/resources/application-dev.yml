@@ -13,7 +13,7 @@ mingri:
       username: root
       password: 123456
   redis:
-    host: 127.0.0.1
+    host: 139.9.51.109
     port: 6379
     password:
     database: 1
@@ -23,11 +23,11 @@ mingri:
     access-key-secret:
     bucket-name:
   mail:
+    user: 3116430062@qq.com
     from: 3116430062@qq.com
     password:
     host: smtp.qq.com
     port: 465
-    user: 3116430062@qq.com
     expireTime: 180 #3分钟
   jwt:
     secret-key: csd_admin

@@ -1,4 +1,4 @@
-package com.mingri.entity;
+package com.mingri.entity.response;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;

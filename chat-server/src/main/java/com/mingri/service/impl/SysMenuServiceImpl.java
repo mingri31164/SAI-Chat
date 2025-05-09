@@ -1,6 +1,6 @@
 package com.mingri.service.impl;
 
-import com.mingri.entity.SysMenu;
+import com.mingri.entity.sys.SysMenu;
 import com.mingri.mapper.SysMenuMapper;
 import com.mingri.service.ISysMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

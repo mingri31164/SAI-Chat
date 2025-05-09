@@ -30,7 +30,7 @@ const handlerLogout = () => {
   localStorage.removeItem('x-token')
   userInfoStore.clearUserInfo()
   ws.disConnect()
-  router.push('/login')
+  router.push('/helper')
   globalStore.closeGlobalDialog()
 }
 </script>

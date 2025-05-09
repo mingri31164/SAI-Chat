@@ -1,6 +1,6 @@
 package com.mingri.event.vo;
 
-import com.mingri.entity.Message;
+import com.mingri.entity.chat.Message;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

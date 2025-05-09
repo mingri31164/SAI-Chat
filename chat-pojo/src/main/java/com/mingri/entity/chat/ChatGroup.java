@@ -1,4 +1,4 @@
-package com.mingri.entity;
+package com.mingri.entity.chat;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;

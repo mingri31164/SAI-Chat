@@ -1,8 +1,8 @@
 package com.mingri.service;
 
-import com.mingri.entity.ChatList;
+import com.mingri.entity.chat.ChatList;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.entity.Message;
+import com.mingri.entity.chat.Message;
 import java.util.List;
 
 

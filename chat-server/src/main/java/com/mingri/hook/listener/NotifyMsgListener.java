@@ -1,6 +1,6 @@
 package com.mingri.hook.listener;
 
-import com.mingri.entity.Message;
+import com.mingri.entity.chat.Message;
 import com.mingri.event.NotifyMsgEvent;
 import com.mingri.service.IChatListService;
 import com.mingri.service.WebSocketService;

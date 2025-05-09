@@ -8,7 +8,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/login',
+      path: '/helper',
       name: 'login',
       component: Login,
     },
@@ -28,11 +28,11 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   let token = window.localStorage.getItem('x-token')
   if (token) ws.connect(token)
-  if (!token && to.path !== '/login') {
-    next({ path: '/login' })
+  if (!token && to.path !== '/helper') {
+    next({ path: '/helper' })
     return
   }
-  if ((token && to.path === '/login') || !to.matched.length) {
+  if ((token && to.path === '/helper') || !to.matched.length) {
     next({ path: '/' })
     return
   }

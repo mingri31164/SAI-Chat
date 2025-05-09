@@ -2,21 +2,29 @@ package com.mingri.controller.user;
 
 import com.mingri.annotation.UrlLimit;
 import com.mingri.constant.JwtClaimsConstant;
+import com.mingri.constant.MessageConstant;
 import com.mingri.constant.type.LimitKeyType;
 import com.mingri.dto.user.SysUpdateDTO;
 import com.mingri.dto.user.SysUserLoginDTO;
 import com.mingri.dto.user.SysUserRegisterDTO;
-import com.mingri.entity.SysUser;
+import com.mingri.entity.login.LoginUser;
+import com.mingri.entity.sys.SysUser;
+import com.mingri.enumeration.UserStatus;
+import com.mingri.exception.LoginFailedException;
 import com.mingri.properties.JwtProperties;
 import com.mingri.result.Result;
 import com.mingri.service.ISysUserService;
 import com.mingri.utils.CacheUtil;
 import com.mingri.utils.JwtUtil;
-import com.mingri.vo.SysUserInfoVO;
-import com.mingri.vo.SysUserLoginVO;
+import com.mingri.vo.sys.SysUserInfoVO;
+import com.mingri.vo.sys.SysUserLoginVO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +44,8 @@ public class SysUserController {
     private JwtProperties jwtProperties;
     @Autowired
     private CacheUtil cacheUtil;
-
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     /**
      * 登录
@@ -49,22 +58,47 @@ public class SysUserController {
     public Result<SysUserLoginVO> login(@RequestBody SysUserLoginDTO userLoginDTO) {
         log.info("用户登录：{}", userLoginDTO);
 
-        SysUser loginUser = iSysUserService.login(userLoginDTO);
-        //登录成功后，生成jwt令牌
+        // 1️⃣ 执行认证
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(userLoginDTO.getUserName(), userLoginDTO.getPassword());
+
+        Authentication authenticate;
+        try {
+            authenticate = authenticationManager.authenticate(authenticationToken);
+        } catch (AuthenticationException e) {
+            throw new LoginFailedException(MessageConstant.LOGIN_ERROR);
+        }
+
+        // 2️⃣ 获取认证后的 LoginUser
+        LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
+        SysUser sysUser = loginUser.getSysUser();
+
+        // 检查用户状态
+        if (sysUser.getStatus().equals(UserStatus.FREEZE)) {
+            throw new LoginFailedException(MessageConstant.ACCOUNT_LOCKED);
+        }
+
+        // 3️⃣ 调用 Service 做业务操作（更新登录时间、写入 Redis 缓存等）
+        iSysUserService.afterLogin(sysUser, loginUser);
+
+        // 4️⃣ 生成 JWT token
         Map<String, Object> claims = new HashMap<>();
-        claims.put(JwtClaimsConstant.USER_ID, loginUser.getId());
+        claims.put(JwtClaimsConstant.USER_ID, sysUser.getId());
         String token = JwtUtil.createJWT(
                 jwtProperties.getSecretKey(),
                 jwtProperties.getExpireTime(),
-                claims);
+                claims
+        );
 
-        cacheUtil.putUserSessionCache(String.valueOf(loginUser.getId()), token);
+        cacheUtil.putUserSessionCache(String.valueOf(sysUser.getId()), token);
+
+        // 5️⃣ 构建返回对象
         SysUserLoginVO userLoginVO = SysUserLoginVO.builder()
-                .userId(loginUser.getId())
-                .userName(loginUser.getUserName())
-                .type(loginUser.getUserType())
-                .email(loginUser.getEmail())
-                .avatar(loginUser.getAvatar())
+                .userId(sysUser.getId())
+                .userName(sysUser.getUserName())
+                .type(sysUser.getUserType())
+                .email(sysUser.getEmail())
+                .avatar(sysUser.getAvatar())
                 .token(token)
                 .build();
 

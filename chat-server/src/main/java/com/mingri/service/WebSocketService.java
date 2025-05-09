@@ -6,7 +6,7 @@ import com.mingri.constant.JwtClaimsConstant;
 import com.mingri.constant.MessageConstant;
 import com.mingri.constant.type.WsContentType;
 import com.mingri.dto.message.NotifyDto;
-import com.mingri.entity.Message;
+import com.mingri.entity.chat.Message;
 import com.mingri.properties.JwtProperties;
 import com.mingri.result.Result;
 import com.mingri.utils.CacheUtil;

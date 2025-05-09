@@ -3,9 +3,11 @@ package com.mingri.service;
 import com.mingri.dto.user.SysUpdateDTO;
 import com.mingri.dto.user.SysUserLoginDTO;
 import com.mingri.dto.user.SysUserRegisterDTO;
-import com.mingri.entity.SysUser;
+import com.mingri.entity.login.LoginUser;
+import com.mingri.entity.sys.SysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.vo.SysUserInfoVO;
+import com.mingri.result.Result;
+import com.mingri.vo.sys.SysUserInfoVO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,11 +18,8 @@ public interface ISysUserService extends IService<SysUser> {
 
     /**
      * 用户登录
-     *
-     * @param userLoginDTO
-     * @return
      */
-    SysUser login(SysUserLoginDTO userLoginDTO);
+    void afterLogin(SysUser sysUser, LoginUser loginUser);
 
 
     /**

@@ -7,7 +7,7 @@ import com.mingri.constant.JwtClaimsConstant;
 import com.mingri.constant.MessageConstant;
 import com.mingri.constant.RedisConstant;
 import com.mingri.context.BaseContext;
-import com.mingri.entity.LoginUser;
+import com.mingri.entity.login.LoginUser;
 import com.mingri.exception.LoginFailedException;
 import com.mingri.exception.UserNotLoginException;
 import com.mingri.properties.JwtProperties;

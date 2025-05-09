@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-@ConfigurationProperties(prefix = "captcha.email")
+@ConfigurationProperties(prefix = "spring.mail")
 public class EmailProperties {
     /**
      * 邮箱地址（注意：如果使用foxmail邮箱，此处user为qq号）
      */
-    private String user;
+    private String username;
     /**
      * 发件人昵称（必须正确，否则发送失败）
      */

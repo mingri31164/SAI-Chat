@@ -701,7 +701,7 @@ const handlerLogout = async () => {
       localStorage.removeItem('x-token')
       userInfoStore.clearUserInfo()
       ws.disConnect()
-      router.push('/login')
+      router.push('/helper')
     }
     else showToast(res.msg, true)
   })

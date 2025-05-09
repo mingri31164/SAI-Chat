@@ -1,6 +1,6 @@
 package com.mingri.controller.user;
 
-import com.mingri.entity.ChatGroup;
+import com.mingri.entity.chat.ChatGroup;
 import com.mingri.result.Result;
 import com.mingri.service.IChatGroupService;
 import com.mingri.vo.chatGroup.*;

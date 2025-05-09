@@ -3,7 +3,7 @@ package com.mingri.service;
 import com.mingri.dto.message.RecallDTO;
 import com.mingri.dto.message.RecordDTO;
 import com.mingri.dto.message.SendMessageDTO;
-import com.mingri.entity.Message;
+import com.mingri.entity.chat.Message;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mingri.vo.chatGroup.SendMsgVo;
 

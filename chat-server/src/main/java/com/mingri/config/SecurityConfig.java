@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -38,13 +39,31 @@ public class SecurityConfig  {
 		return new BCryptPasswordEncoder();
 	}
 
+
+
+	//我们在 SysUserServiceImpl 中 注入了 AuthenticationManager。
+	//而 AuthenticationManager 是我们 SecurityConfig 里用 @Bean 方法定义的，并且它 依赖 HttpSecurity。
+	//Spring 在创建 HttpSecurity 的时候，会 反过来触发我们的 SysUserServiceImpl，于是形成了循环依赖。
+//	@Bean（考虑删除：不需要自己显式地声明@BeanAuthenticationManager，
+//	在我们的SysUserServiceImpl中，直接使用构造器注入AuthenticationManager即可）
+//	public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+//		AuthenticationManagerBuilder authenticationManagerBuilder =
+//				http.getSharedObject(AuthenticationManagerBuilder.class);
+//		return authenticationManagerBuilder.build();
+//	}
+
+
+
 	@Bean
-	public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-		AuthenticationManagerBuilder authenticationManagerBuilder =
-				http.getSharedObject(AuthenticationManagerBuilder.class);
-		return authenticationManagerBuilder.build();
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
 	}
 
+
+
+
+
+// SpingBoot3x 默认使用 WebFlux 模式，而不是使用 SpringMVC 模式。此处只适用于SpringBoot2x
 //	@Bean
 //	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 //		http
@@ -53,7 +72,7 @@ public class SecurityConfig  {
 //				sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 使用无状态会话
 //				.and()
 //				.authorizeRequests()
-//				.antMatchers("/api/v1/user/login","/api/v1/user/register","/api/v1/file",
+//				.antMatchers("/api/v1/user/helper","/api/v1/user/register","/api/v1/file",
 //						"/api/v1/file","/api/v1/common/**",
 //						"/ws/**",
 //						"/v2/api-docs",

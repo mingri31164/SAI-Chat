@@ -8,7 +8,7 @@ import com.mingri.constant.type.MessageType;
 import com.mingri.constant.type.TextContentType;
 import com.mingri.dto.message.SendMessageDTO;
 import com.mingri.dto.message.TextMessageContent;
-import com.mingri.vo.SysUserInfoVO;
+import com.mingri.vo.sys.SysUserInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Async;

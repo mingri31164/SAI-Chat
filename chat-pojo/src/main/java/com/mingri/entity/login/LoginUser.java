@@ -1,6 +1,7 @@
-package com.mingri.entity;
+package com.mingri.entity.login;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.mingri.entity.sys.SysUser;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

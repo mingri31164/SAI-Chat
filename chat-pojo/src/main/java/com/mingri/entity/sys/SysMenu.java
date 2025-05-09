@@ -1,4 +1,4 @@
-package com.mingri.entity;
+package com.mingri.entity.sys;
 
 import com.baomidou.mybatisplus.annotation.*;
 import java.io.Serializable;

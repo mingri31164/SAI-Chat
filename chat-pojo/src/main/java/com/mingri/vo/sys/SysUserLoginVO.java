@@ -1,4 +1,4 @@
-package com.mingri.vo;
+package com.mingri.vo.sys;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.mingri.enumeration.UserTypes;

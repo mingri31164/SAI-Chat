@@ -1,10 +1,10 @@
-package com.mingri.entity;
+package com.mingri.entity.chat;
 
 import com.baomidou.mybatisplus.annotation.*;
 import java.io.Serializable;
 import java.util.Date;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
-import com.mingri.vo.SysUserInfoVO;
+import com.mingri.vo.sys.SysUserInfoVO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

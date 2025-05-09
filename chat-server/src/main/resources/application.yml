@@ -9,8 +9,22 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss.SSS
     time-zone: Asia/Shanghai
-  main:
-    allow-circular-references: true
+
+  mail:
+    password: ${mingri.mail.password}
+    host: ${mingri.mail.host}
+    port: ${mingri.mail.port}
+    username: ${mingri.mail.user}
+    from: ${mingri.mail.from}
+    expireTime: ${mingri.mail.expireTime}
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+
   datasource:
     dynamic:
       primary: master
@@ -48,6 +62,7 @@ spring:
 
 
 
+
 #mybatis:
 #  #mapper配置文件
 #  mapper-locations: classpath:mapper/*.xml
@@ -82,15 +97,6 @@ mingri:
     access-key-id: ${mingri.alioss.access-key-id}
     access-key-secret: ${mingri.alioss.access-key-secret}
     bucket-name: ${mingri.alioss.bucket-name}
-
-captcha:
-  email:
-    from: ${mingri.mail.from}
-    password: ${mingri.mail.password}
-    host: ${mingri.mail.host}
-    port: ${mingri.mail.port}
-    user: ${mingri.mail.user}
-    expire-time: ${mingri.mail.expireTime}
 
 security:
   jwt:
@@ -136,6 +142,10 @@ mini-chat:
     count-limit: ${mingri.doubao.count-limit}
     length-limit: ${mingri.doubao.length-limit}
     model: ${mingri.doubao.model}
+
+
+
+
 
 
 

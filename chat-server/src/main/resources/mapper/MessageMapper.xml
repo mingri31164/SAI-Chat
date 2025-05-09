@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mingri.mapper.MessageMapper">
 
-    <resultMap id="RecordVoMap" type="com.mingri.entity.Message">
+    <resultMap id="RecordVoMap" type="com.mingri.entity.chat.Message">
         <result property="id" column="id"/>
         <result property="fromId" column="from_id"/>
         <result property="toId" column="to_id"/>

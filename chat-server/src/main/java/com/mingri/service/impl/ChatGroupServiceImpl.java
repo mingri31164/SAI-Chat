@@ -7,9 +7,9 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.mingri.constant.MessageSource;
 import com.mingri.constant.type.MessageType;
 import com.mingri.dto.message.SystemMsgDto;
-import com.mingri.entity.ChatGroup;
-import com.mingri.entity.ChatGroupMember;
-import com.mingri.entity.SysUser;
+import com.mingri.entity.chat.ChatGroup;
+import com.mingri.entity.chat.ChatGroupMember;
+import com.mingri.entity.sys.SysUser;
 import com.mingri.entity.ext.MsgContent;
 import com.mingri.enumeration.UserTypes;
 import com.mingri.exception.ChatGroupOperationErrorException;
@@ -115,6 +115,7 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
     }
 
     @Override
+    @Transactional(rollbackFor = RuntimeException.class)
     public boolean dissolveChatGroup(String userId, DissolveChatGroupVo dissolveChatGroupVo) {
         if (!isOwner(dissolveChatGroupVo.getGroupId(), userId))
             throw new ChatGroupOperationErrorException(ERROR_ONLY_OWNER_OPERATION);
@@ -138,6 +139,7 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
     }
 
     @Override
+    @Transactional(rollbackFor = RuntimeException.class)
     public boolean inviteMember(String userId, InviteMemberVo inviteMemberVo) {
         List<ChatGroupMember> members = new ArrayList<>();
         for (String inviteUserid : inviteMemberVo.getUserIds()) {
@@ -181,11 +183,13 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
     }
 
     @Override
+    @Transactional(rollbackFor = RuntimeException.class)
     public boolean quitChatGroup(String userId, QuitChatGroupVo quitChatGroupVo) {
         return false;
     }
 
     @Override
+    @Transactional(rollbackFor = RuntimeException.class)
     public boolean kickChatGroup(String userId, KickChatGroupVo kickChatGroupVo) {
         return false;
     }
