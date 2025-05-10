@@ -3,7 +3,7 @@ mingri:
     master:
       host: 127.0.0.1
       port: 3306 #3339
-      database: mini-chat
+      database: chatroom
       username: root
       password: 123456
     slave:
@@ -23,11 +23,11 @@ mingri:
     access-key-secret:
     bucket-name:
   mail:
-    user: 3116430062@qq.com
     from: 3116430062@qq.com
     password:
     host: smtp.qq.com
     port: 465
+    user: 3116430062@qq.com
     expireTime: 180 #3分钟
   jwt:
     secret-key: csd_admin
@@ -38,5 +38,7 @@ mingri:
     count-limit: 0
     length-limit: 50
     model: ep-20250130211307-qgfnq
+
+
 
 

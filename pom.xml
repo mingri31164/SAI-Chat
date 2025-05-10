@@ -19,7 +19,7 @@
         <module>chat-server</module>
         <module>chat-ai</module>
         <module>chat-core</module>
-        <module>event-spring-boot-starter</module>
+        <module>chat-frameworks</module>
     </modules>
     <properties>
         <mybaits-plus.version>3.5.3.1</mybaits-plus.version>
