@@ -1,9 +1,9 @@
 package com.mingri.controller.common;
 
-import com.mingri.constant.MessageConstant;
-import com.mingri.result.Result;
+import com.mingri.common.constant.MessageConstant;
+import com.mingri.common.result.Result;
 import com.mingri.service.CommonService;
-import com.mingri.utils.AliOssUtil;
+import com.mingri.core.utils.AliOssUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,9 @@
 package com.mingri.controller.user;
 
-import com.mingri.entity.chat.ChatGroup;
-import com.mingri.result.Result;
+import com.mingri.pojo.entity.chat.ChatGroup;
+import com.mingri.common.result.Result;
+import com.mingri.pojo.vo.chatGroup.*;
 import com.mingri.service.IChatGroupService;
-import com.mingri.vo.chatGroup.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;

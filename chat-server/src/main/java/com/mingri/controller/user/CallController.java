@@ -1,8 +1,8 @@
 package com.mingri.controller.user;
 
-import com.mingri.annotation.UrlLimit;
-import com.mingri.dto.call.*;
-import com.mingri.result.Result;
+import com.mingri.common.result.Result;
+import com.mingri.core.limit.UrlLimit;
+import com.mingri.pojo.dto.call.*;
 import com.mingri.service.CallService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

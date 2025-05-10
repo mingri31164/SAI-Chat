@@ -1,6 +1,6 @@
 package com.mingri.mapper;
 
-import com.mingri.entity.chat.ChatGroup;
+import com.mingri.pojo.entity.chat.ChatGroup;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

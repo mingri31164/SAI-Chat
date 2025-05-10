@@ -4,22 +4,22 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.mingri.constant.MessageSource;
-import com.mingri.constant.type.MessageType;
-import com.mingri.dto.message.SystemMsgDto;
-import com.mingri.entity.chat.ChatGroup;
-import com.mingri.entity.chat.ChatGroupMember;
-import com.mingri.entity.sys.SysUser;
-import com.mingri.entity.ext.MsgContent;
-import com.mingri.enumeration.UserTypes;
-import com.mingri.exception.ChatGroupOperationErrorException;
+import com.mingri.common.constant.MessageSource;
+import com.mingri.common.constant.type.MessageType;
+import com.mingri.pojo.dto.message.SystemMsgDto;
+import com.mingri.pojo.entity.chat.ChatGroup;
+import com.mingri.pojo.entity.chat.ChatGroupMember;
+import com.mingri.pojo.entity.sys.SysUser;
+import com.mingri.pojo.entity.ext.MsgContent;
+import com.mingri.common.enumeration.UserTypes;
+import com.mingri.common.exception.ChatGroupOperationErrorException;
 import com.mingri.mapper.ChatGroupMapper;
+import com.mingri.pojo.vo.chatGroup.*;
 import com.mingri.service.IChatGroupMemberService;
 import com.mingri.service.IChatGroupService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mingri.service.IMessageService;
 import com.mingri.service.ISysUserService;
-import com.mingri.vo.chatGroup.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-import static com.mingri.constant.MessageConstant.ERROR_ONLY_OWNER_OPERATION;
+import static com.mingri.common.constant.MessageConstant.ERROR_ONLY_OWNER_OPERATION;
 
 /**
  * <p>

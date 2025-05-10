@@ -1,7 +1,7 @@
 package com.mingri.core.snowflake;
 
 import cn.hutool.core.collection.CollUtil;
-import com.mingri.context.ApplicationContextHolder;
+import com.mingri.common.context.ApplicationContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.ClassPathResource;

@@ -1,7 +1,7 @@
 package com.mingri.websocket;
 
-import com.mingri.utils.CacheUtil;
-import com.mingri.utils.RedisUtils;
+import com.mingri.core.utils.CacheUtil;
+import com.mingri.core.utils.RedisUtils;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;

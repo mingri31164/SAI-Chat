@@ -2,10 +2,10 @@ package com.mingri.service.helper.login;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.mingri.constant.MessageConstant;
-import com.mingri.entity.login.LoginUser;
-import com.mingri.entity.sys.SysUser;
-import com.mingri.exception.LoginFailedException;
+import com.mingri.common.constant.MessageConstant;
+import com.mingri.pojo.entity.login.LoginUser;
+import com.mingri.pojo.entity.sys.SysUser;
+import com.mingri.common.exception.LoginFailedException;
 import com.mingri.mapper.SysMenuMapper;
 import com.mingri.mapper.SysUserMapper;
 import lombok.extern.slf4j.Slf4j;

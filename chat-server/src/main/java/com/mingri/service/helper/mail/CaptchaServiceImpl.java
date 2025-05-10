@@ -1,12 +1,12 @@
 package com.mingri.service.helper.mail;
 
-import com.mingri.constant.MailConstant;
-import com.mingri.constant.MessageConstant;
-import com.mingri.exception.EmailErrorException;
-import com.mingri.properties.EmailProperties;
+import com.mingri.common.constant.MailConstant;
+import com.mingri.common.constant.MessageConstant;
+import com.mingri.common.exception.EmailErrorException;
+import com.mingri.common.properties.EmailProperties;
 import com.mingri.service.CommonService;
-import com.mingri.utils.RedisUtils;
-import com.mingri.utils.VerifyCodeUtil;
+import com.mingri.core.utils.RedisUtils;
+import com.mingri.core.utils.VerifyCodeUtil;
 import io.lettuce.core.RedisException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;

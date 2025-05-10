@@ -18,6 +18,7 @@
         <module>chat-pojo</module>
         <module>chat-server</module>
         <module>chat-ai</module>
+        <module>chat-core</module>
         <module>event-spring-boot-starter</module>
     </modules>
     <properties>

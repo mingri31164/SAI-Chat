@@ -1,13 +1,11 @@
 package com.mingri.service;
 
-import com.mingri.dto.user.SysUpdateDTO;
-import com.mingri.dto.user.SysUserLoginDTO;
-import com.mingri.dto.user.SysUserRegisterDTO;
-import com.mingri.entity.login.LoginUser;
-import com.mingri.entity.sys.SysUser;
+import com.mingri.pojo.dto.user.SysUpdateDTO;
+import com.mingri.pojo.dto.user.SysUserRegisterDTO;
+import com.mingri.pojo.entity.login.LoginUser;
+import com.mingri.pojo.entity.sys.SysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.result.Result;
-import com.mingri.vo.sys.SysUserInfoVO;
+import com.mingri.pojo.vo.sys.SysUserInfoVO;
 
 import java.time.LocalDate;
 import java.util.List;

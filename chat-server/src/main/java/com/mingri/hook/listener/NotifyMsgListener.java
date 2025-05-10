@@ -1,7 +1,7 @@
 package com.mingri.hook.listener;
 
-import com.mingri.entity.chat.Message;
-import com.mingri.event.NotifyMsgEvent;
+import com.mingri.pojo.entity.chat.Message;
+import com.mingri.pojo.event.NotifyMsgEvent;
 import com.mingri.service.IChatListService;
 import com.mingri.service.WebSocketService;
 import lombok.extern.slf4j.Slf4j;

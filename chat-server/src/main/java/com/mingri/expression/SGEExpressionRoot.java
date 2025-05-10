@@ -1,6 +1,6 @@
 package com.mingri.expression;
 
-import com.mingri.entity.login.LoginUser;
+import com.mingri.pojo.entity.login.LoginUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 

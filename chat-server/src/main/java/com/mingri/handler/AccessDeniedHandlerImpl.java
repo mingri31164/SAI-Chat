@@ -1,9 +1,9 @@
 package com.mingri.handler;
 
 import com.alibaba.fastjson.JSON;
-import com.mingri.constant.MessageConstant;
-import com.mingri.result.Result;
-import com.mingri.utils.WebUtils;
+import com.mingri.common.constant.MessageConstant;
+import com.mingri.common.result.Result;
+import com.mingri.core.utils.WebUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

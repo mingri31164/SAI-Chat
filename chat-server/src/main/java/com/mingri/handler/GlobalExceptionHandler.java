@@ -1,7 +1,7 @@
 package com.mingri.handler;
 
-import com.mingri.exception.BaseException;
-import com.mingri.result.Result;
+import com.mingri.common.exception.BaseException;
+import com.mingri.common.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

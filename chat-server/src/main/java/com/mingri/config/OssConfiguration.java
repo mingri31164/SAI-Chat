@@ -1,7 +1,7 @@
 package com.mingri.config;
 
-import com.mingri.properties.AliOssProperties;
-import com.mingri.utils.AliOssUtil;
+import com.mingri.common.properties.AliOssProperties;
+import com.mingri.core.utils.AliOssUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;

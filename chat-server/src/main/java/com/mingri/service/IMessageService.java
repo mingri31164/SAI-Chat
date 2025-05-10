@@ -1,11 +1,11 @@
 package com.mingri.service;
 
-import com.mingri.dto.message.RecallDTO;
-import com.mingri.dto.message.RecordDTO;
-import com.mingri.dto.message.SendMessageDTO;
-import com.mingri.entity.chat.Message;
+import com.mingri.pojo.dto.message.RecallDTO;
+import com.mingri.pojo.dto.message.RecordDTO;
+import com.mingri.pojo.dto.message.SendMessageDTO;
+import com.mingri.pojo.entity.chat.Message;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.vo.chatGroup.SendMsgVo;
+import com.mingri.pojo.vo.chatGroup.SendMsgVo;
 
 import java.time.LocalDate;
 import java.util.List;

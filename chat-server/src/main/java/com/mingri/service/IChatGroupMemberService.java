@@ -1,6 +1,6 @@
 package com.mingri.service;
 
-import com.mingri.entity.chat.ChatGroupMember;
+import com.mingri.pojo.entity.chat.ChatGroupMember;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

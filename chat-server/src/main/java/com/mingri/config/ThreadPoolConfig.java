@@ -1,14 +1,14 @@
 package com.mingri.config;
 
-import com.mingri.properties.ThreadPoolConfigProperties;
-import com.mingri.utils.RedisUtils;
+import com.mingri.common.properties.ThreadPoolConfigProperties;
+import com.mingri.core.utils.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
-import javax.annotation.PreDestroy;
+
 import java.util.concurrent.*;
 
 @Slf4j

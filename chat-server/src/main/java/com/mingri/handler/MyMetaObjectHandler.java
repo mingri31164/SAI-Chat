@@ -2,7 +2,7 @@ package com.mingri.handler;
 
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.mingri.context.BaseContext;
+import com.mingri.common.context.BaseContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;

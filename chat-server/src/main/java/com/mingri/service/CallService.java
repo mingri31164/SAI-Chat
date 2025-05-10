@@ -1,8 +1,8 @@
 package com.mingri.service;
 
 import cn.hutool.json.JSONObject;
-import com.mingri.context.BaseContext;
-import com.mingri.dto.call.*;
+import com.mingri.common.context.BaseContext;
+import com.mingri.pojo.dto.call.*;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 

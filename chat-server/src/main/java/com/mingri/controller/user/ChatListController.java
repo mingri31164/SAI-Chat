@@ -1,11 +1,11 @@
 package com.mingri.controller.user;
 
-import com.mingri.annotation.UrlLimit;
-import com.mingri.dto.chatList.CreateDTO;
-import com.mingri.dto.chatList.DeleteDTO;
-import com.mingri.dto.chatList.ReadDTO;
-import com.mingri.entity.chat.ChatList;
-import com.mingri.result.Result;
+import com.mingri.core.limit.UrlLimit;
+import com.mingri.pojo.dto.chatList.CreateDTO;
+import com.mingri.pojo.dto.chatList.DeleteDTO;
+import com.mingri.pojo.dto.chatList.ReadDTO;
+import com.mingri.pojo.entity.chat.ChatList;
+import com.mingri.common.result.Result;
 import com.mingri.service.IChatListService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

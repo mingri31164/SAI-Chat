@@ -1,12 +1,11 @@
 package com.mingri.controller.user;
 
-
-import com.mingri.annotation.UrlLimit;
-import com.mingri.dto.message.RecallDTO;
-import com.mingri.dto.message.RecordDTO;
-import com.mingri.dto.message.SendMessageDTO;
-import com.mingri.entity.chat.Message;
-import com.mingri.result.Result;
+import com.mingri.core.limit.UrlLimit;
+import com.mingri.pojo.dto.message.RecallDTO;
+import com.mingri.pojo.dto.message.RecordDTO;
+import com.mingri.pojo.dto.message.SendMessageDTO;
+import com.mingri.pojo.entity.chat.Message;
+import com.mingri.common.result.Result;
 import com.mingri.service.IMessageService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.PostMapping;
