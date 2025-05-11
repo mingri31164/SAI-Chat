@@ -1,6 +1,7 @@
 package com.mingri.pojo.dto.message;
 
 
+import com.mingri.core.sensitive.SensitiveField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -12,5 +13,6 @@ public class TextMessageContent {
     private String type;
 
     @Schema(description = "消息内容")
+//    @SensitiveField(bind = "content")
     private String content;
 }

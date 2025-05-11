@@ -7,6 +7,11 @@ import com.github.houbb.sensitive.word.support.tag.WordTags;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+
+
+/**
+ * 暂定为当前使用铭感词过滤器
+ **/
 @Configuration
 public class SensitiveWordConfig {
 

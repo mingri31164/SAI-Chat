@@ -1,6 +1,7 @@
 package com.mingri.pojo.dto.message;
 
 
+import com.mingri.core.sensitive.SensitiveField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,6 +13,7 @@ public class SystemMsgDto {
     @Data
     class Content {
         private boolean isEmphasize;
+//        @SensitiveField(bind = "content")
         private String content;
     }
 

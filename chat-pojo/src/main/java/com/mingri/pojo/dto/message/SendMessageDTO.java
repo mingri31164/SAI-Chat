@@ -2,6 +2,7 @@ package com.mingri.pojo.dto.message;
 
 import com.mingri.common.constant.type.MessageType;
 
+import com.mingri.core.sensitive.SensitiveField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -23,6 +24,7 @@ public class SendMessageDTO {
 
     @Schema(description = "消息内容")
     @NotBlank(message = "消息内容不能为空~")
+//    @SensitiveField(bind = "msgContent")
     private String msgContent;
 
     @Schema(description = "引用的消息ID，非引用消息则为null")
