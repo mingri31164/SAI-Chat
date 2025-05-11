@@ -10,6 +10,13 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss.SSS
     time-zone: Asia/Shanghai
 
+#  config:
+#    import:
+#      - application-dal.yml
+#      - application-email.yml
+#      - application-rabbitmq.yml
+#      - application-ai.yml
+
   mail:
     password: ${mingri.mail.password}
     host: ${mingri.mail.host}
