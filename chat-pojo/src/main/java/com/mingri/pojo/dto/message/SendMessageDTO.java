@@ -1,8 +1,7 @@
 package com.mingri.pojo.dto.message;
 
-import com.mingri.common.constant.type.MessageType;
+import com.mingri.api.constant.type.MessageType;
 
-import com.mingri.core.sensitive.SensitiveField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

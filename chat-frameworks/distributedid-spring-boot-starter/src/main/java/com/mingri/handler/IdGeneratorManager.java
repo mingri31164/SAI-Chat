@@ -1,5 +1,3 @@
-
-
 package com.mingri.handler;
 
 import com.mingri.core.IdGenerator;

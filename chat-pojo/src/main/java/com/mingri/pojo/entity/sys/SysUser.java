@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.annotation.*;
 import java.io.Serializable;
 import java.util.List;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
-import com.mingri.common.enumeration.UserStatus;
-import com.mingri.common.enumeration.UserTypes;
+import com.mingri.api.enumeration.UserStatus;
+import com.mingri.api.enumeration.UserTypes;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

@@ -2,11 +2,11 @@ package com.mingri.core.limit;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.mingri.common.constant.JwtClaimsConstant;
-import com.mingri.common.constant.MessageConstant;
-import com.mingri.common.constant.UrlLimitStats;
-import com.mingri.common.constant.type.LimitKeyType;
-import com.mingri.common.exception.BaseException;
+import com.mingri.api.constant.JwtClaimsConstant;
+import com.mingri.api.constant.MessageConstant;
+import com.mingri.api.constant.UrlLimitStats;
+import com.mingri.api.constant.type.LimitKeyType;
+import com.mingri.api.exception.BaseException;
 import com.mingri.core.utils.IpUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;

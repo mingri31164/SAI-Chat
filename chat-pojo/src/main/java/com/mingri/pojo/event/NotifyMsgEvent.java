@@ -1,6 +1,6 @@
 package com.mingri.pojo.event;
 
-import com.mingri.common.enumeration.NotifyTypeEnum;
+import com.mingri.api.enumeration.NotifyTypeEnum;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
