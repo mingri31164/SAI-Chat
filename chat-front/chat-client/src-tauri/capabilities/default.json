@@ -1,0 +1,85 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Capability for the main window",
+  "windows": [
+    "*"
+  ],
+  "permissions": [
+    "core:path:default",
+    "core:event:default",
+    "core:window:default",
+    "core:window:allow-start-dragging",
+    "core:window:allow-close",
+    "core:window:allow-hide",
+    "core:window:allow-center",
+    "core:window:allow-show",
+    "core:window:allow-maximize",
+    "core:window:allow-minimize",
+    "core:window:allow-destroy",
+    "core:window:allow-is-focused",
+    "core:window:allow-is-fullscreen",
+    "core:window:allow-set-focus",
+    "core:window:allow-set-position",
+    "core:window:allow-scale-factor",
+    "core:window:allow-unminimize",
+    "core:window:allow-set-always-on-top",
+    "core:window:allow-set-size",
+    "core:window:allow-unmaximize",
+    "core:app:default",
+    "core:image:default",
+    "core:resources:default",
+    "core:menu:default",
+    "core:tray:default",
+    "core:tray:allow-new",
+    "core:tray:allow-set-tooltip",
+    "core:tray:allow-set-icon",
+    "core:tray:allow-get-by-id",
+    "shell:allow-open",
+    "websocket:default",
+    "http:default",
+    "process:default",
+    "process:allow-exit",
+    "core:webview:default",
+    "core:webview:allow-create-webview",
+    "core:webview:allow-create-webview-window",
+    "clipboard-manager:default",
+    "clipboard-manager:allow-write-image",
+    "clipboard-manager:allow-write-text",
+    "dialog:allow-save",
+    "upload:allow-download",
+    "dialog:allow-open",
+    "upload:allow-upload",
+    "fs:default",
+    "fs:write-all",
+    "fs:allow-stat",
+    "fs:write-all",
+    "global-shortcut:default",
+    "global-shortcut:allow-register",
+    "global-shortcut:allow-is-registered",
+    "global-shortcut:allow-unregister",
+    "fs:default",
+    "autostart:allow-enable",
+    "autostart:allow-disable",
+    "autostart:default",
+    "updater:allow-check",
+    "updater:default",
+    {
+      "identifier": "http:default",
+      "allow": [
+        {
+          "url": "http://**"
+        },
+        {
+          "url": "https://**"
+        },
+        {
+          "url": "http://*:*"
+        },
+        {
+          "url": "https://*:*"
+        }
+      ]
+    }
+  ]
+}
