@@ -1,6 +1,6 @@
 package com.mingri.config;
 
-import com.mingri.api.context.ApplicationContextHolder;
+import com.mingri.model.context.ApplicationContextHolder;
 import com.mingri.core.snowflake.LocalRedisWorkIdChoose;
 import com.mingri.core.snowflake.RandomWorkIdChoose;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

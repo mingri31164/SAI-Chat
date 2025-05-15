@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mingri.mapper.MessageMapper">
+<mapper namespace="com.mingri.service.chat.repo.mapper.MessageMapper">
 
-    <resultMap id="RecordVoMap" type="com.mingri.pojo.entity.chat.Message">
+    <resultMap id="RecordVoMap" type="com.mingri.service.chat.repo.entity.MessageDO">
         <result property="id" column="id"/>
         <result property="fromId" column="from_id"/>
         <result property="toId" column="to_id"/>

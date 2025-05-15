@@ -1,9 +1,9 @@
 package com.mingri.web.hook.listener;
 
-import com.mingri.pojo.entity.chat.Message;
-import com.mingri.pojo.event.NotifyMsgEvent;
-import com.mingri.service.IChatListService;
-import com.mingri.service.WebSocketService;
+import com.mingri.service.chat.repo.entity.MessageDO;
+import com.mingri.model.vo.notify.NotifyMsgEvent;
+import com.mingri.service.chat.service.IChatListService;
+import com.mingri.service.websocket.service.WebSocketService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -30,15 +30,15 @@ public class NotifyMsgListener<T> implements ApplicationListener<NotifyMsgEvent<
     public void onApplicationEvent(NotifyMsgEvent<T> msgEvent) {
         switch (msgEvent.getNotifyType()) {
             case GROUP_CHAT:
-                updateChatListGroup((NotifyMsgEvent<Message>) msgEvent);
+                updateChatListGroup((NotifyMsgEvent<MessageDO>) msgEvent);
                 break;
             default:
                 // todo 系统消息
         }
     }
 
-    private void updateChatListGroup(NotifyMsgEvent<Message> msgEvent) {
-        Message message = msgEvent.getContent();
+    private void updateChatListGroup(NotifyMsgEvent<MessageDO> msgEvent) {
+        MessageDO message = msgEvent.getContent();
         chatListService.updateChatListGroup(message);
         webSocketService.sendMsgToGroup(message);
     }

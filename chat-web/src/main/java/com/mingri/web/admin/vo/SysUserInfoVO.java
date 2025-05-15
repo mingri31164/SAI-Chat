@@ -1,7 +1,7 @@
 package com.mingri.web.admin.vo;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.mingri.api.enumeration.UserTypes;
+import com.mingri.model.enumeration.UserTypes;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

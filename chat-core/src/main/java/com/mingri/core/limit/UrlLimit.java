@@ -1,6 +1,6 @@
 package com.mingri.core.limit;
 
-import com.mingri.api.constant.type.LimitKeyType;
+import com.mingri.model.constant.type.LimitKeyType;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

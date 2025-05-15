@@ -15,7 +15,6 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>chat-api</module>
-        <module>chat-pojo</module>
         <module>chat-service</module>
         <module>chat-ai</module>
         <module>chat-core</module>
