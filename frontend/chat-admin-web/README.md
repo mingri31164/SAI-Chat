@@ -3,8 +3,6 @@
 </p>
 <h1 align="center">林语</h1>
 <p align="center">该代码仓库为 林语 管理端相关代码</p>
-<p align="center">客户端地址：https://github.com/DWHengr/linyu-client</p>
-<p align="center">后端地址：https://github.com/DWHengr/linyu-server</p>
 
 # 简绍
 

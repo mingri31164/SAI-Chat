@@ -38,6 +38,7 @@
         <java.version>17</java.version>
         <spring-ai.version>0.8.1</spring-ai.version>
         <hutool-all.version>5.8.20</hutool-all.version>
+        <minio.version>8.2.1</minio.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -183,6 +184,12 @@
                 <version>${hutool-all.version}</version>
             </dependency>
 
+<!--            minio-->
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

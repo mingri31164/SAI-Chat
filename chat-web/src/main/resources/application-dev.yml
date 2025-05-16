@@ -17,11 +17,6 @@ mingri:
     port: 6379
     password:
     database: 1
-  alioss:
-    endpoint: oss-cn-hangzhou.aliyuncs.com
-    access-key-id:
-    access-key-secret:
-    bucket-name:
   mail:
     from: 3116430062@qq.com
     password:
@@ -33,6 +28,12 @@ mingri:
     secret-key: csd_admin
     expire-time: 7200000
     token-name: x-token
+  minio:
+    endpoint:
+    bucketName: chat
+    fileBucketName: file
+    accessKey:
+    secretKey:
 
 
 

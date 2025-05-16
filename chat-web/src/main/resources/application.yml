@@ -94,12 +94,13 @@ logging:
         service: info
         controller: info
 
-mingri:
-  alioss:
-    endpoint: ${mingri.alioss.endpoint}
-    access-key-id: ${mingri.alioss.access-key-id}
-    access-key-secret: ${mingri.alioss.access-key-secret}
-    bucket-name: ${mingri.alioss.bucket-name}
+minio:
+  endpoint: ${mingri.minio.endpoint}
+  access-key: ${mingri.minio.accessKey}
+  secret-key: ${mingri.minio.secretKey}
+  bucket-name: ${mingri.minio.bucketName}
+  file-bucket-name: ${mingri.minio.fileBucketName}
+
 
 security:
   jwt:
