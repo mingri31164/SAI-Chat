@@ -1,15 +1,9 @@
 package com.mingri.service.user.service;
 
-import com.mingri.model.vo.sys.dto.SysUpdateDTO;
-import com.mingri.model.vo.sys.dto.SysUserInfoDTO;
-import com.mingri.model.vo.sys.dto.SysUserRegisterDTO;
+import com.mingri.model.vo.sys.req.SysUserRegisterReq;
 import com.mingri.service.user.repo.entity.helper.LoginUser;
 import com.mingri.service.user.repo.entity.SysUserDO;
 import com.baomidou.mybatisplus.extension.service.IService;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
 
 
 public interface ISysUserService extends IService<SysUserDO> {
@@ -25,30 +19,11 @@ public interface ISysUserService extends IService<SysUserDO> {
      *
      * @param userRegisterDTO
      */
-    void register(SysUserRegisterDTO userRegisterDTO);
+    void register(SysUserRegisterReq userRegisterDTO);
 
     /**
      * 用户退出
      */
     void logout();
 
-    SysUserInfoDTO getUserById(String userId);
-
-    List<SysUserInfoDTO> listUser();
-
-    List<String> onlineWeb();
-
-    Map<String, SysUserInfoDTO> listMapUser();
-
-    void online(String userId);
-
-    void offline(String userId);
-
-    void deleteExpiredUsers(LocalDate expirationDate);
-
-    void updateUserBadge(String id);
-
-    void initBotUser();
-
-    boolean updateUser(SysUpdateDTO sysUpdateDTO);
 }

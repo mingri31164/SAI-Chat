@@ -51,7 +51,6 @@ spring:
 #          hikari:
 #            max-lifetime: 70000
 
-
   data:
     redis:
       host: ${mingri.redis.host}
@@ -66,9 +65,6 @@ spring:
       retry-interval: 1000
       ping-interval: 60000
       keep-alive: true
-
-
-
 
 #mybatis:
 #  #mapper配置文件
@@ -125,36 +121,6 @@ thread:
         keep-alive-time: 5000
         block-queue-size: 5000
         policy: CallerRunsPolicy
-
-
-## 动态线程池管理配置
-dynamic:
-  thread:
-    pool:
-      config:
-#        enable: true
-        # redis host
-        host: ${mingri.redis.host}
-        # redis port
-        port: ${mingri.redis.port}
-        password: ${mingri.redis.password}
-
-
-mini-chat:
-  limit: 100 #在线人数限制
-  name: 聊天室 #群聊名称
-  expires: 7 #数据过期时间（天）
-  doubao: #豆包
-    api-key: ${mingri.doubao.api-key}
-    count-limit: ${mingri.doubao.count-limit}
-    length-limit: ${mingri.doubao.length-limit}
-    model: ${mingri.doubao.model}
-
-
-
-
-
-
 
 springdoc:
   api-docs:

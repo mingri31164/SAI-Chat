@@ -33,11 +33,7 @@ mingri:
     secret-key: csd_admin
     expire-time: 7200000
     token-name: x-token
-  doubao:
-    api-key:
-    count-limit: 0
-    length-limit: 50
-    model: ep-20250130211307-qgfnq
+
 
 
 

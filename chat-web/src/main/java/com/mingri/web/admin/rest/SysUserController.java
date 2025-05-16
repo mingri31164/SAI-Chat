@@ -1,13 +1,11 @@
 package com.mingri.web.admin.rest;
 
 import com.mingri.model.constant.JwtClaimsConstant;
+import com.mingri.model.constant.LimitKeyType;
 import com.mingri.model.constant.MessageConstant;
-import com.mingri.model.constant.type.LimitKeyType;
 import com.mingri.core.limit.UrlLimit;
-import com.mingri.model.vo.sys.dto.SysUpdateDTO;
-import com.mingri.model.vo.sys.dto.SysUserInfoDTO;
-import com.mingri.model.vo.sys.dto.SysUserLoginDTO;
-import com.mingri.model.vo.sys.dto.SysUserRegisterDTO;
+import com.mingri.model.vo.sys.req.SysUserLoginReq;
+import com.mingri.model.vo.sys.req.SysUserRegisterReq;
 import com.mingri.service.user.repo.entity.helper.LoginUser;
 import com.mingri.service.user.repo.entity.SysUserDO;
 import com.mingri.model.enumeration.UserStatus;
@@ -28,7 +26,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -58,7 +55,7 @@ public class SysUserController {
     @UrlLimit(keyType = LimitKeyType.IP)
     @Operation(summary = "用户登录")
     @PostMapping("/login")
-    public Result<SysUserLoginVO> login(@RequestBody SysUserLoginDTO userLoginDTO) {
+    public Result<SysUserLoginVO> login(@RequestBody SysUserLoginReq userLoginDTO) {
         log.info("用户登录：{}", userLoginDTO);
 
         // 执行认证
@@ -118,7 +115,7 @@ public class SysUserController {
     @UrlLimit(keyType = LimitKeyType.IP)
     @PostMapping("/register")
     @Operation(summary = "用户注册")
-    public Result register(@RequestBody SysUserRegisterDTO userRegisterDTO){
+    public Result register(@RequestBody SysUserRegisterReq userRegisterDTO){
         log.info("新增用户：{}",userRegisterDTO);
         iSysUserService.register(userRegisterDTO);
         return Result.success();
@@ -152,37 +149,6 @@ public class SysUserController {
     }
 
 
-    /**
-     * 编辑用户信息
-     * @param sysUpdateDTO
-     * @return
-     */
-    @UrlLimit
-    @PutMapping("/update")
-    @Operation(summary = "编辑用户信息")
-    public Result update(@RequestBody SysUpdateDTO sysUpdateDTO){
-        log.info("编辑用户信息：{}", sysUpdateDTO);
-        iSysUserService.updateUser(sysUpdateDTO);
-        return Result.success();
-    }
-
-
-    @UrlLimit
-    @Operation(summary = "查询所有用户信息")
-    @GetMapping("/list/map")
-    public Object listMapUser() {
-        Map<String, SysUserInfoDTO> result = iSysUserService.listMapUser();
-        return Result.success(result);
-    }
-
-
-    @UrlLimit
-    @Operation(summary = "查询所有在线用户")
-    @GetMapping("/online/web")
-    public Object onlineWeb() {
-        List<String> result = iSysUserService.onlineWeb();
-        return Result.success(result);
-    }
 
 
 

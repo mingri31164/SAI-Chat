@@ -1,0 +1,323 @@
+.common-chat-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(117, 117, 117, 0.3);
+  }
+
+  .chat-content-title {
+    height: 60px;
+    width: 100%;
+    background-color: #F9FBFF;
+    display: flex;
+    align-items: center;
+
+    .notice {
+      display: flex;
+      align-items: center;
+      max-width: 300px;
+      background-color: #EDF2F9;
+      font-size: 12px;
+      border-radius: 4px;
+      font-weight: 500;
+      padding: 0 5px;
+      user-select: none;
+      box-sizing: border-box;
+      border: #FFFFFF 1px solid;
+      cursor: pointer;
+    }
+  }
+
+  .chat-content-show-frame {
+    padding: 10px 15px;
+    flex: 1;
+    background-color: #EDF2F9;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    .badge-symbol {
+      border: 1px #969696 solid;
+      user-select: none;
+      margin-left: 5px;
+      height: 14px;
+      font-size: 10px;
+      line-height: 14px;
+      border-radius: 5px;
+      padding: 1px;
+    }
+  }
+
+  .hint {
+    padding: 2px 10px;
+    background-color: white;
+    position: fixed;
+    right: 15px;
+    bottom: 265px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    box-shadow: 0 0 5px 0.1px #999;
+    user-select: none;
+    color: #4C9BFF;
+    cursor: pointer;
+  }
+
+  .resize-handle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 10px;
+    cursor: ns-resize;
+    background-color: transparent;
+  }
+
+  .chat-content-send-frame {
+    width: 100%;
+    height: 250px;
+    min-height: 150px;
+    max-height: 450px;
+    background-color: #F9FBFF;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    .chat-content-send-frame-operation {
+      height: 30px;
+      padding: 5px 8px 0 8px;
+      display: flex;
+      align-items: center;
+      font-size: 30px;
+      color: #646464;
+      justify-content: space-between;
+    }
+
+    .chat-content-send-frame-msg {
+      flex: 1;
+      margin: 0 10px;
+      min-height: 0;
+
+
+      textarea {
+        font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        width: 100%;
+        height: 100%;
+        overflow-y: scroll;
+        background-color: #F9FBFF;
+        box-sizing: border-box;
+        border: none;
+        resize: none;
+        outline: none;
+        line-height: 18px;
+      }
+    }
+
+    .chat-content-send-frame-operation-bottom {
+      display: flex;
+      justify-content: end;
+      margin: 5px 10px 10px 0;
+    }
+  }
+
+}
+
+.biao-qing-pop {
+  border-radius: 5px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(2px);
+  display: flex;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+  padding: 4px 0 4px 4px;
+
+  .biao-qing {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    user-select: none;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    margin: 2px;
+    font-size: 20px;
+
+    &:hover {
+      border-radius: 2px;
+      background-color: rgb(220, 234, 255);
+    }
+  }
+}
+
+.chat-group-drawer {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 20px);
+
+  .chat-group-portrait-info {
+    height: 70px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 5px;
+
+    .portrait-info {
+      width: 50px;
+      height: 50px;
+      border-radius: 50px;
+      position: relative;
+      cursor: pointer;
+
+      .portrait-info-cover {
+        width: 50px;
+        height: 50px;
+        border-radius: 50px;
+        position: absolute;
+        background-color: rgba(112, 112, 112, 0.4);
+        top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+    }
+  }
+
+  .chat-group-drawer-item {
+    margin-bottom: 10px;
+
+    .item-label {
+      font-weight: 600;
+      user-select: none;
+      font-size: 14px;
+    }
+  }
+
+  .chat-group-member-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .item-label {
+      font-weight: 600;
+      user-select: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .member {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      font-weight: 600;
+      overflow-y: scroll;
+
+      .member-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+        padding: 2px 5px;
+        user-select: none;
+        border-radius: 5px;
+
+        .item-portrait {
+          width: 30px;
+          height: 30px;
+          border-radius: 30px;
+          margin-right: 5px;
+        }
+
+        .item-name {
+          font-size: 12px;
+        }
+
+        .item-operations {
+          display: none;
+          color: #969696;
+          margin-left: auto;
+
+          .item-operation {
+            font-size: 20px;
+            margin-right: 5px;
+            cursor: pointer;
+
+            &:hover {
+              color: #1F1F1F;
+            }
+          }
+        }
+
+        &:hover {
+          background-color: #F9FBFF;
+
+          .item-operations {
+            display: flex;
+          }
+        }
+      }
+    }
+  }
+}
+
+.user-details {
+  width: 320px;
+  height: 190px;
+  padding: 5px 15px;
+  border-radius: 5px;
+  background-image: linear-gradient(130deg, rgba(249, 251, 255, 0.6), rgba(227, 236, 255, 0.6));
+  backdrop-filter: blur(10px);
+  border: rgba(255, 255, 255, 0.8) 2px solid;
+
+  .user-details-title {
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    line-height: 14px;
+  }
+
+  .user-details-content {
+    display: flex;
+    flex: 1;
+    align-items: center;
+
+    .item {
+      margin-bottom: 5px;
+
+      .item-label {
+        color: #5BA5E8;
+        font-size: 10px;
+        line-height: 12px;
+        user-select: none;
+      }
+
+      .item-value {
+        font-size: 12px;
+        line-height: 14px;
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+
+      .two-line {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        max-height: 28px;
+      }
+    }
+  }
+}
