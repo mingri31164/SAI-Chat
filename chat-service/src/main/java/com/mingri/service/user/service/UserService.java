@@ -2,10 +2,10 @@ package com.mingri.service.user.service;
 
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.model.vo.user.dto.UserDto;
-import com.mingri.model.vo.user.req.*;
-import com.mingri.model.vo.user.req.login.LoginVo;
-import com.mingri.model.vo.user.req.login.QrCodeLoginVo;
+import com.mingri.service.user.repo.dto.UserDto;
+import com.mingri.service.user.repo.req.*;
+import com.mingri.service.user.repo.req.login.LoginVo;
+import com.mingri.service.user.repo.req.login.QrCodeLoginVo;
 import com.mingri.service.user.repo.entity.User;
 
 import java.util.HashMap;

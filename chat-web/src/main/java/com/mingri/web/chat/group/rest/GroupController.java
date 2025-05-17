@@ -3,10 +3,10 @@ package com.mingri.web.chat.group.rest;
 import cn.hutool.json.JSONObject;
 import com.mingri.core.annotation.Userid;
 import com.mingri.core.toolkit.ResultUtil;
-import com.mingri.model.vo.chat.dto.GroupListDto;
-import com.mingri.model.vo.chat.req.CreateGroupVo;
-import com.mingri.model.vo.chat.req.DeleteGroupVo;
-import com.mingri.model.vo.chat.req.UpdateGroupVo;
+import com.mingri.service.chat.repo.dto.GroupListDto;
+import com.mingri.service.chat.repo.req.CreateGroupVo;
+import com.mingri.service.chat.repo.req.DeleteGroupVo;
+import com.mingri.service.chat.repo.req.UpdateGroupVo;
 import com.mingri.service.chat.service.GroupService;
 import org.springframework.web.bind.annotation.*;
 

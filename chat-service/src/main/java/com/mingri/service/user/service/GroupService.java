@@ -1,10 +1,10 @@
 package com.mingri.service.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.model.vo.chat.dto.GroupListDto;
-import com.mingri.model.vo.chat.req.CreateGroupVo;
-import com.mingri.model.vo.chat.req.DeleteGroupVo;
-import com.mingri.model.vo.chat.req.UpdateGroupVo;
+import com.mingri.service.chat.repo.dto.GroupListDto;
+import com.mingri.service.chat.repo.req.CreateGroupVo;
+import com.mingri.service.chat.repo.req.DeleteGroupVo;
+import com.mingri.service.chat.repo.req.UpdateGroupVo;
 import com.mingri.service.chat.repo.entity.Group;
 
 import java.util.List;

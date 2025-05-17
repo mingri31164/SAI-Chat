@@ -3,7 +3,7 @@ package com.mingri.web.user.rest;
 import cn.hutool.json.JSONObject;
 import com.mingri.core.annotation.Userid;
 import com.mingri.core.toolkit.ResultUtil;
-import com.mingri.model.vo.user.req.UpdateUserSetVo;
+import com.mingri.service.user.repo.req.UpdateUserSetVo;
 import com.mingri.service.user.repo.entity.UserSet;
 import com.mingri.service.user.service.UserSetService;
 import org.springframework.web.bind.annotation.*;

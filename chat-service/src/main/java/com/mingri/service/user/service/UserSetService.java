@@ -2,7 +2,7 @@ package com.mingri.service.user.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.model.vo.user.req.UpdateUserSetVo;
+import com.mingri.service.user.repo.req.UpdateUserSetVo;
 import com.mingri.service.user.repo.entity.UserSet;
 
 /**

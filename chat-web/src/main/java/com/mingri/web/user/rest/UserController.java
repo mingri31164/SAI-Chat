@@ -2,33 +2,25 @@ package com.mingri.web.user.rest;
 
 import cn.hutool.json.JSONObject;
 import com.mingri.core.annotation.UrlFree;
-import com.mingri.core.annotation.UserRole;
 import com.mingri.core.annotation.Userid;
 import com.mingri.core.toolkit.MinioUtil;
 import com.mingri.core.toolkit.RedisUtils;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.core.toolkit.SecurityUtil;
-import com.mingri.model.exception.BaseException;
-import com.mingri.model.vo.mail.req.EmailVerifyByAccountVo;
-import com.mingri.model.vo.mail.req.EmailVerifyVo;
-import com.mingri.model.vo.user.dto.UserDto;
-import com.mingri.model.vo.user.req.*;
 import com.mingri.service.mail.VerificationCodeService;
+import com.mingri.service.mail.repo.EmailVerifyByAccountVo;
+import com.mingri.service.mail.repo.EmailVerifyVo;
+import com.mingri.service.user.repo.dto.UserDto;
 import com.mingri.service.user.repo.entity.User;
+import com.mingri.service.user.repo.req.*;
 import com.mingri.service.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 
