@@ -1,25 +1,33 @@
 package com.mingri.service.user.service.impl;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mingri.core.config.MinioConfig;
-import com.mingri.core.toolkit.MinioUtil;
-import com.mingri.core.toolkit.RedisUtils;
-import com.mingri.core.toolkit.SecurityUtil;
+import com.mingri.core.toolkit.*;
 import com.mingri.model.constant.NotifyType;
+import com.mingri.model.constant.UserRole;
 import com.mingri.model.constant.UserStatus;
 import com.mingri.model.exception.BaseException;
 import com.mingri.model.vo.user.dto.UserDto;
+import com.mingri.model.vo.user.dto.login.QrCodeResult;
 import com.mingri.model.vo.user.req.*;
+import com.mingri.model.vo.user.req.login.LoginVo;
+import com.mingri.model.vo.user.req.login.QrCodeLoginVo;
 import com.mingri.service.chat.service.ChatListService;
 import com.mingri.service.chat.service.NotifyService;
 import com.mingri.service.mail.EmailService;
 import com.mingri.service.mail.VerificationCodeService;
 import com.mingri.service.user.repo.entity.User;
 import com.mingri.service.user.repo.mapper.UserMapper;
+import com.mingri.service.user.service.UserOperatedService;
 import com.mingri.service.user.service.UserService;
+import com.mingri.service.user.service.WebSocketService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -38,27 +46,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Resource
     ChatListService chatListService;
-
     @Resource
     NotifyService notifyService;
-
     @Resource
     UserMapper userMapper;
-
     @Resource
     MinioConfig minioConfig;
-
     @Resource
     RedisUtils redisUtils;
-
-    @Resource
-    EmailService emailService;
-
-    @Resource
-    MinioUtil minioUtil;
-
     @Resource
     VerificationCodeService verificationCodeService;
+    @Resource
+    UserOperatedService userOperatedService;
+    @Resource
+    WebSocketService webSocketService;
 
 
     @Override
@@ -189,4 +190,80 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         verificationCodeService.emailVerificationCode(user.getEmail());
     }
+
+    @Override
+    public JSONObject validateLogin(LoginVo loginVo, String userIp, boolean isAdmin) {
+        // 获取用户
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(User::getAccount, loginVo.getAccount());
+        User user = getOne(queryWrapper);
+        if (null == user) {
+            return ResultUtil.Fail("用户名或密码错误~");
+        }
+        if (!SecurityUtil.verifyPassword(loginVo.getPassword(), user.getPassword())) {
+            return ResultUtil.Fail("用户名或密码错误~");
+        }
+        if (isAdmin && !UserRole.Admin.equals(user.getRole())) {
+            return ResultUtil.Fail("您非管理员~");
+        }
+        JSONObject userinfo = createUserToken(user, userIp);
+        user.setOnlineEquipment(loginVo.getOnlineEquipment());
+        boolean isSave = updateById(user);
+        return isSave?ResultUtil.Succeed(userinfo): ResultUtil.Fail("登录失败~");
+    }
+
+    @Override
+    public JSONObject validateQrCodeLogin(QrCodeLoginVo qrCodeLoginVo, String userid) {
+        // 获取用户
+        User user = getById(userid);
+        if (null == user) {
+            return ResultUtil.Fail("用户不存在~");
+        }
+        String result = (String) redisUtils.get(qrCodeLoginVo.getKey());
+        if (null == result) {
+            return ResultUtil.Fail("二维码已失效~");
+        }
+        QrCodeResult qrCodeResult = JSONUtil.toBean(result, QrCodeResult.class);
+        JSONObject userinfo = createUserToken(user, qrCodeResult.getIp());
+        qrCodeResult.setStatus("success");
+        qrCodeResult.setExtend(userinfo);
+        redisUtils.set(qrCodeLoginVo.getKey(), JSONUtil.toJsonStr(qrCodeResult), 60);
+        return ResultUtil.Succeed();
+    }
+
+
+    public JSONObject createUserToken(User user, String userIp) {
+        JSONObject userinfo = new JSONObject();
+        userinfo.put("userId", user.getId());
+        userinfo.put("account", user.getAccount());
+        userinfo.put("username", user.getName());
+        userinfo.put("role", user.getRole());
+        userinfo.put("sex", user.getSex());
+        userinfo.put("portrait", user.getPortrait());
+        userinfo.put("phone", user.getPhone());
+        userinfo.put("email", user.getEmail());
+        //生成用户token
+        userinfo.put("token", JwtUtil.createToken(userinfo));
+        ThreadUtil.execAsync(() -> {
+            //记录登录操作
+            userOperatedService.recordLogin(user.getId(), userIp);
+            //更新同时在线人数
+            updateRedisOnlineNum();
+        });
+        return userinfo;
+    }
+
+    public void updateRedisOnlineNum() {
+        Integer onlineNum = webSocketService.getOnlineNum();
+        String key = "onlineNum#" + DateUtil.today();
+        Integer redisOnlineNum = (Integer) redisUtils.get(key);
+        if (null == redisOnlineNum) {
+            redisUtils.set(key, onlineNum, 25 * 60 * 60);
+        }
+        if (onlineNum > redisOnlineNum) {
+            redisUtils.set(key, onlineNum, 25 * 60 * 60);
+        }
+    }
+
+
 }

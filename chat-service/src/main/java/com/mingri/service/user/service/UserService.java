@@ -4,6 +4,8 @@ import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mingri.model.vo.user.dto.UserDto;
 import com.mingri.model.vo.user.req.*;
+import com.mingri.model.vo.user.req.login.LoginVo;
+import com.mingri.model.vo.user.req.login.QrCodeLoginVo;
 import com.mingri.service.user.repo.entity.User;
 
 import java.util.HashMap;
@@ -32,6 +34,9 @@ public interface UserService extends IService<User> {
 
     User getUserByAccount(String account);
 
-
     void emailVerifyByAccount(String account);
+
+    JSONObject validateLogin(LoginVo loginVo, String userIp, boolean b);
+
+    JSONObject validateQrCodeLogin(QrCodeLoginVo qrCodeLoginVo, String userid);
 }
