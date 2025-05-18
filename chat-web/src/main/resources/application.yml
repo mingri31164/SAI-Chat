@@ -112,16 +112,14 @@ security:
     token-name: ${mingri.jwt.token-name}
 
 
-# 线程池配置
-thread:
-  pool:
-    executor:
-      config:
-        core-pool-size: 20
-        max-pool-size: 50
-        keep-alive-time: 5000
-        block-queue-size: 5000
-        policy: CallerRunsPolicy
+rocketmq:
+  enabled: false
+  name-server: 117.72.48.167:9876
+  producer:
+    group: linyu_group
+    send-message-timeout: 5000
+    retry-times-when-send-failed: 3
+    retry-times-when-send-async-failed: 3
 
 springdoc:
   api-docs:

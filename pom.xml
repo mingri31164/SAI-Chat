@@ -39,6 +39,7 @@
         <spring-ai.version>0.8.1</spring-ai.version>
         <hutool-all.version>5.8.20</hutool-all.version>
         <minio.version>8.2.1</minio.version>
+        <rocketmq.version>2.2.3</rocketmq.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -131,6 +132,12 @@
                 <version>${jaxb-api}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-spring-boot-starter</artifactId>
+                <version>${rocketmq.version}</version>
+            </dependency>
+
 
             <!-- poi -->
             <dependency>
@@ -143,6 +150,7 @@
                 <artifactId>poi-ooxml</artifactId>
                 <version>${poi}</version>
             </dependency>
+
 
 
 

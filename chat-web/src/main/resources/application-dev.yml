@@ -29,11 +29,16 @@ mingri:
     expire-time: 7200000
     token-name: x-token
   minio:
-    endpoint:
+    endpoint: 127.0.0.1:9000
     bucketName: chat
     fileBucketName: file
     accessKey:
     secretKey:
+  rocketmq:
+    enabled: ${mingri.rocketmq.enabled}
+    name-server: ${mingri.rocketmq.name-server}
+    group: ${mingri.rocketmq.group}
+
 
 
 
