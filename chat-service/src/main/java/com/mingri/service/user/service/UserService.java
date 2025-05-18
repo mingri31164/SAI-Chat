@@ -39,4 +39,10 @@ public interface UserService extends IService<User> {
     JSONObject validateLogin(LoginVo loginVo, String userIp, boolean b);
 
     JSONObject validateQrCodeLogin(QrCodeLoginVo qrCodeLoginVo, String userid);
+
+    void online(String userId);
+
+    void offline(String userId);
+
+
 }

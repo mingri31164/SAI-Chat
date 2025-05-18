@@ -230,6 +230,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return ResultUtil.Succeed();
     }
 
+    @Override
+    public void online(String userId) {
+        LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.set(User::getIsOnline, true)
+                .eq(User::getId, userId);
+        update(updateWrapper);
+    }
+
+    @Override
+    public void offline(String userId) {
+        LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.set(User::getIsOnline, false)
+                .set(User::getOnlineEquipment, "")
+                .eq(User::getId, userId);
+        update(updateWrapper);
+    }
+
+
 
     public JSONObject createUserToken(User user, String userIp) {
         JSONObject userinfo = new JSONObject();
