@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mingri.service.chat.repo.dto.MemberListDto;
 import com.mingri.service.chat.repo.entity.ChatGroupMember;
 import com.mingri.service.chat.repo.mapper.ChatGroupMemberMapper;
-import com.mingri.service.chat.repo.req.MemberListVo;
+import com.mingri.service.chat.repo.req.chatlist.MemberListVo;
 import com.mingri.service.chat.service.ChatGroupMemberService;
 import org.springframework.stereotype.Service;
 

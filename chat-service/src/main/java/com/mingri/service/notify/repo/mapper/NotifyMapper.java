@@ -1,10 +1,8 @@
-package com.mingri.service.chat.repo.mapper;
+package com.mingri.service.notify.repo.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mingri.service.chat.repo.entity.Notify;
+import com.mingri.service.notify.repo.entity.Notify;
 import org.apache.ibatis.annotations.Select;
-
-import java.util.List;
 
 /**
  * 通知 Mapper 接口

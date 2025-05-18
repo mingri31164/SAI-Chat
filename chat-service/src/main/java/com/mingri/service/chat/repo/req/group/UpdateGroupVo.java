@@ -1,4 +1,4 @@
-package com.mingri.service.chat.repo.req;
+package com.mingri.service.chat.repo.req.group;
 
 import lombok.Data;
 

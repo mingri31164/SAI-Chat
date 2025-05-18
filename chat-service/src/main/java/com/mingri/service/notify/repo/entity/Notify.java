@@ -1,4 +1,4 @@
-package com.mingri.service.chat.repo.entity;
+package com.mingri.service.notify.repo.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;

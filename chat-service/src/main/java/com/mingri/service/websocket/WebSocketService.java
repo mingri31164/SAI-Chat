@@ -76,6 +76,7 @@ public class WebSocketService {
         }
     }
 
+
     public void sendMsgToGroup(Message message, String groupId) {
         List<ChatGroupMember> list = chatGroupMemberService.getGroupMember(groupId);
         for (ChatGroupMember member : list) {

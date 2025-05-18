@@ -1,9 +1,8 @@
-package com.mingri.service.chat.service.impl;
+package com.mingri.service.notify.service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.mingri.service.chat.repo.entity.Notify;
-import com.mingri.service.chat.repo.mapper.NotifyMapper;
-import com.mingri.service.chat.service.NotifyService;
+import com.mingri.service.notify.repo.entity.Notify;
+import com.mingri.service.notify.repo.mapper.NotifyMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

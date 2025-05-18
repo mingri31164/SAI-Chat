@@ -1,8 +1,8 @@
-package com.mingri.service.chat.service;
+package com.mingri.service.notify.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.service.chat.repo.entity.Notify;
+import com.mingri.service.notify.repo.entity.Notify;
 
 
 /**

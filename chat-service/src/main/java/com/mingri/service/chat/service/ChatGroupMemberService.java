@@ -4,7 +4,7 @@ package com.mingri.service.chat.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mingri.service.chat.repo.dto.MemberListDto;
 import com.mingri.service.chat.repo.entity.ChatGroupMember;
-import com.mingri.service.chat.repo.req.MemberListVo;
+import com.mingri.service.chat.repo.req.chatlist.MemberListVo;
 
 import java.util.List;
 import java.util.Map;

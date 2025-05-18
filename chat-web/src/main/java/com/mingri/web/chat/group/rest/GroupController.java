@@ -4,9 +4,9 @@ import cn.hutool.json.JSONObject;
 import com.mingri.core.annotation.Userid;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.service.chat.repo.dto.GroupListDto;
-import com.mingri.service.chat.repo.req.CreateGroupVo;
-import com.mingri.service.chat.repo.req.DeleteGroupVo;
-import com.mingri.service.chat.repo.req.UpdateGroupVo;
+import com.mingri.service.chat.repo.req.group.CreateGroupVo;
+import com.mingri.service.chat.repo.req.group.DeleteGroupVo;
+import com.mingri.service.chat.repo.req.group.UpdateGroupVo;
 import com.mingri.service.chat.service.GroupService;
 import org.springframework.web.bind.annotation.*;
 

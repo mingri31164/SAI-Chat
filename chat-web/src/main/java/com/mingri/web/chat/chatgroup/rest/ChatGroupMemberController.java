@@ -8,7 +8,7 @@ import com.mingri.core.toolkit.MinioUtil;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.service.chat.repo.dto.MemberListDto;
 import com.mingri.service.chat.repo.entity.ChatGroupMember;
-import com.mingri.service.chat.repo.req.MemberListVo;
+import com.mingri.service.chat.repo.req.chatlist.MemberListVo;
 import com.mingri.service.chat.service.ChatGroupMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
