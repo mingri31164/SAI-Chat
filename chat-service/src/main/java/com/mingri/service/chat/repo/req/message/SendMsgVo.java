@@ -1,6 +1,6 @@
 package com.mingri.service.chat.repo.req.message;
 
-import com.cershy.linyuserver.entity.ext.MsgContent;
+import com.mingri.service.chat.repo.entity.ext.MsgContent;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;

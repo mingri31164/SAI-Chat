@@ -32,4 +32,6 @@ public interface ChatListService extends IService<ChatList> {
 
     void removeByUserId(String userId, String friendId);
 
+    ChatList getChatListByUserIdAndFromId(String userId, String toId);
+
 }

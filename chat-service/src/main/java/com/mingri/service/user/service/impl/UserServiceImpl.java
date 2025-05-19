@@ -247,6 +247,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         update(updateWrapper);
     }
 
+    @Override
+    public List<User> getUserByEmail(String email) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(User::getEmail, email);
+        return list(queryWrapper);
+    }
 
 
     public JSONObject createUserToken(User user, String userIp) {

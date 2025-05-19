@@ -44,5 +44,5 @@ public interface UserService extends IService<User> {
 
     void offline(String userId);
 
-
+    List<User> getUserByEmail(String email);
 }
