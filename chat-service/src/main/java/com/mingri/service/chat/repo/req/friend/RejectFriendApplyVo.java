@@ -4,10 +4,9 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
-/**
- * @author colouredglaze
- * @date 2024/11/23$ 13:08$
- */
+
+
+
 @Data
 public class RejectFriendApplyVo {
 

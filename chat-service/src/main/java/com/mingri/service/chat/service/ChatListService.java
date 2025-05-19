@@ -30,4 +30,6 @@ public interface ChatListService extends IService<ChatList> {
 
     boolean messageReadAll(String userId);
 
+    void removeByUserId(String userId, String friendId);
+
 }

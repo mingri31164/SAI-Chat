@@ -166,5 +166,13 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
         return update(updateWrapper);
     }
 
+    @Override
+    public void removeByUserId(String userId, String friendId) {
+        LambdaQueryWrapper<ChatList> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(ChatList::getUserId, userId)
+                .eq(ChatList::getFromId, friendId);
+        remove(queryWrapper);
+    }
+
 
 }

@@ -26,6 +26,7 @@ import com.mingri.service.user.repo.entity.User;
 import com.mingri.service.user.repo.mapper.UserMapper;
 import com.mingri.service.user.service.UserOperatedService;
 import com.mingri.service.user.service.UserService;
+import com.mingri.service.websocket.WebSocketService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

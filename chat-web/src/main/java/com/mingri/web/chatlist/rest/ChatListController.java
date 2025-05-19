@@ -16,6 +16,7 @@ import com.mingri.service.chat.repo.req.chatlist.CreateChatListVo;
 import com.mingri.service.chat.repo.req.chatlist.DeleteChatListVo;
 import com.mingri.service.chat.repo.req.chatlist.DetailChatListVo;
 import com.mingri.service.chat.repo.req.chatlist.TopChatListVo;
+import com.mingri.service.chat.repo.req.friend.SearchVo;
 import com.mingri.service.chat.service.ChatListService;
 import com.mingri.service.chat.service.FriendService;
 import lombok.RequiredArgsConstructor;
