@@ -8,6 +8,7 @@ import com.mingri.service.chat.repo.req.chatGroupNotice.CreateNoticeVo;
 import com.mingri.service.chat.repo.req.chatGroupNotice.DeleteNoticeVo;
 import com.mingri.service.chat.repo.req.chatGroupNotice.NoticeListVo;
 import com.mingri.service.chat.repo.req.chatGroupNotice.UpdateNoticeVo;
+import com.mingri.service.chat.service.ChatGroupNoticeService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
