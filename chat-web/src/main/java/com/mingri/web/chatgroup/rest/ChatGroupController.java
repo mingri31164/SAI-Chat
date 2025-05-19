@@ -1,4 +1,4 @@
-package com.mingri.web.chat.chatgroup.rest;
+package com.mingri.web.chatgroup.rest;
 
 import cn.hutool.json.JSONObject;
 import com.mingri.core.annotation.Userid;

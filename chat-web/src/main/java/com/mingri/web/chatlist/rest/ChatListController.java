@@ -1,4 +1,4 @@
-package com.mingri.web.chat.chatlist.rest;
+package com.mingri.web.chatlist.rest;
 
 
 import cn.hutool.json.JSONObject;
