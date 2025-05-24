@@ -6,11 +6,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mingri.service.chat.repo.dto.TalkContentDto;
 import com.mingri.service.chat.repo.dto.TalkListDto;
 import com.mingri.service.chat.repo.entity.Talk;
+import com.mingri.service.chat.repo.entity.TalkPermission;
 import com.mingri.service.chat.repo.mapper.TalkMapper;
 import com.mingri.service.chat.repo.req.talk.CreateTalkVo;
 import com.mingri.service.chat.repo.req.talk.DeleteTalkVo;
 import com.mingri.service.chat.repo.req.talk.DetailsTalkVo;
 import com.mingri.service.chat.repo.req.talk.TalkListVo;
+import com.mingri.service.chat.service.TalkPermissionService;
 import com.mingri.service.chat.service.TalkService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,8 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements Ta
 
     @Resource
     TalkMapper talkMapper;
+    @Resource
+    TalkPermissionService talkPermissionService;
 
 
     @Override
@@ -49,7 +53,25 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements Ta
         talk.setContent(talkContentDto);
         save(talk);
 
-        // TODO 增加说说查看权限
+        // 说说查看权限
+        List<String> permissions = createTalkVo.getPermission();
+        if (null == permissions || permissions.isEmpty()) {
+            TalkPermission talkPermission = new TalkPermission();
+            talkPermission.setId(IdUtil.randomUUID());
+            talkPermission.setTalkId(talkId);
+            talkPermission.setPermission("all");
+            talkPermissionService.save(talkPermission);
+        } else {
+            List<TalkPermission> talkPermissionList = new ArrayList<>();
+            for (String permission : permissions) {
+                TalkPermission talkPermission = new TalkPermission();
+                talkPermission.setId(IdUtil.randomUUID());
+                talkPermission.setTalkId(talkId);
+                talkPermission.setPermission(permission);
+                talkPermissionList.add(talkPermission);
+            }
+            talkPermissionService.saveBatch(talkPermissionList);
+        }
         return talk;
     }
 
