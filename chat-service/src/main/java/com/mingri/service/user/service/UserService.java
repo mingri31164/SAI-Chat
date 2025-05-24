@@ -7,6 +7,7 @@ import com.mingri.model.vo.user.dto.UserDto;
 import com.mingri.model.vo.user.req.login.LoginReq;
 import com.mingri.model.vo.user.req.login.QrCodeLoginReq;
 import com.mingri.model.vo.user.entity.User;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,4 +46,13 @@ public interface UserService extends IService<User> {
     void offline(String userId);
 
     List<User> getUserByEmail(String email);
+
+    String createThirdPartyUser(MultipartFile portrait, String name);
+
+    boolean updateThirdPartyUser(MultipartFile portrait, String name, String userId);
+
+    boolean deleteThirdPartyUser(String userId);
+
+    boolean allUserOffline();
+
 }

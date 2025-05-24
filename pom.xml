@@ -153,8 +153,6 @@
 
 
 
-
-
             <!--springai-->
             <dependency>
                 <groupId>org.springframework.ai</groupId>
@@ -198,6 +196,7 @@
                 <artifactId>minio</artifactId>
                 <version>${minio.version}</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 

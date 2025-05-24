@@ -1,5 +1,5 @@
 server:
-  port: 8848
+  port: 9200
 
 spring:
   application:
@@ -112,18 +112,12 @@ knife4j:
 #    #开启驼峰命名
 #    map-underscore-to-camel-case: true
 mybatis-plus:
-  type-aliases-package: com.mingri.entity
-  mapper-locations: classpath*:/mapper/**/*.xml
-  global-config:
-    db-config:
-      id-type: auto
-      logic-delete-field: del_flag # 逻辑删除字段名
-      logic-delete-value: 1 # 逻辑已删除值（默认为1）
-      logic-not-delete-value: 0 # 逻辑未删除值（默认为0）
   configuration:
-    # 全局枚举处理器
-    default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+voice:
+  model: "/model/faster-whisper-small/"
+  transitionApi: "http://123.207.210.163:8000/v1/audio/transcriptions"
 
 logging:
   level:

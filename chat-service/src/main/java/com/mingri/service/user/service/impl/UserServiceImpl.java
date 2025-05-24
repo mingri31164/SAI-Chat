@@ -3,6 +3,7 @@ package com.mingri.service.user.service.impl;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -30,6 +31,8 @@ import com.mingri.service.websocket.WebSocketService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -59,6 +62,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     UserOperatedService userOperatedService;
     @Resource
     WebSocketService webSocketService;
+    @Resource
+    MinioUtil minioUtil;
 
 
     @Override
@@ -254,6 +259,62 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return list(queryWrapper);
     }
 
+    @Override
+    @Transactional(rollbackFor = RuntimeException.class)
+    public String createThirdPartyUser(MultipartFile portrait, String name) {
+        String userId = IdUtil.randomUUID();
+        User user = new User();
+        user.setId(userId);
+        user.setName(name);
+        user.setAccount(IdUtil.objectId());
+        String password = RandomUtil.randomString(8);
+        String passwordHash = SecurityUtil.hashPassword(password);
+        user.setStatus(UserStatus.Normal);
+        user.setPassword(passwordHash);
+        user.setBirthday(new Date());
+        user.setRole(UserRole.Third);
+        user.setSex("男");
+        String url;
+        try {
+            url = minioUtil.upload(portrait.getInputStream(), userId + "-portrait"
+                    , portrait.getContentType(), portrait.getSize());
+        } catch (Exception e) {
+            throw new BaseException("头像上传失败~");
+        }
+        user.setPortrait(url);
+        save(user);
+        return userId;
+    }
+
+    @Override
+    @Transactional(rollbackFor = RuntimeException.class)
+    public boolean updateThirdPartyUser(MultipartFile portrait, String name, String userId) {
+        String url;
+        try {
+            url = minioUtil.upload(portrait.getInputStream(), userId + "-portrait"
+                    , portrait.getContentType(), portrait.getSize());
+        } catch (Exception e) {
+            throw new BaseException("头像上传失败~");
+        }
+        url += "?t=" + System.currentTimeMillis();
+        User user = getById(userId);
+        user.setPortrait(url);
+        user.setName(name);
+        return updateById(user);
+    }
+
+    @Override
+    @Transactional(rollbackFor = RuntimeException.class)
+    public boolean deleteThirdPartyUser(String userId) {
+        return removeById(userId);
+    }
+
+    @Override
+    public boolean allUserOffline() {
+        LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.set(User::getIsOnline, false);
+        return update(updateWrapper);
+    }
 
     public JSONObject createUserToken(User user, String userIp) {
         JSONObject userinfo = new JSONObject();

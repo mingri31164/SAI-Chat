@@ -31,8 +31,6 @@ public class NotifyServiceImpl extends ServiceImpl<NotifyMapper, Notify> impleme
     @Resource
     NotifyMapper notifyMapper;
     @Resource
-    FriendService friendService;
-    @Resource
     WebSocketService webSocketService;
 
 
@@ -52,11 +50,13 @@ public class NotifyServiceImpl extends ServiceImpl<NotifyMapper, Notify> impleme
 
     @Override
     public boolean friendApplyNotify(String userId, FriendApplyNotifyReq friendApplyNotifyReq) {
-        if (friendService.isFriend(userId, friendApplyNotifyReq.getUserId())) {
-            throw new BaseException("ta已是您的好友");
-        }
-        LambdaQueryWrapper<Notify> queryWrapper = new LambdaQueryWrapper<>();
+        // TODO 在不引起循环依赖的前提下调用friendService
+//        if (friendService.isFriend(userId, friendApplyNotifyReq.getUserId())) {
+//            throw new BaseException("ta已是您的好友");
+//        }
+
         // TODO 重复申请处理
+//        LambdaQueryWrapper<Notify> queryWrapper = new LambdaQueryWrapper<>();
 //        queryWrapper.eq(Notify::getFromId, userId)
 //                .eq(Notify::getToId, friendApplyNotifyVo.getUserId())
 //                .eq(Notify::getType, NotifyType.Friend_Apply);

@@ -3,7 +3,7 @@ mingri:
     master:
       host: 127.0.0.1
       port: 3306 #3339
-      database: chatroom
+      database: mini-chat
       username: root
       password: 123456
     slave:
@@ -25,14 +25,14 @@ mingri:
     user: 3116430062@qq.com
     expireTime: 180 #3分钟
   minio:
-    endpoint: 127.0.0.1:9000
+    endpoint: http://127.0.0.1:9000
     bucketName: chat
     fileBucketName: file
     accessKey:
     secretKey:
   rocketmq:
-    enabled: false
-    name-server: 117.72.48.167:9876
+    enabled: true
+    name-server: 127.0.0.1:9876
     group: mingri_group
   jwt:
     secret-key: csd_admin
