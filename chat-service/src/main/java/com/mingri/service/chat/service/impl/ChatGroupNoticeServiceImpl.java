@@ -5,13 +5,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mingri.model.exception.BaseException;
-import com.mingri.service.chat.repo.entity.ChatGroup;
-import com.mingri.service.chat.repo.entity.ChatGroupNotice;
+import com.mingri.model.vo.chat.chatgroup.entity.ChatGroup;
+import com.mingri.model.vo.chat.chatgroup.entity.ChatGroupNotice;
 import com.mingri.service.chat.repo.mapper.ChatGroupNoticeMapper;
-import com.mingri.service.chat.repo.req.chatGroupNotice.CreateNoticeVo;
-import com.mingri.service.chat.repo.req.chatGroupNotice.DeleteNoticeVo;
-import com.mingri.service.chat.repo.req.chatGroupNotice.NoticeListVo;
-import com.mingri.service.chat.repo.req.chatGroupNotice.UpdateNoticeVo;
+import com.mingri.model.vo.chat.chatgroup.req.CreateNoticeReq;
+import com.mingri.model.vo.chat.chatgroup.req.DeleteNoticeReq;
+import com.mingri.model.vo.chat.chatgroup.req.NoticeListReq;
+import com.mingri.model.vo.chat.chatgroup.req.UpdateNoticeReq;
 import com.mingri.service.chat.service.ChatGroupMemberService;
 import com.mingri.service.chat.service.ChatGroupNoticeService;
 import com.mingri.service.chat.service.ChatGroupService;
@@ -37,7 +37,7 @@ public class ChatGroupNoticeServiceImpl extends ServiceImpl<ChatGroupNoticeMappe
     ChatGroupService chatGroupService;
 
     @Override
-    public List<ChatGroupNotice> noticeList(String userId, NoticeListVo noticeListVo) {
+    public List<ChatGroupNotice> noticeList(String userId, NoticeListReq noticeListVo) {
         boolean isMemberExists = chatGroupMemberService.isMemberExists(noticeListVo.getGroupId(), userId);
         if (!isMemberExists)
             throw new BaseException("非该群成员~");
@@ -47,7 +47,7 @@ public class ChatGroupNoticeServiceImpl extends ServiceImpl<ChatGroupNoticeMappe
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public boolean createNotice(String userId, CreateNoticeVo createNoticeVo) {
+    public boolean createNotice(String userId, CreateNoticeReq createNoticeVo) {
         ChatGroup chatGroup = chatGroupService.getById(createNoticeVo.getGroupId());
         if (!chatGroup.getOwnerUserId().equals(userId))
             throw new BaseException("您不是群主~");
@@ -63,7 +63,7 @@ public class ChatGroupNoticeServiceImpl extends ServiceImpl<ChatGroupNoticeMappe
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public boolean deleteNotice(String userId, DeleteNoticeVo deleteNoticeVo) {
+    public boolean deleteNotice(String userId, DeleteNoticeReq deleteNoticeVo) {
         ChatGroup chatGroup = chatGroupService.getById(deleteNoticeVo.getGroupId());
         if (!chatGroup.getOwnerUserId().equals(userId))
             throw new BaseException("您不是群主~");
@@ -83,7 +83,7 @@ public class ChatGroupNoticeServiceImpl extends ServiceImpl<ChatGroupNoticeMappe
     }
 
     @Override
-    public boolean updateNotice(String userId, UpdateNoticeVo updateNoticeVo) {
+    public boolean updateNotice(String userId, UpdateNoticeReq updateNoticeVo) {
         ChatGroup chatGroup = chatGroupService.getById(updateNoticeVo.getGroupId());
         if (!chatGroup.getOwnerUserId().equals(userId))
             throw new BaseException("您不是群主~");

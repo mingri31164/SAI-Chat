@@ -8,13 +8,13 @@ import com.mingri.core.toolkit.MinioUtil;
 import com.mingri.core.toolkit.RedisUtils;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.model.constant.MsgType;
-import com.mingri.service.chat.repo.entity.Message;
-import com.mingri.service.chat.repo.entity.MessageRetraction;
-import com.mingri.service.chat.repo.entity.ext.MsgContent;
-import com.mingri.service.chat.repo.req.SendMsgVo;
-import com.mingri.service.chat.repo.req.message.MessageRecordVo;
-import com.mingri.service.chat.repo.req.message.ReeditMsgVo;
-import com.mingri.service.chat.repo.req.message.RetractionMsgVo;
+import com.mingri.model.vo.chat.message.entity.Message;
+import com.mingri.model.vo.chat.message.entity.MessageRetraction;
+import com.mingri.model.vo.chat.message.dto.MsgContent;
+import com.mingri.model.vo.chat.message.req.MessageRecordReq;
+import com.mingri.model.vo.chat.message.req.ReeditMsgReq;
+import com.mingri.model.vo.chat.message.req.RetractionMsgReq;
+import com.mingri.model.vo.chat.message.req.SendMsgReq;
 import com.mingri.service.chat.service.MessageService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -54,8 +54,8 @@ public class MessageController {
      * @return
      */
     @PostMapping("/send")
-    public JSONObject sendMessage(@Userid String userId, @UserRole String role, @RequestBody SendMsgVo sendMsgVo) {
-        Message result = messageService.sendMessage(userId, role, sendMsgVo, MsgType.User);
+    public JSONObject sendMessage(@Userid String userId, @UserRole String role, @RequestBody SendMsgReq sendMsgReq) {
+        Message result = messageService.sendMessage(userId, role, sendMsgReq, MsgType.User);
         return ResultUtil.Succeed(result);
     }
 
@@ -65,8 +65,8 @@ public class MessageController {
      * @return
      */
     @PostMapping("/retraction")
-    public JSONObject retractionMsg(@Userid String userId, @RequestBody RetractionMsgVo retractionMsgVo) {
-        Message result = messageService.retractionMsg(userId, retractionMsgVo);
+    public JSONObject retractionMsg(@Userid String userId, @RequestBody RetractionMsgReq retractionMsgReq) {
+        Message result = messageService.retractionMsg(userId, retractionMsgReq);
         return ResultUtil.Succeed(result);
     }
 
@@ -76,8 +76,8 @@ public class MessageController {
      * @return
      */
     @PostMapping("/reedit")
-    public JSONObject reeditMsg(@Userid String userId, @RequestBody ReeditMsgVo reeditMsgVo) {
-        MessageRetraction result = messageService.reeditMsg(userId, reeditMsgVo);
+    public JSONObject reeditMsg(@Userid String userId, @RequestBody ReeditMsgReq reeditMsgReq) {
+        MessageRetraction result = messageService.reeditMsg(userId, reeditMsgReq);
         return ResultUtil.Succeed(result);
     }
 
@@ -87,8 +87,8 @@ public class MessageController {
      * @return
      */
     @PostMapping("/record")
-    public JSONObject messageRecord(@Userid String userId, @RequestBody MessageRecordVo messageRecordVo) {
-        List<Message> result = messageService.messageRecord(userId, messageRecordVo);
+    public JSONObject messageRecord(@Userid String userId, @RequestBody MessageRecordReq messageRecordReq) {
+        List<Message> result = messageService.messageRecord(userId, messageRecordReq);
         return ResultUtil.Succeed(result);
     }
 
@@ -98,8 +98,8 @@ public class MessageController {
      * @return
      */
     @PostMapping("/record/desc")
-    public JSONObject messageRecordDesc(@Userid String userId, @RequestBody MessageRecordVo messageRecordVo) {
-        List<Message> result = messageService.messageRecordDesc(userId, messageRecordVo);
+    public JSONObject messageRecordDesc(@Userid String userId, @RequestBody MessageRecordReq messageRecordReq) {
+        List<Message> result = messageService.messageRecordDesc(userId, messageRecordReq);
         return ResultUtil.Succeed(result);
     }
 

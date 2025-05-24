@@ -8,14 +8,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mingri.model.constant.FriendApplyStatus;
 import com.mingri.model.constant.NotifyType;
 import com.mingri.model.exception.BaseException;
-import com.mingri.service.chat.repo.dto.FriendNotifyDto;
-import com.mingri.service.chat.repo.dto.SystemNotifyDto;
-import com.mingri.service.chat.repo.req.notify.FriendApplyNotifyVo;
-import com.mingri.service.chat.repo.req.notify.ReadNotifyVo;
+import com.mingri.model.vo.chat.friend.dto.FriendNotifyDto;
+import com.mingri.model.vo.notify.dto.SystemNotifyDto;
+import com.mingri.model.vo.notify.req.FriendApplyNotifyReq;
+import com.mingri.model.vo.notify.req.ReadNotifyReq;
 import com.mingri.service.chat.service.FriendService;
-import com.mingri.service.notify.repo.entity.Notify;
+import com.mingri.model.vo.notify.entity.Notify;
 import com.mingri.service.notify.repo.mapper.NotifyMapper;
-import com.mingri.service.notify.repo.req.DeleteNotifyVo;
+import com.mingri.model.vo.notify.req.DeleteNotifyReq;
 import com.mingri.service.websocket.WebSocketService;
 import org.springframework.stereotype.Service;
 
@@ -51,8 +51,8 @@ public class NotifyServiceImpl extends ServiceImpl<NotifyMapper, Notify> impleme
     }
 
     @Override
-    public boolean friendApplyNotify(String userId, FriendApplyNotifyVo friendApplyNotifyVo) {
-        if (friendService.isFriend(userId, friendApplyNotifyVo.getUserId())) {
+    public boolean friendApplyNotify(String userId, FriendApplyNotifyReq friendApplyNotifyReq) {
+        if (friendService.isFriend(userId, friendApplyNotifyReq.getUserId())) {
             throw new BaseException("ta已是您的好友");
         }
         LambdaQueryWrapper<Notify> queryWrapper = new LambdaQueryWrapper<>();
@@ -66,12 +66,12 @@ public class NotifyServiceImpl extends ServiceImpl<NotifyMapper, Notify> impleme
         Notify notify = new Notify();
         notify.setId(IdUtil.randomUUID());
         notify.setFromId(userId);
-        notify.setToId(friendApplyNotifyVo.getUserId());
+        notify.setToId(friendApplyNotifyReq.getUserId());
         notify.setType(NotifyType.Friend_Apply);
         notify.setStatus(FriendApplyStatus.Wait);
-        notify.setContent(friendApplyNotifyVo.getContent());
-        notify.setUnreadId(friendApplyNotifyVo.getUserId());
-        webSocketService.sendNotifyToUser(notify, friendApplyNotifyVo.getUserId());
+        notify.setContent(friendApplyNotifyReq.getContent());
+        notify.setUnreadId(friendApplyNotifyReq.getUserId());
+        webSocketService.sendNotifyToUser(notify, friendApplyNotifyReq.getUserId());
         return save(notify);
     }
 
@@ -82,11 +82,11 @@ public class NotifyServiceImpl extends ServiceImpl<NotifyMapper, Notify> impleme
     }
 
     @Override
-    public boolean readNotify(String userId, ReadNotifyVo readNotifyVo) {
+    public boolean readNotify(String userId, ReadNotifyReq readNotifyReq) {
         LambdaUpdateWrapper<Notify> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.set(Notify::getUnreadId, "")
                 .eq(Notify::getUnreadId, userId)
-                .eq(Notify::getType, readNotifyVo.getNotifyType());
+                .eq(Notify::getType, readNotifyReq.getNotifyType());
         return update(updateWrapper);
     }
 
@@ -97,8 +97,8 @@ public class NotifyServiceImpl extends ServiceImpl<NotifyMapper, Notify> impleme
     }
 
     @Override
-    public boolean deleteNotify(DeleteNotifyVo deleteNotifyVo) {
-        return removeById(deleteNotifyVo.getNotifyId());
+    public boolean deleteNotify(DeleteNotifyReq deleteNotifyReq) {
+        return removeById(deleteNotifyReq.getNotifyId());
     }
 
     @Override

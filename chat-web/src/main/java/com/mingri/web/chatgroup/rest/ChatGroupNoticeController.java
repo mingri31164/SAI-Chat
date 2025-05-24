@@ -3,11 +3,11 @@ package com.mingri.web.chatgroup.rest;
 import cn.hutool.json.JSONObject;
 import com.mingri.core.annotation.Userid;
 import com.mingri.core.toolkit.ResultUtil;
-import com.mingri.service.chat.repo.entity.ChatGroupNotice;
-import com.mingri.service.chat.repo.req.chatGroupNotice.CreateNoticeVo;
-import com.mingri.service.chat.repo.req.chatGroupNotice.DeleteNoticeVo;
-import com.mingri.service.chat.repo.req.chatGroupNotice.NoticeListVo;
-import com.mingri.service.chat.repo.req.chatGroupNotice.UpdateNoticeVo;
+import com.mingri.model.vo.chat.chatgroup.entity.ChatGroupNotice;
+import com.mingri.model.vo.chat.chatgroup.req.CreateNoticeReq;
+import com.mingri.model.vo.chat.chatgroup.req.DeleteNoticeReq;
+import com.mingri.model.vo.chat.chatgroup.req.NoticeListReq;
+import com.mingri.model.vo.chat.chatgroup.req.UpdateNoticeReq;
 import com.mingri.service.chat.service.ChatGroupNoticeService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +31,7 @@ public class ChatGroupNoticeController {
      * @return
      */
     @PostMapping("/create")
-    public JSONObject createNotice(@Userid String userId, @RequestBody CreateNoticeVo createNoticeVo) {
+    public JSONObject createNotice(@Userid String userId, @RequestBody CreateNoticeReq createNoticeVo) {
         boolean result = chatGroupNoticeService.createNotice(userId, createNoticeVo);
         return ResultUtil.ResultByFlag(result);
     }
@@ -42,7 +42,7 @@ public class ChatGroupNoticeController {
      * @return
      */
     @PostMapping("/list")
-    public JSONObject noticeList(@Userid String userId, @RequestBody NoticeListVo noticeListVo) {
+    public JSONObject noticeList(@Userid String userId, @RequestBody NoticeListReq noticeListVo) {
         List<ChatGroupNotice> result = chatGroupNoticeService.noticeList(userId, noticeListVo);
         return ResultUtil.Succeed(result);
     }
@@ -53,7 +53,7 @@ public class ChatGroupNoticeController {
      * @return
      */
     @PostMapping("/delete")
-    public JSONObject deleteNotice(@Userid String userId, @RequestBody DeleteNoticeVo deleteNoticeVo) {
+    public JSONObject deleteNotice(@Userid String userId, @RequestBody DeleteNoticeReq deleteNoticeVo) {
         boolean result = chatGroupNoticeService.deleteNotice(userId, deleteNoticeVo);
         return ResultUtil.ResultByFlag(result);
     }
@@ -65,7 +65,7 @@ public class ChatGroupNoticeController {
      * @return
      */
     @PostMapping("/update")
-    public JSONObject updateNotice(@Userid String userId, @RequestBody UpdateNoticeVo updateNoticeVo) {
+    public JSONObject updateNotice(@Userid String userId, @RequestBody UpdateNoticeReq updateNoticeVo) {
         boolean result = chatGroupNoticeService.updateNotice(userId, updateNoticeVo);
         return ResultUtil.ResultByFlag(result);
     }

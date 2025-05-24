@@ -14,21 +14,21 @@ import com.mingri.model.constant.MessageContentType;
 import com.mingri.model.constant.MsgSource;
 import com.mingri.model.constant.MsgType;
 import com.mingri.model.exception.BaseException;
-import com.mingri.service.chat.repo.dto.FriendDetailsDto;
-import com.mingri.service.chat.repo.dto.Top10MsgDto;
-import com.mingri.service.chat.repo.entity.ChatList;
-import com.mingri.service.chat.repo.entity.Message;
-import com.mingri.service.chat.repo.entity.MessageRetraction;
-import com.mingri.service.chat.repo.entity.ext.MsgContent;
+import com.mingri.model.vo.chat.friend.dto.FriendDetailsDto;
+import com.mingri.model.vo.chat.message.dto.Top10MsgDto;
+import com.mingri.model.vo.chat.chatlist.entity.ChatList;
+import com.mingri.model.vo.chat.message.entity.Message;
+import com.mingri.model.vo.chat.message.entity.MessageRetraction;
+import com.mingri.model.vo.chat.message.dto.MsgContent;
+import com.mingri.model.vo.chat.message.req.SendMsgReq;
 import com.mingri.service.chat.repo.mapper.MessageMapper;
-import com.mingri.service.chat.repo.req.SendMsgVo;
-import com.mingri.service.chat.repo.req.expose.ThirdSendMsgVo;
-import com.mingri.service.chat.repo.req.message.MessageRecordVo;
-import com.mingri.service.chat.repo.req.message.ReeditMsgVo;
-import com.mingri.service.chat.repo.req.message.RetractionMsgVo;
+import com.mingri.model.vo.chat.message.req.expose.ThirdsendMsgReq;
+import com.mingri.model.vo.chat.message.req.MessageRecordReq;
+import com.mingri.model.vo.chat.message.req.ReeditMsgReq;
+import com.mingri.model.vo.chat.message.req.RetractionMsgReq;
 import com.mingri.service.chat.service.*;
 import com.mingri.service.rocketmq.MQProducerService;
-import com.mingri.service.user.repo.entity.User;
+import com.mingri.model.vo.user.entity.User;
 import com.mingri.service.user.service.UserService;
 import com.mingri.service.websocket.WebSocketService;
 import lombok.extern.slf4j.Slf4j;
@@ -101,7 +101,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     }
 
     /**
-     * 当没有sendMsgVo时，使用此方法发送消息
+     * 当没有sendMsgReq时，使用此方法发送消息
      */
     public Message sendMessage(String userId, String toUserId, MsgContent msgContent, String source, String type) {
         Message message = getMessage(userId, msgContent, source, type, toUserId);
@@ -111,27 +111,27 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     }
 
     /**
-     * 发送消息，通过sendMsgVo判断是否为转发消息
+     * 发送消息，通过sendMsgReq判断是否为转发消息
      */
-    public Message sendMessage(String userId, SendMsgVo sendMsgVo, MsgContent msgContent , String source, String type) {
-        final String toUserId = sendMsgVo.getToUserId();
+    public Message sendMessage(String userId, SendMsgReq sendMsgReq, MsgContent msgContent , String source, String type) {
+        final String toUserId = sendMsgReq.getToUserId();
         //获取上一条显示时间的消息
         Message message = getMessage(userId, msgContent, source, type, toUserId);
-        if (null != sendMsgVo.getIsForward() && sendMsgVo.getIsForward())
-            message.setFromForwardMsgId(sendMsgVo.getFromMsgId());
+        if (null != sendMsgReq.getIsForward() && sendMsgReq.getIsForward())
+            message.setFromForwardMsgId(sendMsgReq.getFromMsgId());
         boolean isSave = save(message);
         if (isSave) return message;
         return null;
     }
 
-    public Message sendMessageToUser(String userId, SendMsgVo sendMsgVo, String type) {
+    public Message sendMessageToUser(String userId, SendMsgReq sendMsgReq, String type) {
         //验证是否是好友
-        boolean isFriend = friendService.isFriendIgnoreSpecial(userId, sendMsgVo.getToUserId());
+        boolean isFriend = friendService.isFriendIgnoreSpecial(userId, sendMsgReq.getToUserId());
         if (!isFriend) throw new BaseException("双方非好友");
-        Message message = sendMessage(userId, sendMsgVo,sendMsgVo.getMsgContent(), MsgSource.User, type);
+        Message message = sendMessage(userId, sendMsgReq,sendMsgReq.getMsgContent(), MsgSource.User, type);
         MsgContent msgContent = message.getMsgContent();
         // TODO 获取好友信息
-        FriendDetailsDto friendDetails = friendService.getFriendDetails(sendMsgVo.getToUserId(), userId);
+        FriendDetailsDto friendDetails = friendService.getFriendDetails(sendMsgReq.getToUserId(), userId);
         msgContent.setFormUserId(userId);
         msgContent.setFormUserName(StringUtils.isNotBlank(friendDetails.getRemark())
                 ? friendDetails.getRemark() : friendDetails.getName());
@@ -148,13 +148,13 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
 
     }
 
-    public Message sendMessageToGroup(String userId, SendMsgVo sendMsgVo, String type) {
+    public Message sendMessageToGroup(String userId, SendMsgReq sendMsgReq, String type) {
         //获取发送方用户信息
         User user = userService.getById(userId);
-        MsgContent msgContent = sendMsgVo.getMsgContent();
+        MsgContent msgContent = sendMsgReq.getMsgContent();
         msgContent.setFormUserName(user.getName());
         msgContent.setFormUserPortrait(user.getPortrait());
-        Message message = sendMessage(userId, sendMsgVo, msgContent, MsgSource.Group, type);
+        Message message = sendMessage(userId, sendMsgReq, msgContent, MsgSource.Group, type);
         // TODO 更新聊天列表
 //        chatListService.updateChatListGroup(message.getToId(), message.getMsgContent());
         try {
@@ -167,25 +167,25 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     }
 
     @Override
-    public Message sendMessage(String userId, String role, SendMsgVo sendMsgVo, String type) {
-        if (MsgSource.Group.equals(sendMsgVo.getSource())) {
-            return sendMessageToGroup(userId, sendMsgVo, type);
+    public Message sendMessage(String userId, String role, SendMsgReq sendMsgReq, String type) {
+        if (MsgSource.Group.equals(sendMsgReq.getSource())) {
+            return sendMessageToGroup(userId, sendMsgReq, type);
         } else {
-            return sendMessageToUser(userId, sendMsgVo, type);
+            return sendMessageToUser(userId, sendMsgReq, type);
         }
     }
 
     @Override
-    public List<Message> messageRecord(String userId, MessageRecordVo messageRecordVo) {
-        List<Message> messages = messageMapper.messageRecord(userId, messageRecordVo.getTargetId(),
-                messageRecordVo.getIndex(), messageRecordVo.getNum());
+    public List<Message> messageRecord(String userId, MessageRecordReq messageRecordReq) {
+        List<Message> messages = messageMapper.messageRecord(userId, messageRecordReq.getTargetId(),
+                messageRecordReq.getIndex(), messageRecordReq.getNum());
         return messages;
     }
 
     @Override
-    public List<Message> messageRecordDesc(String userId, MessageRecordVo messageRecordVo) {
-        List<Message> messages = messageMapper.messageRecordDesc(userId, messageRecordVo.getTargetId(),
-                messageRecordVo.getIndex(), messageRecordVo.getNum());
+    public List<Message> messageRecordDesc(String userId, MessageRecordReq messageRecordReq) {
+        List<Message> messages = messageMapper.messageRecordDesc(userId, messageRecordReq.getTargetId(),
+                messageRecordReq.getIndex(), messageRecordReq.getNum());
         return messages;
     }
 
@@ -221,9 +221,9 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public Message retractionMsg(String userId, RetractionMsgVo retractionMsgVo) {
+    public Message retractionMsg(String userId, RetractionMsgReq retractionMsgReq) {
 
-        Message message = getById(retractionMsgVo.getMsgId());
+        Message message = getById(retractionMsgReq.getMsgId());
         if (null == message)
             throw new BaseException("消息不存在");
         MsgContent msgContent = message.getMsgContent();
@@ -260,15 +260,15 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         if (message.getSource().equals(MsgSource.User))
             webSocketService.sendMsgToUser(message, message.getToId());
         if (message.getSource().equals(MsgSource.Group))
-            webSocketService.sendMsgToGroup(message, retractionMsgVo.getTargetId());
+            webSocketService.sendMsgToGroup(message, retractionMsgReq.getTargetId());
 
         return message;
     }
 
     @Override
-    public MessageRetraction reeditMsg(String userId, ReeditMsgVo reeditMsgVo) {
+    public MessageRetraction reeditMsg(String userId, ReeditMsgReq reeditMsgReq) {
         LambdaQueryWrapper<MessageRetraction> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(MessageRetraction::getMsgId, reeditMsgVo.getMsgId());
+        queryWrapper.eq(MessageRetraction::getMsgId, reeditMsgReq.getMsgId());
         return messageRetractionService.getOne(queryWrapper);
     }
 
@@ -323,20 +323,20 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     }
 
     @Override
-    public boolean thirdPartySendMsg(String userId, ThirdSendMsgVo thirdSendMsgVo) {
+    public boolean thirdPartySendMsg(String userId, ThirdsendMsgReq thirdsendMsgReq) {
         if (userId == null)
             return false;
-        List<User> users = userService.getUserByEmail(thirdSendMsgVo.getEmail());
+        List<User> users = userService.getUserByEmail(thirdsendMsgReq.getEmail());
         for (User user : users) {
             MsgContent msgContent = new MsgContent();
             msgContent.setType(MessageContentType.Text);
-            msgContent.setContent(thirdSendMsgVo.getContent());
+            msgContent.setContent(thirdsendMsgReq.getContent());
 
-            SendMsgVo sendMsgVo = new SendMsgVo();
-            sendMsgVo.setMsgContent(msgContent);
-            sendMsgVo.setToUserId(user.getId());
-            sendMsgVo.setSource(MsgSource.User);
-            sendMessageToUser(userId, sendMsgVo, MsgType.User);
+            SendMsgReq sendMsgReq = new SendMsgReq();
+            sendMsgReq.setMsgContent(msgContent);
+            sendMsgReq.setToUserId(user.getId());
+            sendMsgReq.setSource(MsgSource.User);
+            sendMessageToUser(userId, sendMsgReq, MsgType.User);
         }
         return true;
     }

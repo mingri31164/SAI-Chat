@@ -1,8 +1,8 @@
 package com.mingri.service.chat.repo.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mingri.service.chat.repo.dto.GroupListDto;
-import com.mingri.service.chat.repo.entity.Group;
+import com.mingri.model.vo.chat.group.dto.GroupListDto;
+import com.mingri.model.vo.chat.group.entity.Group;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;

@@ -3,9 +3,9 @@ package com.mingri.service.user.service.impl;
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mingri.model.constant.UserOperatedType;
-import com.mingri.service.user.repo.dto.UserOperatedDto;
-import com.mingri.service.user.repo.req.LoginDetailsVo;
-import com.mingri.service.user.repo.entity.UserOperated;
+import com.mingri.model.vo.user.dto.UserOperatedDto;
+import com.mingri.model.vo.user.req.LoginDetailsReq;
+import com.mingri.model.vo.user.entity.UserOperated;
 import com.mingri.service.user.repo.mapper.UserOperatedMapper;
 import com.mingri.service.user.service.UserOperatedService;
 import org.springframework.stereotype.Service;
@@ -31,8 +31,8 @@ public class UserOperatedServiceImpl extends ServiceImpl<UserOperatedMapper, Use
     }
 
     @Override
-    public List<UserOperatedDto> loginDetails(LoginDetailsVo loginDetailsVo) {
-        List<UserOperatedDto> result = userOperatedMapper.loginDetails(loginDetailsVo.getIndex(), loginDetailsVo.getNum(), loginDetailsVo.getKeyword());
+    public List<UserOperatedDto> loginDetails(LoginDetailsReq loginDetailsReq) {
+        List<UserOperatedDto> result = userOperatedMapper.loginDetails(loginDetailsReq.getIndex(), loginDetailsReq.getNum(), loginDetailsReq.getKeyword());
         return result;
     }
 

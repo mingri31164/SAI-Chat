@@ -7,13 +7,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mingri.model.constant.MsgSource;
 import com.mingri.model.constant.UserRole;
 import com.mingri.model.exception.BaseException;
-import com.mingri.service.chat.repo.dto.ChatListDto;
-import com.mingri.service.chat.repo.entity.ChatList;
+import com.mingri.model.vo.chat.chatlist.dto.ChatListDto;
+import com.mingri.model.vo.chat.chatlist.entity.ChatList;
 import com.mingri.service.chat.repo.mapper.ChatListMapper;
-import com.mingri.service.chat.repo.req.chatlist.CreateChatListVo;
-import com.mingri.service.chat.repo.req.chatlist.DeleteChatListVo;
-import com.mingri.service.chat.repo.req.chatlist.DetailChatListVo;
-import com.mingri.service.chat.repo.req.chatlist.TopChatListVo;
+import com.mingri.model.vo.chat.chatlist.req.CreateChatListReq;
+import com.mingri.model.vo.chat.chatlist.req.DeleteChatListReq;
+import com.mingri.model.vo.chat.chatlist.req.DetailChatListReq;
+import com.mingri.model.vo.chat.chatlist.req.TopChatListReq;
 import com.mingri.service.chat.service.ChatListService;
 import com.mingri.service.chat.service.FriendService;
 import org.springframework.context.annotation.Lazy;
@@ -88,7 +88,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
 
 
     @Override
-    public ChatList createChatList(String userId, String role, CreateChatListVo createChatListVo) {
+    public ChatList createChatList(String userId, String role, CreateChatListReq createChatListVo) {
         ChatList chatList;
         if (MsgSource.User.equals(createChatListVo.getType())) {
             boolean isFriend = friendService.isFriendIgnoreSpecial(userId, createChatListVo.getToId());
@@ -127,7 +127,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
     }
 
     @Override
-    public ChatList detailChartList(String userId, DetailChatListVo detailChatListVo) {
+    public ChatList detailChartList(String userId, DetailChatListReq detailChatListVo) {
         if (MsgSource.Group.equals(detailChatListVo.getType())) {
             return chatListMapper.detailChatGroupList(userId, detailChatListVo.getTargetId());
         } else {
@@ -136,7 +136,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
     }
 
     @Override
-    public boolean deleteChatList(String userId, DeleteChatListVo deleteChatListVo) {
+    public boolean deleteChatList(String userId, DeleteChatListReq deleteChatListVo) {
         LambdaQueryWrapper<ChatList> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(ChatList::getId, deleteChatListVo.getChatListId())
                 .eq(ChatList::getUserId, userId);
@@ -144,7 +144,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
     }
 
     @Override
-    public boolean topChatList(String userId, TopChatListVo topChatListVo) {
+    public boolean topChatList(String userId, TopChatListReq topChatListVo) {
         LambdaUpdateWrapper<ChatList> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.set(ChatList::getIsTop, topChatListVo.isTop())
                 .eq(ChatList::getId, topChatListVo.getChatListId())

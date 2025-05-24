@@ -4,10 +4,10 @@ package com.mingri.web.notify.rest;
 import cn.hutool.json.JSONObject;
 import com.mingri.core.annotation.Userid;
 import com.mingri.core.toolkit.ResultUtil;
-import com.mingri.service.chat.repo.dto.FriendNotifyDto;
-import com.mingri.service.chat.repo.dto.SystemNotifyDto;
-import com.mingri.service.chat.repo.req.notify.FriendApplyNotifyVo;
-import com.mingri.service.chat.repo.req.notify.ReadNotifyVo;
+import com.mingri.model.vo.chat.friend.dto.FriendNotifyDto;
+import com.mingri.model.vo.notify.dto.SystemNotifyDto;
+import com.mingri.model.vo.notify.req.FriendApplyNotifyReq;
+import com.mingri.model.vo.notify.req.ReadNotifyReq;
 import com.mingri.service.notify.service.NotifyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +41,8 @@ public class NotifyController {
      * @return
      */
     @PostMapping("/friend/apply")
-    public JSONObject friendApplyNotify(@Userid String userId, @RequestBody FriendApplyNotifyVo friendApplyNotifyVo) {
-        boolean result = notifyService.friendApplyNotify(userId, friendApplyNotifyVo);
+    public JSONObject friendApplyNotify(@Userid String userId, @RequestBody FriendApplyNotifyReq friendApplyNotifyReq) {
+        boolean result = notifyService.friendApplyNotify(userId, friendApplyNotifyReq);
         return ResultUtil.Succeed(result);
     }
 
@@ -52,8 +52,8 @@ public class NotifyController {
      * @return
      */
     @PostMapping("/read")
-    public JSONObject readNotify(@Userid String userId, @RequestBody ReadNotifyVo readNotifyVo) {
-        boolean result = notifyService.readNotify(userId, readNotifyVo);
+    public JSONObject readNotify(@Userid String userId, @RequestBody ReadNotifyReq readNotifyReq) {
+        boolean result = notifyService.readNotify(userId, readNotifyReq);
         return ResultUtil.Succeed(result);
     }
 

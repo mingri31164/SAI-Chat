@@ -1,8 +1,8 @@
 package com.mingri.service.user.repo.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mingri.service.user.repo.dto.UserDto;
-import com.mingri.service.user.repo.entity.User;
+import com.mingri.model.vo.user.dto.UserDto;
+import com.mingri.model.vo.user.entity.User;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;

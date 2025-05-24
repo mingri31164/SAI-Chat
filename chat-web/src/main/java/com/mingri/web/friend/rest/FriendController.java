@@ -7,10 +7,10 @@ import com.mingri.core.annotation.Userid;
 import com.mingri.core.toolkit.MinioUtil;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.core.toolkit.SecurityUtil;
-import com.mingri.service.chat.repo.dto.FriendDetailsDto;
-import com.mingri.service.chat.repo.dto.FriendListDto;
-import com.mingri.service.chat.repo.entity.Friend;
-import com.mingri.service.chat.repo.req.friend.*;
+import com.mingri.model.vo.chat.friend.req.*;
+import com.mingri.model.vo.chat.friend.dto.FriendDetailsDto;
+import com.mingri.model.vo.chat.friend.dto.FriendListDto;
+import com.mingri.model.vo.chat.friend.entity.Friend;
 import com.mingri.service.chat.service.FriendService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -90,7 +90,7 @@ public class FriendController {
      * @return
      */
     @PostMapping("/search")
-    public JSONObject searchFriends(@Userid String userId, @RequestBody SearchVo searchVo) {
+    public JSONObject searchFriends(@Userid String userId, @RequestBody SearchReq searchVo) {
         List<FriendDetailsDto> result = friendService.searchFriends(userId, searchVo);
         return ResultUtil.Succeed(result);
     }
@@ -101,7 +101,7 @@ public class FriendController {
      * @return
      */
     @PostMapping("/agree")
-    public JSONObject agreeFriendApply(@Userid String userId, @RequestBody AgreeFriendApplyVo agreeFriendApplyVo) {
+    public JSONObject agreeFriendApply(@Userid String userId, @RequestBody AgreeFriendApplyReq agreeFriendApplyVo) {
         boolean result = friendService.agreeFriendApply(userId, agreeFriendApplyVo);
         return ResultUtil.Succeed(result);
     }
@@ -112,7 +112,7 @@ public class FriendController {
      * @return
      */
     @PostMapping("/agree/id")
-    public JSONObject agreeFriendApplyFromId(@Userid String userId, @RequestBody AgreeFriendApplyVo agreeFriendApplyVo) {
+    public JSONObject agreeFriendApplyFromId(@Userid String userId, @RequestBody AgreeFriendApplyReq agreeFriendApplyVo) {
         boolean result = friendService.agreeFriendApply(userId, agreeFriendApplyVo.getFromId());
         return ResultUtil.Succeed(result);
     }
@@ -123,7 +123,7 @@ public class FriendController {
      * @return
      */
     @PostMapping("/reject")
-    public JSONObject refuseFriendApply(@Userid String userId, @RequestBody RejectFriendApplyVo friendApplyVo) {
+    public JSONObject refuseFriendApply(@Userid String userId, @RequestBody RejectFriendApplyReq friendApplyVo) {
         boolean result = friendService.rejectFriendApply(userId, friendApplyVo.getFromId());
         return ResultUtil.Succeed(result);
     }
@@ -135,7 +135,7 @@ public class FriendController {
      * @return
      */
     @PostMapping("/add/qr")
-    public JSONObject addFriendByQr(@Userid String userId, @RequestBody AddFriendByQrVo AddFriendByQrVo) {
+    public JSONObject addFriendByQr(@Userid String userId, @RequestBody AddFriendByQrReq AddFriendByQrVo) {
         String targetId = SecurityUtil.aesDecrypt(AddFriendByQrVo.getQrCode());
         boolean result = friendService.addFriendApply(userId, targetId);
         return ResultUtil.Succeed(result);
@@ -147,7 +147,7 @@ public class FriendController {
      * @return
      */
     @PostMapping("/set/remark")
-    public JSONObject setRemark(@Userid String userId, @RequestBody SetRemarkVo setRemarkVo) {
+    public JSONObject setRemark(@Userid String userId, @RequestBody SetRemarkReq setRemarkVo) {
         boolean result = friendService.setRemark(userId, setRemarkVo);
         return ResultUtil.Succeed(result);
     }
@@ -158,7 +158,7 @@ public class FriendController {
      * @return
      */
     @PostMapping("/set/group")
-    public JSONObject setGroup(@Userid String userId, @RequestBody SetGroupVo setGroupVo) {
+    public JSONObject setGroup(@Userid String userId, @RequestBody SetGroupReq setGroupVo) {
         boolean result = friendService.setGroup(userId, setGroupVo);
         return ResultUtil.Succeed(result);
     }
@@ -169,7 +169,7 @@ public class FriendController {
      * @return
      */
     @PostMapping("/delete")
-    public JSONObject deleteFriend(@Userid String userId, @RequestBody DeleteFriendVo deleteFriendVo) {
+    public JSONObject deleteFriend(@Userid String userId, @RequestBody DeleteFriendReq deleteFriendVo) {
         boolean result = friendService.deleteFriend(userId, deleteFriendVo);
         return ResultUtil.ResultByFlag(result);
     }
@@ -180,7 +180,7 @@ public class FriendController {
      * @return
      */
     @PostMapping("/carefor")
-    public JSONObject careForFriend(@Userid String userId, @RequestBody CareForFriendVo careForFriendVo) {
+    public JSONObject careForFriend(@Userid String userId, @RequestBody CareForFriendReq careForFriendVo) {
         boolean result = friendService.careForFriend(userId, careForFriendVo);
         return ResultUtil.ResultByFlag(result);
     }
@@ -191,8 +191,8 @@ public class FriendController {
      * @return
      */
     @PostMapping("/uncarefor")
-    public JSONObject unCareForFriend(@Userid String userId, @RequestBody UnCareForFriendVo unCareForFriendVo) {
-        boolean result = friendService.unCareForFriend(userId, unCareForFriendVo);
+    public JSONObject unCareForFriend(@Userid String userId, @RequestBody UnCareForFriendReq unCareForFriendReq) {
+        boolean result = friendService.unCareForFriend(userId, unCareForFriendReq);
         return ResultUtil.ResultByFlag(result);
     }
 

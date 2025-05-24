@@ -1,10 +1,10 @@
 package com.mingri.service.chat.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.service.chat.repo.dto.FriendDetailsDto;
-import com.mingri.service.chat.repo.dto.FriendListDto;
-import com.mingri.service.chat.repo.entity.Friend;
-import com.mingri.service.chat.repo.req.friend.*;
+import com.mingri.model.vo.chat.friend.req.*;
+import com.mingri.model.vo.chat.friend.dto.FriendDetailsDto;
+import com.mingri.model.vo.chat.friend.dto.FriendListDto;
+import com.mingri.model.vo.chat.friend.entity.Friend;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface FriendService extends IService<Friend> {
 
     boolean updateGroupId(String userId, String oldGroupId, String newGroupId);
 
-    List<FriendDetailsDto> searchFriends(String userId, SearchVo searchVo);
+    List<FriendDetailsDto> searchFriends(String userId, SearchReq searchVo);
 
     boolean isFriendIgnoreSpecial(String userId, String toId);
 
@@ -26,7 +26,7 @@ public interface FriendService extends IService<Friend> {
 
     FriendDetailsDto getFriendDetails(String userId, String friendId);
 
-    boolean agreeFriendApply(String userId, AgreeFriendApplyVo agreeFriendApplyVo);
+    boolean agreeFriendApply(String userId, AgreeFriendApplyReq agreeFriendApplyVo);
 
     boolean agreeFriendApply(String userId,String fromId);
 
@@ -34,15 +34,15 @@ public interface FriendService extends IService<Friend> {
 
     boolean addFriendApply(String userId, String targetId);
 
-    boolean setRemark(String userId, SetRemarkVo setRemarkVo);
+    boolean setRemark(String userId, SetRemarkReq setRemarkVo);
 
-    boolean setGroup(String userId, SetGroupVo setGroupVo);
+    boolean setGroup(String userId, SetGroupReq setGroupVo);
 
-    boolean deleteFriend(String userId, DeleteFriendVo deleteFriendVo);
+    boolean deleteFriend(String userId, DeleteFriendReq deleteFriendVo);
 
-    boolean careForFriend(String userId, CareForFriendVo careForFriendVo);
+    boolean careForFriend(String userId, CareForFriendReq careForFriendVo);
 
-    boolean unCareForFriend(String userId, UnCareForFriendVo unCareForFriendVo);
+    boolean unCareForFriend(String userId, UnCareForFriendReq unCareForFriendReq);
 
     List<Friend> getFriendListFlat(String userId, String friendInfo);
 

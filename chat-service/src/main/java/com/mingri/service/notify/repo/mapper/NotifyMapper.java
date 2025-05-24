@@ -1,9 +1,9 @@
 package com.mingri.service.notify.repo.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mingri.service.chat.repo.dto.FriendNotifyDto;
-import com.mingri.service.chat.repo.dto.SystemNotifyDto;
-import com.mingri.service.notify.repo.entity.Notify;
+import com.mingri.model.vo.chat.friend.dto.FriendNotifyDto;
+import com.mingri.model.vo.notify.dto.SystemNotifyDto;
+import com.mingri.model.vo.notify.entity.Notify;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 

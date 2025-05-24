@@ -2,9 +2,9 @@ package com.mingri.service.chat.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.service.chat.repo.dto.MemberListDto;
-import com.mingri.service.chat.repo.entity.ChatGroupMember;
-import com.mingri.service.chat.repo.req.chatlist.MemberListVo;
+import com.mingri.model.vo.chat.chatgroup.dto.MemberListDto;
+import com.mingri.model.vo.chat.chatgroup.entity.ChatGroupMember;
+import com.mingri.model.vo.chat.chatlist.req.MemberListReq;
 
 import java.util.List;
 import java.util.Map;
@@ -16,9 +16,9 @@ public interface ChatGroupMemberService extends IService<ChatGroupMember> {
 
     List<ChatGroupMember> getGroupMember(String groupId);
 
-    Map<String, MemberListDto> memberList(String userId, MemberListVo memberListVo);
+    Map<String, MemberListDto> memberList(String userId, MemberListReq memberListVo);
 
-    List<MemberListDto> memberListPage(String userId, MemberListVo memberListVo);
+    List<MemberListDto> memberListPage(String userId, MemberListReq memberListVo);
 
     boolean isMemberExists(String groupId, String userId);
 }

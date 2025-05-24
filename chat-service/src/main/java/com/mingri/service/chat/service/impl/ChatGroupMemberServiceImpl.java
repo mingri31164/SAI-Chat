@@ -2,10 +2,10 @@ package com.mingri.service.chat.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.mingri.service.chat.repo.dto.MemberListDto;
-import com.mingri.service.chat.repo.entity.ChatGroupMember;
+import com.mingri.model.vo.chat.chatgroup.dto.MemberListDto;
+import com.mingri.model.vo.chat.chatgroup.entity.ChatGroupMember;
 import com.mingri.service.chat.repo.mapper.ChatGroupMemberMapper;
-import com.mingri.service.chat.repo.req.chatlist.MemberListVo;
+import com.mingri.model.vo.chat.chatlist.req.MemberListReq;
 import com.mingri.service.chat.service.ChatGroupMemberService;
 import org.springframework.stereotype.Service;
 
@@ -31,13 +31,13 @@ public class ChatGroupMemberServiceImpl extends ServiceImpl<ChatGroupMemberMappe
     }
 
     @Override
-    public Map<String, MemberListDto> memberList(String userId, MemberListVo memberListVo) {
+    public Map<String, MemberListDto> memberList(String userId, MemberListReq memberListVo) {
         List<MemberListDto> result = chatGroupMemberMapper.memberList(userId, memberListVo.getChatGroupId());
         return result.stream().collect(Collectors.toMap(MemberListDto::getUserId, user -> user));
     }
 
     @Override
-    public List<MemberListDto> memberListPage(String userId, MemberListVo memberListVo) {
+    public List<MemberListDto> memberListPage(String userId, MemberListReq memberListVo) {
         List<MemberListDto> result = chatGroupMemberMapper.memberListPage(userId, memberListVo);
         return result;
     }

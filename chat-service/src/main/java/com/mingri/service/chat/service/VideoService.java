@@ -2,7 +2,7 @@ package com.mingri.service.chat.service;
 
 import cn.hutool.json.JSONObject;
 import com.mingri.model.exception.BaseException;
-import com.mingri.service.chat.repo.req.video.*;
+import com.mingri.model.vo.video.*;
 import com.mingri.service.websocket.WebSocketService;
 import org.springframework.stereotype.Service;
 
@@ -17,79 +17,79 @@ public class VideoService {
     @Resource
     WebSocketService webSocketService;
 
-    public boolean offer(String userId, OfferVo offerVo) {
-        boolean isFriend = friendService.isFriendIgnoreSpecial(userId, offerVo.getUserId());
+    public boolean offer(String userId, OfferReq offerReq) {
+        boolean isFriend = friendService.isFriendIgnoreSpecial(userId, offerReq.getUserId());
         if (!isFriend) {
             throw new BaseException("双方非好友");
         }
         JSONObject msg = new JSONObject();
         msg.set("type", "offer");
-        msg.set("desc", offerVo.getDesc());
+        msg.set("desc", offerReq.getDesc());
         msg.set("fromId", userId);
-        webSocketService.sendVideoToUser(msg, offerVo.getUserId());
+        webSocketService.sendVideoToUser(msg, offerReq.getUserId());
         return true;
     }
 
-    public boolean answer(String userId, AnswerVo answerVo) {
-        boolean isFriend = friendService.isFriendIgnoreSpecial(userId, answerVo.getUserId());
+    public boolean answer(String userId, AnswerReq answerReq) {
+        boolean isFriend = friendService.isFriendIgnoreSpecial(userId, answerReq.getUserId());
         if (!isFriend) {
             throw new BaseException("双方非好友");
         }
         JSONObject msg = new JSONObject();
         msg.set("type", "answer");
-        msg.set("desc", answerVo.getDesc());
+        msg.set("desc", answerReq.getDesc());
         msg.set("fromId", userId);
-        webSocketService.sendVideoToUser(msg, answerVo.getUserId());
+        webSocketService.sendVideoToUser(msg, answerReq.getUserId());
         return true;
     }
 
-    public boolean candidate(String userId, CandidateVo candidateVo) {
-        boolean isFriend = friendService.isFriendIgnoreSpecial(userId, candidateVo.getUserId());
+    public boolean candidate(String userId, CandidateReq candidateReq) {
+        boolean isFriend = friendService.isFriendIgnoreSpecial(userId, candidateReq.getUserId());
         if (!isFriend) {
             throw new BaseException("双方非好友");
         }
         JSONObject msg = new JSONObject();
         msg.set("type", "candidate");
-        msg.set("candidate", candidateVo.getCandidate());
+        msg.set("candidate", candidateReq.getCandidate());
         msg.set("fromId", userId);
-        webSocketService.sendVideoToUser(msg, candidateVo.getUserId());
+        webSocketService.sendVideoToUser(msg, candidateReq.getUserId());
         return true;
     }
 
-    public boolean hangup(String userId, HangupVo hangupVo) {
-        boolean isFriend = friendService.isFriendIgnoreSpecial(userId, hangupVo.getUserId());
+    public boolean hangup(String userId, HangupReq hangupReq) {
+        boolean isFriend = friendService.isFriendIgnoreSpecial(userId, hangupReq.getUserId());
         if (!isFriend) {
             throw new BaseException("双方非好友");
         }
         JSONObject msg = new JSONObject();
         msg.set("type", "hangup");
         msg.set("fromId", userId);
-        webSocketService.sendVideoToUser(msg, hangupVo.getUserId());
+        webSocketService.sendVideoToUser(msg, hangupReq.getUserId());
         return true;
     }
 
-    public boolean invite(String userId, InviteVo inviteVo) {
-        boolean isFriend = friendService.isFriendIgnoreSpecial(userId, inviteVo.getUserId());
+    public boolean invite(String userId, InviteReq inviteReq) {
+        boolean isFriend = friendService.isFriendIgnoreSpecial(userId, inviteReq.getUserId());
         if (!isFriend) {
             throw new BaseException("双方非好友");
         }
         JSONObject msg = new JSONObject();
         msg.set("type", "invite");
         msg.set("fromId", userId);
-        msg.set("isOnlyAudio", inviteVo.isOnlyAudio());
-        webSocketService.sendVideoToUser(msg, inviteVo.getUserId());
+        msg.set("isOnlyAudio", inviteReq.isOnlyAudio());
+        webSocketService.sendVideoToUser(msg, inviteReq.getUserId());
         return true;
     }
 
-    public boolean accept(String userId, AcceptVo acceptVo) {
-        boolean isFriend = friendService.isFriendIgnoreSpecial(userId, acceptVo.getUserId());
+    public boolean accept(String userId, AcceptReq acceptReq) {
+        boolean isFriend = friendService.isFriendIgnoreSpecial(userId, acceptReq.getUserId());
         if (!isFriend) {
             throw new BaseException("双方非好友");
         }
         JSONObject msg = new JSONObject();
         msg.set("type", "accept");
         msg.set("fromId", userId);
-        webSocketService.sendVideoToUser(msg, acceptVo.getUserId());
+        webSocketService.sendVideoToUser(msg, acceptReq.getUserId());
         return true;
     }
 }

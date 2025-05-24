@@ -14,15 +14,15 @@ import com.mingri.model.constant.NotifyType;
 import com.mingri.model.constant.UserRole;
 import com.mingri.model.constant.UserStatus;
 import com.mingri.model.exception.BaseException;
-import com.mingri.service.user.repo.dto.UserDto;
-import com.mingri.service.user.repo.dto.login.QrCodeResult;
-import com.mingri.service.user.repo.req.*;
-import com.mingri.service.user.repo.req.login.LoginVo;
-import com.mingri.service.user.repo.req.login.QrCodeLoginVo;
+import com.mingri.model.vo.user.req.*;
+import com.mingri.model.vo.user.dto.UserDto;
+import com.mingri.model.vo.user.dto.login.QrCodeResult;
+import com.mingri.model.vo.user.req.login.LoginReq;
+import com.mingri.model.vo.user.req.login.QrCodeLoginReq;
 import com.mingri.service.chat.service.ChatListService;
 import com.mingri.service.notify.service.NotifyService;
 import com.mingri.service.mail.VerificationCodeService;
-import com.mingri.service.user.repo.entity.User;
+import com.mingri.model.vo.user.entity.User;
 import com.mingri.service.user.repo.mapper.UserMapper;
 import com.mingri.service.user.service.UserOperatedService;
 import com.mingri.service.user.service.UserService;
@@ -62,8 +62,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 
     @Override
-    public List<UserDto> searchUser(SearchUserVo searchUserVo) {
-        List<UserDto> users = userMapper.findUserByInfo(searchUserVo.getUserInfo());
+    public List<UserDto> searchUser(SearchUserReq searchUserReq) {
+        List<UserDto> users = userMapper.findUserByInfo(searchUserReq.getUserInfo());
         return users;
     }
 
@@ -88,19 +88,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public boolean updateUserInfo(String userId, UpdateVo updateVo) {
+    public boolean updateUserInfo(String userId, UpdateReq updateReq) {
         LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.set(User::getName, updateVo.getName())
-                .set(User::getPortrait, updateVo.getPortrait())
-                .set(User::getSex, updateVo.getSex())
-                .set(User::getBirthday, updateVo.getBirthday())
-                .set(User::getSignature, updateVo.getSignature())
+        updateWrapper.set(User::getName, updateReq.getName())
+                .set(User::getPortrait, updateReq.getPortrait())
+                .set(User::getSex, updateReq.getSex())
+                .set(User::getBirthday, updateReq.getBirthday())
+                .set(User::getSignature, updateReq.getSignature())
                 .eq(User::getId, userId);
         return update(updateWrapper);
     }
 
     @Override
-    public boolean updateUserInfo(String userId, UpdatePasswordVo updateVo) {
+    public boolean updateUserInfo(String userId, UpdatePasswordReq updateVo) {
         LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
         String passwordHash = SecurityUtil.hashPassword(updateVo.getConfirmPassword());
         updateWrapper.set(User::getPassword, passwordHash)
@@ -119,49 +119,49 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 
     @Override
-    public boolean register(RegisterVo registerVo) {
+    public boolean register(RegisterReq registerReq) {
         //验证码校验
-        String code = (String) redisUtils.get(registerVo.getEmail());
-        if (code == null || !code.equals(registerVo.getCode())) {
+        String code = (String) redisUtils.get(registerReq.getEmail());
+        if (code == null || !code.equals(registerReq.getCode())) {
             throw new BaseException("验证码错误或者已失效~");
         }
-        redisUtils.del(registerVo.getEmail());
+        redisUtils.del(registerReq.getEmail());
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getAccount, registerVo.getAccount());
+        queryWrapper.eq(User::getAccount, registerReq.getAccount());
         if (count(queryWrapper) > 0) {
             throw new BaseException("账号已存在~");
         }
         User user = new User();
         user.setId(IdUtil.randomUUID());
-        user.setName(registerVo.getUsername());
-        user.setAccount(registerVo.getAccount());
-        String passwordHash = SecurityUtil.hashPassword(registerVo.getPassword());
+        user.setName(registerReq.getUsername());
+        user.setAccount(registerReq.getAccount());
+        String passwordHash = SecurityUtil.hashPassword(registerReq.getPassword());
         user.setStatus(UserStatus.Normal);
         user.setPassword(passwordHash);
         user.setBirthday(new Date());
         user.setSex("男");
-        user.setEmail(registerVo.getEmail());
+        user.setEmail(registerReq.getEmail());
         user.setPortrait(minioConfig.getEndpoint() + "/" + minioConfig.getBucketName() + "/default-portrait.jpg");
         return save(user);
     }
 
     @Override
-    public boolean forget(ForgetVo forgetVo) {
-        User user = getUserByAccount(forgetVo.getAccount());
+    public boolean forget(ForgetReq forgetReq) {
+        User user = getUserByAccount(forgetReq.getAccount());
         if (null == user) throw new BaseException("用户不存在~");
         //验证码校验
         String code = (String) redisUtils.get(user.getEmail());
-        if (code == null || !code.equals(forgetVo.getCode())) {
+        if (code == null || !code.equals(forgetReq.getCode())) {
             throw new BaseException("验证码错误或者已失效~");
         }
         redisUtils.del(user.getEmail());
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getAccount, forgetVo.getAccount())
+        queryWrapper.eq(User::getAccount, forgetReq.getAccount())
                 .eq(User::getEmail, user.getEmail());
 //        User user = new User();
 //        user.setId(IdUtil.randomUUID());
 //        user.setAccount(forgetVo.getAccount());
-        String passwordHash = SecurityUtil.hashPassword(forgetVo.getPassword());
+        String passwordHash = SecurityUtil.hashPassword(forgetReq.getPassword());
 //        user.setStatus(UserStatus.Normal);
         user.setPassword(passwordHash);
 //        user.setBirthday(new Date());
@@ -191,34 +191,34 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public JSONObject validateLogin(LoginVo loginVo, String userIp, boolean isAdmin) {
+    public JSONObject validateLogin(LoginReq loginReq, String userIp, boolean isAdmin) {
         // 获取用户
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.eq(User::getAccount, loginVo.getAccount());
+        queryWrapper.eq(User::getAccount, loginReq.getAccount());
         User user = getOne(queryWrapper);
         if (null == user) {
             return ResultUtil.Fail("用户名或密码错误~");
         }
-        if (!SecurityUtil.verifyPassword(loginVo.getPassword(), user.getPassword())) {
+        if (!SecurityUtil.verifyPassword(loginReq.getPassword(), user.getPassword())) {
             return ResultUtil.Fail("用户名或密码错误~");
         }
         if (isAdmin && !UserRole.Admin.equals(user.getRole())) {
             return ResultUtil.Fail("您非管理员~");
         }
         JSONObject userinfo = createUserToken(user, userIp);
-        user.setOnlineEquipment(loginVo.getOnlineEquipment());
+        user.setOnlineEquipment(loginReq.getOnlineEquipment());
         boolean isSave = updateById(user);
         return isSave?ResultUtil.Succeed(userinfo): ResultUtil.Fail("登录失败~");
     }
 
     @Override
-    public JSONObject validateQrCodeLogin(QrCodeLoginVo qrCodeLoginVo, String userid) {
+    public JSONObject validateQrCodeLogin(QrCodeLoginReq qrCodeLoginReq, String userid) {
         // 获取用户
         User user = getById(userid);
         if (null == user) {
             return ResultUtil.Fail("用户不存在~");
         }
-        String result = (String) redisUtils.get(qrCodeLoginVo.getKey());
+        String result = (String) redisUtils.get(qrCodeLoginReq.getKey());
         if (null == result) {
             return ResultUtil.Fail("二维码已失效~");
         }
@@ -226,7 +226,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         JSONObject userinfo = createUserToken(user, qrCodeResult.getIp());
         qrCodeResult.setStatus("success");
         qrCodeResult.setExtend(userinfo);
-        redisUtils.set(qrCodeLoginVo.getKey(), JSONUtil.toJsonStr(qrCodeResult), 60);
+        redisUtils.set(qrCodeLoginReq.getKey(), JSONUtil.toJsonStr(qrCodeResult), 60);
         return ResultUtil.Succeed();
     }
 

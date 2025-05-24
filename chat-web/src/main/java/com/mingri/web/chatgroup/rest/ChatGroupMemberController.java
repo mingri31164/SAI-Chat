@@ -6,9 +6,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.mingri.core.annotation.Userid;
 import com.mingri.core.toolkit.MinioUtil;
 import com.mingri.core.toolkit.ResultUtil;
-import com.mingri.service.chat.repo.dto.MemberListDto;
-import com.mingri.service.chat.repo.entity.ChatGroupMember;
-import com.mingri.service.chat.repo.req.chatlist.MemberListVo;
+import com.mingri.model.vo.chat.chatgroup.dto.MemberListDto;
+import com.mingri.model.vo.chat.chatgroup.entity.ChatGroupMember;
+import com.mingri.model.vo.chat.chatlist.req.MemberListReq;
 import com.mingri.service.chat.service.ChatGroupMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -30,13 +30,13 @@ public class ChatGroupMemberController {
     private final MinioUtil minioUtil;
 
     @PostMapping("/list")
-    public JSONObject memberList(@Userid String userId, @RequestBody MemberListVo memberListVo) {
+    public JSONObject memberList(@Userid String userId, @RequestBody MemberListReq memberListVo) {
         Map<String, MemberListDto> result = chatGroupMemberService.memberList(userId, memberListVo);
         return ResultUtil.Succeed(result);
     }
 
     @PostMapping("/list/page")
-    public JSONObject memberListPage(@Userid String userId, @RequestBody MemberListVo memberListVo) {
+    public JSONObject memberListPage(@Userid String userId, @RequestBody MemberListReq memberListVo) {
         List<MemberListDto> result = chatGroupMemberService.memberListPage(userId, memberListVo);
         return ResultUtil.Succeed(result);
     }

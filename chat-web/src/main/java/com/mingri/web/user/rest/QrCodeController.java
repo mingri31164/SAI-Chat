@@ -8,9 +8,9 @@ import com.mingri.core.annotation.Userid;
 import com.mingri.core.toolkit.RedisUtils;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.model.exception.BaseException;
-import com.mingri.service.user.repo.dto.login.QrCodeResult;
-import com.mingri.service.user.repo.req.login.qr.ResultVo;
-import com.mingri.service.user.repo.req.login.qr.StatusVo;
+import com.mingri.model.vo.user.dto.login.QrCodeResult;
+import com.mingri.model.vo.user.req.login.qr.ResultReq;
+import com.mingri.model.vo.user.req.login.qr.StatusReq;
 import com.mingri.service.user.service.QrCodeService;
 import lombok.extern.slf4j.Slf4j;
 import org.simpleframework.xml.Path;
@@ -38,8 +38,8 @@ public class QrCodeController {
 
     @PostMapping("/code/result")
     @UrlFree
-    public JSONObject result(@RequestBody ResultVo resultVo) {
-        String result = (String) redisUtils.get(resultVo.getKey());
+    public JSONObject result(@RequestBody ResultReq resultReq) {
+        String result = (String) redisUtils.get(resultReq.getKey());
         if (null == result) {
             throw new BaseException("二维码失效~");
         }
@@ -48,18 +48,18 @@ public class QrCodeController {
     }
 
     @GetMapping("/code/status")
-    public JSONObject status(@RequestBody StatusVo statusVo) {
-        String result = (String) redisUtils.get(statusVo.getKey());
+    public JSONObject status(@RequestBody StatusReq statusReq) {
+        String result = (String) redisUtils.get(statusReq.getKey());
         if (null == result) {
             throw new BaseException("二维码失效~");
         }
         QrCodeResult qrCodeResult = JSONUtil.toBean(result, QrCodeResult.class);
         qrCodeResult.setStatus("scan");
-        Long ttl = redisUtils.getExpire(statusVo.getKey());
+        Long ttl = redisUtils.getExpire(statusReq.getKey());
         if (ttl > 0) {
-            redisUtils.set(statusVo.getKey(), JSONUtil.toJsonStr(qrCodeResult), ttl);
+            redisUtils.set(statusReq.getKey(), JSONUtil.toJsonStr(qrCodeResult), ttl);
         } else {
-            redisUtils.set(statusVo.getKey(), JSONUtil.toJsonStr(qrCodeResult));
+            redisUtils.set(statusReq.getKey(), JSONUtil.toJsonStr(qrCodeResult));
         }
         return ResultUtil.Succeed(qrCodeResult);
     }

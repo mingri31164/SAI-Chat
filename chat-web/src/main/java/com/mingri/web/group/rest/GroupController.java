@@ -3,10 +3,10 @@ package com.mingri.web.group.rest;
 import cn.hutool.json.JSONObject;
 import com.mingri.core.annotation.Userid;
 import com.mingri.core.toolkit.ResultUtil;
-import com.mingri.service.chat.repo.dto.GroupListDto;
-import com.mingri.service.chat.repo.req.group.CreateGroupVo;
-import com.mingri.service.chat.repo.req.group.DeleteGroupVo;
-import com.mingri.service.chat.repo.req.group.UpdateGroupVo;
+import com.mingri.model.vo.chat.group.dto.GroupListDto;
+import com.mingri.model.vo.chat.group.req.CreateGroupReq;
+import com.mingri.model.vo.chat.group.req.DeleteGroupReq;
+import com.mingri.model.vo.chat.group.req.UpdateGroupReq;
 import com.mingri.service.chat.service.GroupService;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,20 +22,20 @@ public class GroupController {
     GroupService groupService;
 
     @PostMapping("/create")
-    public JSONObject createGroup(@Userid String userId, @RequestBody CreateGroupVo createGroupVo) {
-        boolean flag = groupService.createGroup(userId, createGroupVo);
+    public JSONObject createGroup(@Userid String userId, @RequestBody CreateGroupReq createGroupReq) {
+        boolean flag = groupService.createGroup(userId, createGroupReq);
         return ResultUtil.ResultByFlag(flag);
     }
 
     @PostMapping("/update")
-    public JSONObject updateGroup(@Userid String userId, @RequestBody UpdateGroupVo updateGroupVo) {
-        boolean flag = groupService.updateGroup(userId, updateGroupVo);
+    public JSONObject updateGroup(@Userid String userId, @RequestBody UpdateGroupReq updateGroupReq) {
+        boolean flag = groupService.updateGroup(userId, updateGroupReq);
         return ResultUtil.ResultByFlag(flag);
     }
 
     @PostMapping("/delete")
-    public JSONObject deleteGroup(@Userid String userId, @RequestBody DeleteGroupVo deleteGroupVo) {
-        boolean flag = groupService.deleteGroup(userId, deleteGroupVo);
+    public JSONObject deleteGroup(@Userid String userId, @RequestBody DeleteGroupReq deleteGroupReq) {
+        boolean flag = groupService.deleteGroup(userId, deleteGroupReq);
         return ResultUtil.ResultByFlag(flag);
     }
 

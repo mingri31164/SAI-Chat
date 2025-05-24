@@ -1,9 +1,9 @@
 package com.mingri.service.chat.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.service.chat.repo.dto.ChatGroupDetailsDto;
-import com.mingri.service.chat.repo.entity.ChatGroup;
-import com.mingri.service.chat.repo.req.chatgroup.*;
+import com.mingri.model.vo.chat.chatgroup.dto.ChatGroupDetailsDto;
+import com.mingri.model.vo.chat.chatgroup.req.*;
+import com.mingri.model.vo.chat.chatgroup.entity.ChatGroup;
 
 import java.util.List;
 
@@ -12,27 +12,27 @@ import java.util.List;
  */
 public interface ChatGroupService extends IService<ChatGroup> {
 
-    boolean createChatGroup(String userId, CreateChatGroupVo createChatGroupVo);
+    boolean createChatGroup(String userId, CreateChatGroupReq createChatGroupVo);
 
     List<ChatGroup> chatGroupList(String userId);
 
-    ChatGroupDetailsDto detailsChatGroup(String userId, DetailsChatGroupVo detailsChatGroupVo);
+    ChatGroupDetailsDto detailsChatGroup(String userId, DetailsChatGroupReq detailsChatGroupVo);
 
     boolean isOwner(String groupId, String userId);
 
     boolean updateGroupPortrait(String groupId, String url);
 
-    boolean updateChatGroupName(String userId, UpdateChatGroupNameVo updateChatGroupNameVo);
+    boolean updateChatGroupName(String userId, UpdateChatGroupNameReq updateChatGroupNameVo);
 
-    boolean updateChatGroup(String userId, UpdateChatGroupVo updateChatGroupVo);
+    boolean updateChatGroup(String userId, UpdateChatGroupReq updateChatGroupVo);
 
-    boolean inviteMember(String userId, InviteMemberVo inviteMemberVo);
+    boolean inviteMember(String userId, InviteMemberReq inviteMemberVo);
 
-    boolean quitChatGroup(String userId, QuitChatGroupVo quitChatGroupVo);
+    boolean quitChatGroup(String userId, QuitChatGroupReq quitChatGroupVo);
 
-    boolean kickChatGroup(String userId, KickChatGroupVo kickChatGroupVo);
+    boolean kickChatGroup(String userId, KickChatGroupReq kickChatGroupVo);
 
-    boolean dissolveChatGroup(String userId, DissolveChatGroupVo dissolveChatGroupVo);
+    boolean dissolveChatGroup(String userId, DissolveChatGroupReq dissolveChatGroupVo);
 
-    boolean transferChatGroup(String userId, TransferChatGroupVo transferChatGroupVo);
+    boolean transferChatGroup(String userId, TransferChatGroupReq transferChatGroupVo);
 }

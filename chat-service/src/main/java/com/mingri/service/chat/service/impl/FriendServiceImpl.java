@@ -8,23 +8,23 @@ import com.mingri.model.constant.FriendApplyStatus;
 import com.mingri.model.constant.NotifyType;
 import com.mingri.model.constant.UserRole;
 import com.mingri.model.exception.BaseException;
-import com.mingri.service.chat.repo.dto.FriendDetailsDto;
-import com.mingri.service.chat.repo.dto.FriendListDto;
-import com.mingri.service.chat.repo.dto.TalkContentDto;
-import com.mingri.service.chat.repo.entity.Friend;
-import com.mingri.service.chat.repo.entity.Group;
-import com.mingri.service.chat.repo.entity.Message;
-import com.mingri.service.chat.repo.entity.ext.MsgContent;
+import com.mingri.model.vo.chat.friend.req.*;
+import com.mingri.model.vo.chat.friend.dto.FriendDetailsDto;
+import com.mingri.model.vo.chat.friend.dto.FriendListDto;
+import com.mingri.model.vo.talk.dto.TalkContentDto;
+import com.mingri.model.vo.chat.friend.entity.Friend;
+import com.mingri.model.vo.chat.group.entity.Group;
+import com.mingri.model.vo.chat.message.entity.Message;
+import com.mingri.model.vo.chat.message.dto.MsgContent;
 import com.mingri.service.chat.repo.mapper.FriendMapper;
-import com.mingri.service.chat.repo.req.friend.*;
 import com.mingri.service.chat.service.ChatListService;
 import com.mingri.service.chat.service.FriendService;
 import com.mingri.service.chat.service.GroupService;
-import com.mingri.service.chat.service.TalkService;
-import com.mingri.service.notify.repo.entity.Notify;
+import com.mingri.service.talk.service.TalkService;
+import com.mingri.model.vo.notify.entity.Notify;
 import com.mingri.service.notify.service.NotifyService;
 import com.mingri.service.rocketmq.MQProducerService;
-import com.mingri.service.user.repo.entity.User;
+import com.mingri.model.vo.user.entity.User;
 import com.mingri.service.user.service.UserService;
 import com.mingri.service.websocket.WebSocketService;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +70,7 @@ public class FriendServiceImpl extends ServiceImpl<FriendMapper, Friend> impleme
     }
 
     @Override
-    public boolean setRemark(String userId, SetRemarkVo setRemarkVo) {
+    public boolean setRemark(String userId, SetRemarkReq setRemarkVo) {
         LambdaUpdateWrapper<Friend> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.set(Friend::getRemark, setRemarkVo.getRemark())
                 .eq(Friend::getFriendId, setRemarkVo.getFriendId())
@@ -79,7 +79,7 @@ public class FriendServiceImpl extends ServiceImpl<FriendMapper, Friend> impleme
     }
 
     @Override
-    public boolean setGroup(String userId, SetGroupVo setGroupVo) {
+    public boolean setGroup(String userId, SetGroupReq setGroupVo) {
         boolean isExist = groupService.IsExistGroupByUserId(userId, setGroupVo.getGroupId());
         if (!isExist) {
             throw new BaseException("分组不存在");
@@ -92,7 +92,7 @@ public class FriendServiceImpl extends ServiceImpl<FriendMapper, Friend> impleme
     }
 
     @Override
-    public boolean deleteFriend(String userId, DeleteFriendVo deleteFriendVo) {
+    public boolean deleteFriend(String userId, DeleteFriendReq deleteFriendVo) {
         LambdaQueryWrapper<Friend> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.or((q) -> q.eq(Friend::getUserId, userId).eq(Friend::getFriendId,
                 deleteFriendVo.getFriendId())).or((q) -> q.eq(Friend::getFriendId, userId).eq(Friend::getUserId,
@@ -109,7 +109,7 @@ public class FriendServiceImpl extends ServiceImpl<FriendMapper, Friend> impleme
     }
 
     @Override
-    public boolean careForFriend(String userId, CareForFriendVo careForFriendVo) {
+    public boolean careForFriend(String userId, CareForFriendReq careForFriendVo) {
         LambdaUpdateWrapper<Friend> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.set(Friend::getIsConcern, true)
                 .eq(Friend::getUserId, userId)
@@ -118,11 +118,11 @@ public class FriendServiceImpl extends ServiceImpl<FriendMapper, Friend> impleme
     }
 
     @Override
-    public boolean unCareForFriend(String userId, UnCareForFriendVo unCareForFriendVo) {
+    public boolean unCareForFriend(String userId, UnCareForFriendReq unCareForFriendReq) {
         LambdaUpdateWrapper<Friend> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.set(Friend::getIsConcern, false)
                 .eq(Friend::getUserId, userId)
-                .eq(Friend::getFriendId, unCareForFriendVo.getFriendId());
+                .eq(Friend::getFriendId, unCareForFriendReq.getFriendId());
         return update(updateWrapper);
     }
 
@@ -137,7 +137,7 @@ public class FriendServiceImpl extends ServiceImpl<FriendMapper, Friend> impleme
     }
 
     @Override
-    public List<FriendDetailsDto> searchFriends(String userId, SearchVo searchVo) {
+    public List<FriendDetailsDto> searchFriends(String userId, SearchReq searchVo) {
         return friendMapper.searchFriends(userId, "%" + searchVo.getSearchInfo() + "%");
     }
 
@@ -217,7 +217,7 @@ public class FriendServiceImpl extends ServiceImpl<FriendMapper, Friend> impleme
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public boolean agreeFriendApply(String userId, AgreeFriendApplyVo agreeFriendApplyVo) {
+    public boolean agreeFriendApply(String userId, AgreeFriendApplyReq agreeFriendApplyVo) {
         //判断申请是否是用户发起
         Notify notify = notifyService.getById(agreeFriendApplyVo.getNotifyId());
         if (null == notify

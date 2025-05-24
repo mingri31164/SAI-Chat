@@ -2,11 +2,11 @@ package com.mingri.service.user.service;
 
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.service.user.repo.dto.UserDto;
-import com.mingri.service.user.repo.req.*;
-import com.mingri.service.user.repo.req.login.LoginVo;
-import com.mingri.service.user.repo.req.login.QrCodeLoginVo;
-import com.mingri.service.user.repo.entity.User;
+import com.mingri.model.vo.user.req.*;
+import com.mingri.model.vo.user.dto.UserDto;
+import com.mingri.model.vo.user.req.login.LoginReq;
+import com.mingri.model.vo.user.req.login.QrCodeLoginReq;
+import com.mingri.model.vo.user.entity.User;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,29 +16,29 @@ import java.util.List;
  */
 public interface UserService extends IService<User> {
 
-    List<UserDto> searchUser(SearchUserVo searchUserVo);
+    List<UserDto> searchUser(SearchUserReq searchUserReq);
 
     HashMap<String, Integer> unreadInfo(String userId);
 
     UserDto info(String userId);
 
-    boolean updateUserInfo(String userId, UpdateVo updateVo);
+    boolean updateUserInfo(String userId, UpdateReq updateReq);
 
-    boolean updateUserInfo(String userId, UpdatePasswordVo updateVo);
+    boolean updateUserInfo(String userId, UpdatePasswordReq updateVo);
 
     boolean updateUserPortrait(String userId, String portrait);
 
-    boolean register(RegisterVo registerVo);
+    boolean register(RegisterReq registerReq);
 
-    boolean forget(ForgetVo forgetVo);
+    boolean forget(ForgetReq forgetReq);
 
     User getUserByAccount(String account);
 
     void emailVerifyByAccount(String account);
 
-    JSONObject validateLogin(LoginVo loginVo, String userIp, boolean b);
+    JSONObject validateLogin(LoginReq loginReq, String userIp, boolean b);
 
-    JSONObject validateQrCodeLogin(QrCodeLoginVo qrCodeLoginVo, String userid);
+    JSONObject validateQrCodeLogin(QrCodeLoginReq qrCodeLoginReq, String userid);
 
     void online(String userId);
 

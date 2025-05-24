@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mingri.model.exception.BaseException;
-import com.mingri.service.chat.repo.dto.GroupListDto;
-import com.mingri.service.chat.repo.req.group.CreateGroupVo;
-import com.mingri.service.chat.repo.req.group.DeleteGroupVo;
-import com.mingri.service.chat.repo.req.group.UpdateGroupVo;
-import com.mingri.service.chat.repo.entity.Group;
+import com.mingri.model.vo.chat.group.dto.GroupListDto;
+import com.mingri.model.vo.chat.group.req.CreateGroupReq;
+import com.mingri.model.vo.chat.group.req.DeleteGroupReq;
+import com.mingri.model.vo.chat.group.req.UpdateGroupReq;
+import com.mingri.model.vo.chat.group.entity.Group;
 import com.mingri.service.chat.repo.mapper.GroupMapper;
 import com.mingri.service.chat.service.FriendService;
 import com.mingri.service.chat.service.GroupService;
@@ -42,37 +42,37 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
     }
 
     @Override
-    public boolean createGroup(String userId, CreateGroupVo createGroupVo) {
-        if (isExistGroupNameByUserId(userId, createGroupVo.getGroupName())) {
+    public boolean createGroup(String userId, CreateGroupReq createGroupReq) {
+        if (isExistGroupNameByUserId(userId, createGroupReq.getGroupName())) {
             throw new BaseException("分组名已存在~");
         }
         Group group = new Group();
         group.setId(IdUtil.randomUUID());
         group.setUserId(userId);
-        group.setName(createGroupVo.getGroupName());
+        group.setName(createGroupReq.getGroupName());
         return save(group);
     }
 
     @Override
-    public boolean updateGroup(String userId, UpdateGroupVo updateGroupVo) {
-        if (isExistGroupNameByUserId(userId, updateGroupVo.getGroupName())) {
+    public boolean updateGroup(String userId, UpdateGroupReq updateGroupReq) {
+        if (isExistGroupNameByUserId(userId, updateGroupReq.getGroupName())) {
             throw new BaseException("分组名已存在~");
         }
         LambdaUpdateWrapper<Group> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.set(Group::getName, updateGroupVo.getGroupName())
+        updateWrapper.set(Group::getName, updateGroupReq.getGroupName())
                 .eq(Group::getUserId, userId)
-                .eq(Group::getId, updateGroupVo.getGroupId());
+                .eq(Group::getId, updateGroupReq.getGroupId());
         return update(updateWrapper);
     }
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public boolean deleteGroup(String userId, DeleteGroupVo deleteGroupVo) {
+    public boolean deleteGroup(String userId, DeleteGroupReq deleteGroupReq) {
         //将该分组下好友设置为未分组
-        friendService.updateGroupId(userId, deleteGroupVo.getGroupId(), "0");
+        friendService.updateGroupId(userId, deleteGroupReq.getGroupId(), "0");
         //删除分组
         LambdaQueryWrapper<Group> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Group::getId, deleteGroupVo.getGroupId())
+        queryWrapper.eq(Group::getId, deleteGroupReq.getGroupId())
                 .eq(Group::getUserId, userId);
         return remove(queryWrapper);
     }

@@ -1,11 +1,11 @@
 package com.mingri.service.chat.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.service.chat.repo.dto.GroupListDto;
-import com.mingri.service.chat.repo.req.group.CreateGroupVo;
-import com.mingri.service.chat.repo.req.group.DeleteGroupVo;
-import com.mingri.service.chat.repo.req.group.UpdateGroupVo;
-import com.mingri.service.chat.repo.entity.Group;
+import com.mingri.model.vo.chat.group.dto.GroupListDto;
+import com.mingri.model.vo.chat.group.req.CreateGroupReq;
+import com.mingri.model.vo.chat.group.req.DeleteGroupReq;
+import com.mingri.model.vo.chat.group.req.UpdateGroupReq;
+import com.mingri.model.vo.chat.group.entity.Group;
 
 import java.util.List;
 
@@ -16,11 +16,11 @@ public interface GroupService extends IService<Group> {
 
     List<Group> getGroupByUserId(String userId);
 
-    boolean createGroup(String userId, CreateGroupVo createGroupVo);
+    boolean createGroup(String userId, CreateGroupReq createGroupReq);
 
-    boolean updateGroup(String userId, UpdateGroupVo updateGroupVo);
+    boolean updateGroup(String userId, UpdateGroupReq updateGroupReq);
 
-    boolean deleteGroup(String userId, DeleteGroupVo deleteGroupVo);
+    boolean deleteGroup(String userId, DeleteGroupReq deleteGroupReq);
 
     List<GroupListDto> getList(String userId);
 

@@ -6,13 +6,13 @@ import cn.hutool.json.JSONObject;
 import com.mingri.core.annotation.Userid;
 import com.mingri.core.toolkit.MinioUtil;
 import com.mingri.core.toolkit.ResultUtil;
-import com.mingri.service.chat.repo.dto.TalkListDto;
-import com.mingri.service.chat.repo.entity.Talk;
-import com.mingri.service.chat.repo.req.talk.CreateTalkVo;
-import com.mingri.service.chat.repo.req.talk.DeleteTalkVo;
-import com.mingri.service.chat.repo.req.talk.DetailsTalkVo;
-import com.mingri.service.chat.repo.req.talk.TalkListVo;
-import com.mingri.service.chat.service.TalkService;
+import com.mingri.model.vo.talk.dto.TalkListDto;
+import com.mingri.model.vo.talk.entity.Talk;
+import com.mingri.model.vo.talk.req.CreateTalkReq;
+import com.mingri.model.vo.talk.req.DeleteTalkReq;
+import com.mingri.model.vo.talk.req.DetailsTalkReq;
+import com.mingri.model.vo.talk.req.TalkListReq;
+import com.mingri.service.talk.service.TalkService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,20 +35,20 @@ public class TalkController {
     MinioUtil minioUtil;
 
     @PostMapping("/list")
-    public JSONObject talkList(@Userid String userId, @RequestBody TalkListVo talkListVo) {
-        List<TalkListDto> result = talkService.talkList(userId, talkListVo);
+    public JSONObject talkList(@Userid String userId, @RequestBody TalkListReq talkListReq) {
+        List<TalkListDto> result = talkService.talkList(userId, talkListReq);
         return ResultUtil.Succeed(result);
     }
 
     @PostMapping("/details")
-    public JSONObject detailsTalk(@Userid String userId, @RequestBody DetailsTalkVo detailsTalkVo) {
-        TalkListDto result = talkService.detailsTalk(userId, detailsTalkVo);
+    public JSONObject detailsTalk(@Userid String userId, @RequestBody DetailsTalkReq detailsTalkReq) {
+        TalkListDto result = talkService.detailsTalk(userId, detailsTalkReq);
         return ResultUtil.Succeed(result);
     }
 
     @PostMapping("/create")
-    public JSONObject createTalk(@Userid String userId, @RequestBody CreateTalkVo createTalkVo) {
-        Talk result = talkService.createTalk(userId, createTalkVo);
+    public JSONObject createTalk(@Userid String userId, @RequestBody CreateTalkReq createTalkReq) {
+        Talk result = talkService.createTalk(userId, createTalkReq);
         return ResultUtil.Succeed(result);
     }
 
@@ -81,8 +81,8 @@ public class TalkController {
     }
 
     @PostMapping("/delete")
-    public JSONObject deleteTalk(@Userid String userId, @RequestBody DeleteTalkVo deleteTalkVo) {
-        boolean result = talkService.deleteTalk(userId, deleteTalkVo);
+    public JSONObject deleteTalk(@Userid String userId, @RequestBody DeleteTalkReq deleteTalkReq) {
+        boolean result = talkService.deleteTalk(userId, deleteTalkReq);
         return ResultUtil.ResultByFlag(result);
     }
 }

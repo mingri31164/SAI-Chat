@@ -6,8 +6,8 @@ import com.mingri.core.annotation.UserIp;
 import com.mingri.core.annotation.Userid;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.core.toolkit.SecurityUtil;
-import com.mingri.service.user.repo.req.login.LoginVo;
-import com.mingri.service.user.repo.req.login.QrCodeLoginVo;
+import com.mingri.model.vo.user.req.login.LoginReq;
+import com.mingri.model.vo.user.req.login.QrCodeLoginReq;
 import com.mingri.service.user.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,16 +34,16 @@ public class LoginController {
 
     @UrlFree
     @PostMapping()
-    public Object login(@Valid @RequestBody LoginVo loginVo, @UserIp String userIp) {
-        String decryptedPassword = SecurityUtil.decryptPassword(loginVo.getPassword());
-        loginVo.setPassword(decryptedPassword);
-        JSONObject result = userService.validateLogin(loginVo, userIp, false);
+    public Object login(@Valid @RequestBody LoginReq loginReq, @UserIp String userIp) {
+        String decryptedPassword = SecurityUtil.decryptPassword(loginReq.getPassword());
+        loginReq.setPassword(decryptedPassword);
+        JSONObject result = userService.validateLogin(loginReq, userIp, false);
         return result;
     }
 
     @PostMapping("/qr")
-    public Object qrCodeLogin(@Valid @RequestBody QrCodeLoginVo qrCodeLoginVo, @Userid String userid) {
-        JSONObject result = userService.validateQrCodeLogin(qrCodeLoginVo, userid);
+    public Object qrCodeLogin(@Valid @RequestBody QrCodeLoginReq qrCodeLoginReq, @Userid String userid) {
+        JSONObject result = userService.validateQrCodeLogin(qrCodeLoginReq, userid);
         return result;
     }
 }

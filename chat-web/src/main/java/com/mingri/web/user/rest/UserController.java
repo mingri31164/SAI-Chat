@@ -9,13 +9,13 @@ import com.mingri.core.toolkit.RedisUtils;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.core.toolkit.SecurityUtil;
 import com.mingri.model.exception.BaseException;
+import com.mingri.model.vo.user.req.*;
 import com.mingri.service.chat.service.FriendService;
 import com.mingri.service.mail.VerificationCodeService;
-import com.mingri.service.mail.repo.EmailVerifyByAccountVo;
-import com.mingri.service.mail.repo.EmailVerifyVo;
-import com.mingri.service.user.repo.dto.UserDto;
-import com.mingri.service.user.repo.entity.User;
-import com.mingri.service.user.repo.req.*;
+import com.mingri.service.mail.repo.EmailVerifyByAccountReq;
+import com.mingri.service.mail.repo.EmailVerifyReq;
+import com.mingri.model.vo.user.dto.UserDto;
+import com.mingri.model.vo.user.entity.User;
 import com.mingri.service.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -58,8 +58,8 @@ public class UserController {
      * 用户查询
      */
     @PostMapping("/search")
-    public JSONObject searchUser(@RequestBody SearchUserVo searchUserVo) {
-        List<UserDto> result = userService.searchUser(searchUserVo);
+    public JSONObject searchUser(@RequestBody SearchUserReq searchUserReq) {
+        List<UserDto> result = userService.searchUser(searchUserReq);
         return ResultUtil.Succeed(result);
     }
 
@@ -77,8 +77,8 @@ public class UserController {
      */
     @PostMapping("/email/verify")
     @UrlFree
-    public JSONObject emailVerify(@RequestBody EmailVerifyVo emailVerifyVo) {
-        verificationCodeService.emailVerificationCode(emailVerifyVo.getEmail());
+    public JSONObject emailVerify(@RequestBody EmailVerifyReq emailVerifyReq) {
+        verificationCodeService.emailVerificationCode(emailVerifyReq.getEmail());
         return ResultUtil.Succeed();
     }
 
@@ -87,8 +87,8 @@ public class UserController {
      */
     @PostMapping("/email/verify/by/account")
     @UrlFree
-    public JSONObject emailVerifyByAccount(@RequestBody EmailVerifyByAccountVo emailVerifyByAccountVo) {
-        userService.emailVerifyByAccount(emailVerifyByAccountVo.getAccount());
+    public JSONObject emailVerifyByAccount(@RequestBody EmailVerifyByAccountReq emailVerifyByAccountReq) {
+        userService.emailVerifyByAccount(emailVerifyByAccountReq.getAccount());
         return ResultUtil.Succeed();
     }
 
@@ -97,10 +97,10 @@ public class UserController {
      */
     @UrlFree
     @PostMapping("/register")
-    public JSONObject register(@RequestBody RegisterVo registerVo) {
-        String decryptedPassword = SecurityUtil.decryptPassword(registerVo.getPassword());
-        registerVo.setPassword(decryptedPassword);
-        boolean result = userService.register(registerVo);
+    public JSONObject register(@RequestBody RegisterReq registerReq) {
+        String decryptedPassword = SecurityUtil.decryptPassword(registerReq.getPassword());
+        registerReq.setPassword(decryptedPassword);
+        boolean result = userService.register(registerReq);
         return ResultUtil.ResultByFlag(result);
     }
 
@@ -109,10 +109,10 @@ public class UserController {
      */
     @UrlFree
     @PostMapping("/forget")
-    public JSONObject forget(@RequestBody ForgetVo forgetVo) {
-        String decryptedPassword = SecurityUtil.decryptPassword(forgetVo.getPassword());
-        forgetVo.setPassword(decryptedPassword);
-        boolean result = userService.forget(forgetVo);
+    public JSONObject forget(@RequestBody ForgetReq forgetReq) {
+        String decryptedPassword = SecurityUtil.decryptPassword(forgetReq.getPassword());
+        forgetReq.setPassword(decryptedPassword);
+        boolean result = userService.forget(forgetReq);
         return ResultUtil.ResultByFlag(result);
     }
 
@@ -129,8 +129,8 @@ public class UserController {
      * 修改当前用户信息
      */
     @PostMapping("/update")
-    public JSONObject update(@Userid String userId, @RequestBody UpdateVo updateVo) {
-        boolean result = userService.updateUserInfo(userId, updateVo);
+    public JSONObject update(@Userid String userId, @RequestBody UpdateReq updateReq) {
+        boolean result = userService.updateUserInfo(userId, updateReq);
         return ResultUtil.ResultByFlag(result);
     }
 
@@ -138,7 +138,7 @@ public class UserController {
      * 修改密码
      */
     @PostMapping("/update/password")
-    public JSONObject updateUserPassword(@Userid String userId, @RequestBody UpdatePasswordVo updateVo) {
+    public JSONObject updateUserPassword(@Userid String userId, @RequestBody UpdatePasswordReq updateVo) {
         String decryptedPassword = SecurityUtil.decryptPassword(updateVo.getConfirmPassword());
         updateVo.setConfirmPassword(decryptedPassword);
         User user = userService.getById(userId);

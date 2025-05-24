@@ -1,7 +1,7 @@
 package com.mingri.service.chat.repo.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mingri.service.chat.repo.entity.ChatGroupNotice;
+import com.mingri.model.vo.chat.chatgroup.entity.ChatGroupNotice;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;

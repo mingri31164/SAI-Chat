@@ -3,15 +3,15 @@ package com.mingri.service.chat.service;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.service.chat.repo.dto.Top10MsgDto;
-import com.mingri.service.chat.repo.entity.Message;
-import com.mingri.service.chat.repo.entity.MessageRetraction;
-import com.mingri.service.chat.repo.entity.ext.MsgContent;
-import com.mingri.service.chat.repo.req.SendMsgVo;
-import com.mingri.service.chat.repo.req.expose.ThirdSendMsgVo;
-import com.mingri.service.chat.repo.req.message.MessageRecordVo;
-import com.mingri.service.chat.repo.req.message.ReeditMsgVo;
-import com.mingri.service.chat.repo.req.message.RetractionMsgVo;
+import com.mingri.model.vo.chat.message.dto.Top10MsgDto;
+import com.mingri.model.vo.chat.message.entity.Message;
+import com.mingri.model.vo.chat.message.entity.MessageRetraction;
+import com.mingri.model.vo.chat.message.dto.MsgContent;
+import com.mingri.model.vo.chat.message.req.SendMsgReq;
+import com.mingri.model.vo.chat.message.req.expose.ThirdsendMsgReq;
+import com.mingri.model.vo.chat.message.req.MessageRecordReq;
+import com.mingri.model.vo.chat.message.req.ReeditMsgReq;
+import com.mingri.model.vo.chat.message.req.RetractionMsgReq;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,11 +23,11 @@ import java.util.List;
  */
 public interface MessageService extends IService<Message> {
 
-    Message sendMessage(String userId, String role, SendMsgVo sendMsgVo, String type);
+    Message sendMessage(String userId, String role, SendMsgReq sendMsgReq, String type);
 
-    List<Message> messageRecord(String userId, MessageRecordVo messageRecordVo);
+    List<Message> messageRecord(String userId, MessageRecordReq messageRecordReq);
 
-    List<Message> messageRecordDesc(String userId, MessageRecordVo messageRecordVo);
+    List<Message> messageRecordDesc(String userId, MessageRecordReq messageRecordReq);
 
     Message sendFileMessageToUser(String userId, String toUserId, JSONObject fileInfo);
 
@@ -35,9 +35,9 @@ public interface MessageService extends IService<Message> {
 
     boolean updateMsgContent(String msgId, MsgContent msgContent);
 
-    Message retractionMsg(String userId, RetractionMsgVo retractionMsgVo);
+    Message retractionMsg(String userId, RetractionMsgReq retractionMsgReq);
 
-    MessageRetraction reeditMsg(String userId, ReeditMsgVo reeditMsgVo);
+    MessageRetraction reeditMsg(String userId, ReeditMsgReq reeditMsgReq);
 
     String sendFileOrImg(String userId, String msgId, InputStream request) throws IOException;
 
@@ -48,6 +48,6 @@ public interface MessageService extends IService<Message> {
 
     List<Top10MsgDto> getTop10Msg(Date date);
 
-    boolean thirdPartySendMsg(String userId, ThirdSendMsgVo sendMsgVo);
+    boolean thirdPartySendMsg(String userId, ThirdsendMsgReq sendMsgReq);
 
 }

@@ -2,12 +2,12 @@ package com.mingri.service.notify.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.service.chat.repo.dto.FriendNotifyDto;
-import com.mingri.service.chat.repo.dto.SystemNotifyDto;
-import com.mingri.service.chat.repo.req.notify.FriendApplyNotifyVo;
-import com.mingri.service.chat.repo.req.notify.ReadNotifyVo;
-import com.mingri.service.notify.repo.entity.Notify;
-import com.mingri.service.notify.repo.req.DeleteNotifyVo;
+import com.mingri.model.vo.chat.friend.dto.FriendNotifyDto;
+import com.mingri.model.vo.notify.dto.SystemNotifyDto;
+import com.mingri.model.vo.notify.req.FriendApplyNotifyReq;
+import com.mingri.model.vo.notify.req.ReadNotifyReq;
+import com.mingri.model.vo.notify.entity.Notify;
+import com.mingri.model.vo.notify.req.DeleteNotifyReq;
 
 import java.util.List;
 
@@ -21,15 +21,15 @@ public interface NotifyService extends IService<Notify> {
 
     int unreadByType(String userId, String type);
 
-    boolean friendApplyNotify(String userId, FriendApplyNotifyVo friendApplyNotifyVo);
+    boolean friendApplyNotify(String userId, FriendApplyNotifyReq friendApplyNotifyReq);
 
     List<FriendNotifyDto> friendListNotify(String userId);
 
-    boolean readNotify(String userId, ReadNotifyVo readNotifyVo);
+    boolean readNotify(String userId, ReadNotifyReq readNotifyReq);
 
     List<SystemNotifyDto> SystemListNotify(String userId);
 
-    boolean deleteNotify(DeleteNotifyVo deleteNotifyVo);
+    boolean deleteNotify(DeleteNotifyReq deleteNotifyReq);
 
     boolean createNotify(String url, String title, String text);
 

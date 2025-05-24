@@ -1,6 +1,6 @@
 package com.mingri.service.rocketmq;
 
-import com.mingri.service.chat.repo.entity.Message;
+import com.mingri.model.vo.chat.message.entity.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;

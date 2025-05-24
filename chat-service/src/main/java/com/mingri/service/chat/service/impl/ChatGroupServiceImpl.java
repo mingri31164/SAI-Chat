@@ -12,22 +12,22 @@ import com.mingri.model.constant.MsgSource;
 import com.mingri.model.constant.MsgType;
 import com.mingri.model.constant.UserRole;
 import com.mingri.model.exception.BaseException;
-import com.mingri.service.chat.repo.dto.ChatGroupDetailsDto;
-import com.mingri.service.chat.repo.dto.SystemMsgDto;
-import com.mingri.service.chat.repo.entity.ChatGroup;
-import com.mingri.service.chat.repo.entity.ChatGroupMember;
-import com.mingri.service.chat.repo.entity.ChatGroupNotice;
-import com.mingri.service.chat.repo.entity.ChatList;
-import com.mingri.service.chat.repo.entity.ext.MsgContent;
+import com.mingri.model.vo.chat.chatgroup.dto.ChatGroupDetailsDto;
+import com.mingri.model.vo.chat.chatgroup.req.*;
+import com.mingri.model.vo.chat.chatgroup.dto.SystemMsgDto;
+import com.mingri.model.vo.chat.chatgroup.entity.ChatGroup;
+import com.mingri.model.vo.chat.chatgroup.entity.ChatGroupMember;
+import com.mingri.model.vo.chat.chatgroup.entity.ChatGroupNotice;
+import com.mingri.model.vo.chat.chatlist.entity.ChatList;
+import com.mingri.model.vo.chat.message.dto.MsgContent;
+import com.mingri.model.vo.chat.message.req.SendMsgReq;
 import com.mingri.service.chat.repo.mapper.ChatGroupMapper;
 import com.mingri.service.chat.repo.mapper.ChatGroupNoticeMapper;
-import com.mingri.service.chat.repo.req.SendMsgVo;
-import com.mingri.service.chat.repo.req.chatgroup.*;
 import com.mingri.service.chat.service.ChatGroupMemberService;
 import com.mingri.service.chat.service.ChatGroupService;
 import com.mingri.service.chat.service.ChatListService;
 import com.mingri.service.chat.service.MessageService;
-import com.mingri.service.user.repo.entity.User;
+import com.mingri.model.vo.user.entity.User;
 import com.mingri.service.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -68,7 +68,7 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public boolean createChatGroup(String userId, CreateChatGroupVo createChatGroupVo) {
+    public boolean createChatGroup(String userId, CreateChatGroupReq createChatGroupVo) {
         ChatGroup chatGroup = new ChatGroup();
         chatGroup.setId(IdUtil.randomUUID());
         Random random = new Random();
@@ -104,7 +104,7 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
         chatGroupMember.setUserId(userId);
         chatGroupMemberService.save(chatGroupMember);
         if (isSava && null != createChatGroupVo.getUsers()) {
-            for (CreateChatGroupVo.User user : createChatGroupVo.getUsers()) {
+            for (CreateChatGroupReq.User user : createChatGroupVo.getUsers()) {
                 chatGroupMember = new ChatGroupMember();
                 chatGroupMember.setId(IdUtil.randomUUID());
                 chatGroupMember.setChatGroupId(chatGroup.getId());
@@ -123,7 +123,7 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
     }
 
     @Override
-    public ChatGroupDetailsDto detailsChatGroup(String userId, DetailsChatGroupVo detailsChatGroupVo) {
+    public ChatGroupDetailsDto detailsChatGroup(String userId, DetailsChatGroupReq detailsChatGroupVo) {
         ChatGroupDetailsDto result = chatGroupMapper.detailsChatGroup(userId, detailsChatGroupVo.getChatGroupId());
         return result;
     }
@@ -145,7 +145,7 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
     }
 
     @Override
-    public boolean updateChatGroupName(String userId, UpdateChatGroupNameVo updateChatGroupNameVo) {
+    public boolean updateChatGroupName(String userId, UpdateChatGroupNameReq updateChatGroupNameVo) {
         if (!isOwner(updateChatGroupNameVo.getGroupId(), userId))
             throw new BaseException("您不是群主~");
         LambdaUpdateWrapper<ChatGroup> updateWrapper = new LambdaUpdateWrapper<>();
@@ -155,7 +155,7 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
     }
 
     @Override
-    public boolean updateChatGroup(String userId, UpdateChatGroupVo updateChatGroupVo) {
+    public boolean updateChatGroup(String userId, UpdateChatGroupReq updateChatGroupVo) {
         UpdateWrapper<ChatGroupMember> updateWrapper = new UpdateWrapper<>();
         updateWrapper.set(updateChatGroupVo.getUpdateKey(), updateChatGroupVo.getUpdateValue())
                 .eq("chat_group_id", updateChatGroupVo.getGroupId())
@@ -165,7 +165,7 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public boolean inviteMember(String userId, InviteMemberVo inviteMemberVo) {
+    public boolean inviteMember(String userId, InviteMemberReq inviteMemberVo) {
         List<ChatGroupMember> members = new ArrayList<>();
         for (String inviteUserid : inviteMemberVo.getUserIds()) {
             if (chatGroupMemberService.isMemberExists(inviteMemberVo.getGroupId(), inviteUserid)) {
@@ -178,9 +178,9 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
             members.add(member);
 
             //发送群消息系统消息
-            SendMsgVo sendMsgVo = new SendMsgVo();
-            sendMsgVo.setSource(MsgSource.Group);
-            sendMsgVo.setToUserId(inviteMemberVo.getGroupId());
+            SendMsgReq sendMsgReq = new SendMsgReq();
+            sendMsgReq.setSource(MsgSource.Group);
+            sendMsgReq.setToUserId(inviteMemberVo.getGroupId());
             MsgContent msgContent = new MsgContent();
             msgContent.setType(MessageContentType.System);
             User user = userService.getById(userId);
@@ -194,11 +194,11 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
             msgContent.setContent(JSONUtil.toJsonStr(systemMsgDto.getContents()));
             msgContent.setFormUserId(userId);
             msgContent.setExt(userId);
-            sendMsgVo.setMsgContent(msgContent);
-            messageService.sendMessage(userId, UserRole.User, sendMsgVo, MsgType.System);
+            sendMsgReq.setMsgContent(msgContent);
+            messageService.sendMessage(userId, UserRole.User, sendMsgReq, MsgType.System);
 
         }
-        if (members.size() > 0) {
+        if (!members.isEmpty()) {
             ChatGroup chatGroup = getById(inviteMemberVo.getGroupId());
             chatGroup.setMemberNum(chatGroup.getMemberNum() + members.size());
             updateById(chatGroup);
@@ -209,7 +209,7 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public boolean quitChatGroup(String userId, QuitChatGroupVo quitChatGroupVo) {
+    public boolean quitChatGroup(String userId, QuitChatGroupReq quitChatGroupVo) {
         LambdaQueryWrapper<ChatGroupMember> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(ChatGroupMember::getUserId, userId)
                 .eq(ChatGroupMember::getChatGroupId, quitChatGroupVo.getGroupId());
@@ -221,9 +221,9 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
         chatListService.remove(chatListLambdaQueryWrapper);
 
         //发送群消息系统消息
-        SendMsgVo sendMsgVo = new SendMsgVo();
-        sendMsgVo.setSource(MsgSource.Group);
-        sendMsgVo.setToUserId(quitChatGroupVo.getGroupId());
+        SendMsgReq sendMsgReq = new SendMsgReq();
+        sendMsgReq.setSource(MsgSource.Group);
+        sendMsgReq.setToUserId(quitChatGroupVo.getGroupId());
         MsgContent msgContent = new MsgContent();
         msgContent.setType(MessageContentType.Quit);
         User user = userService.getById(userId);
@@ -234,8 +234,8 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
         msgContent.setContent(JSONUtil.toJsonStr(systemMsgDto.getContents()));
         msgContent.setFormUserId(userId);
         msgContent.setExt(userId);
-        sendMsgVo.setMsgContent(msgContent);
-        messageService.sendMessage(userId, UserRole.User, sendMsgVo, MsgType.System);
+        sendMsgReq.setMsgContent(msgContent);
+        messageService.sendMessage(userId, UserRole.User, sendMsgReq, MsgType.System);
 
         ChatGroup chatGroup = getById(quitChatGroupVo.getGroupId());
         chatGroup.setMemberNum(chatGroup.getMemberNum() - 1);
@@ -244,7 +244,7 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public boolean kickChatGroup(String userId, KickChatGroupVo kickChatGroupVo) {
+    public boolean kickChatGroup(String userId, KickChatGroupReq kickChatGroupVo) {
         if (!isOwner(kickChatGroupVo.getGroupId(), userId))
             throw new BaseException("您不是群主~");
         LambdaQueryWrapper<ChatGroupMember> queryWrapper = new LambdaQueryWrapper<>();
@@ -253,9 +253,9 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
         chatGroupMemberService.remove(queryWrapper);
 
         //发送群消息系统消息
-        SendMsgVo sendMsgVo = new SendMsgVo();
-        sendMsgVo.setSource(MsgSource.Group);
-        sendMsgVo.setToUserId(kickChatGroupVo.getGroupId());
+        SendMsgReq sendMsgReq = new SendMsgReq();
+        sendMsgReq.setSource(MsgSource.Group);
+        sendMsgReq.setToUserId(kickChatGroupVo.getGroupId());
         MsgContent msgContent = new MsgContent();
         msgContent.setType(MessageContentType.Quit);
         User user = userService.getById(kickChatGroupVo.getUserId());
@@ -266,8 +266,8 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
         msgContent.setContent(JSONUtil.toJsonStr(systemMsgDto.getContents()));
         msgContent.setFormUserId(userId);
         msgContent.setExt(kickChatGroupVo.getUserId());
-        sendMsgVo.setMsgContent(msgContent);
-        messageService.sendMessage(userId, UserRole.User, sendMsgVo, MsgType.System);
+        sendMsgReq.setMsgContent(msgContent);
+        messageService.sendMessage(userId, UserRole.User, sendMsgReq, MsgType.System);
 
         ChatGroup chatGroup = getById(kickChatGroupVo.getGroupId());
         chatGroup.setMemberNum(chatGroup.getMemberNum() - 1);
@@ -276,7 +276,7 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public boolean dissolveChatGroup(String userId, DissolveChatGroupVo dissolveChatGroupVo) {
+    public boolean dissolveChatGroup(String userId, DissolveChatGroupReq dissolveChatGroupVo) {
         if (!isOwner(dissolveChatGroupVo.getGroupId(), userId))
             throw new BaseException("您不是群主~");
 
@@ -285,21 +285,21 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
         chatGroupMemberService.remove(queryWrapper);
 
         //发送群消息
-        SendMsgVo sendMsgVo = new SendMsgVo();
-        sendMsgVo.setSource(MsgSource.Group);
-        sendMsgVo.setToUserId(dissolveChatGroupVo.getGroupId());
+        SendMsgReq sendMsgReq = new SendMsgReq();
+        sendMsgReq.setSource(MsgSource.Group);
+        sendMsgReq.setToUserId(dissolveChatGroupVo.getGroupId());
         MsgContent msgContent = new MsgContent();
         msgContent.setType(MessageContentType.Quit);
         msgContent.setFormUserId(userId);
         msgContent.setExt("all");
-        sendMsgVo.setMsgContent(msgContent);
-        messageService.sendMessage(userId, UserRole.User, sendMsgVo, MsgType.System);
+        sendMsgReq.setMsgContent(msgContent);
+        messageService.sendMessage(userId, UserRole.User, sendMsgReq, MsgType.System);
 
         return removeById(dissolveChatGroupVo.getGroupId());
     }
 
     @Override
-    public boolean transferChatGroup(String userId, TransferChatGroupVo transferChatGroupVo) {
+    public boolean transferChatGroup(String userId, TransferChatGroupReq transferChatGroupVo) {
         if (!isOwner(transferChatGroupVo.getGroupId(), userId))
             throw new BaseException("您不是群主~");
         ChatGroup chatGroup = getById(transferChatGroupVo.getGroupId());

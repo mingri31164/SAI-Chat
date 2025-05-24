@@ -3,11 +3,11 @@ package com.mingri.web.talk.rest;
 import cn.hutool.json.JSONObject;
 import com.mingri.core.annotation.Userid;
 import com.mingri.core.toolkit.ResultUtil;
-import com.mingri.service.chat.repo.dto.CommentListDto;
-import com.mingri.service.chat.repo.req.talk.CreateTalkCommentVo;
-import com.mingri.service.chat.repo.req.talk.DeleteTalkCommentVo;
-import com.mingri.service.chat.repo.req.talk.TalkCommentListVo;
-import com.mingri.service.chat.service.TalkCommentService;
+import com.mingri.model.vo.talk.dto.CommentListDto;
+import com.mingri.model.vo.talk.req.CreateTalkCommentReq;
+import com.mingri.model.vo.talk.req.DeleteTalkCommentReq;
+import com.mingri.model.vo.talk.req.TalkCommentListReq;
+import com.mingri.service.talk.service.TalkCommentService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,19 +27,19 @@ public class TalkCommentController {
     TalkCommentService talkCommentService;
 
     @PostMapping("/create")
-    public JSONObject createTalkComment(@Userid String userId, @RequestBody CreateTalkCommentVo createTalkCommentVo) {
+    public JSONObject createTalkComment(@Userid String userId, @RequestBody CreateTalkCommentReq createTalkCommentVo) {
         boolean result = talkCommentService.createTalkComment(userId, createTalkCommentVo);
         return ResultUtil.ResultByFlag(result);
     }
 
     @PostMapping("/list")
-    public JSONObject talkCommentList(@Userid String userId, @RequestBody TalkCommentListVo talkCommentListVo) {
-        List<CommentListDto> result = talkCommentService.talkCommentList(userId, talkCommentListVo);
+    public JSONObject talkCommentList(@Userid String userId, @RequestBody TalkCommentListReq talkCommentListReq) {
+        List<CommentListDto> result = talkCommentService.talkCommentList(userId, talkCommentListReq);
         return ResultUtil.Succeed(result);
     }
 
     @PostMapping("/delete")
-    public JSONObject deleteTalkComment(@Userid String userId, @RequestBody DeleteTalkCommentVo deleteTalkLikeVo) {
+    public JSONObject deleteTalkComment(@Userid String userId, @RequestBody DeleteTalkCommentReq deleteTalkLikeVo) {
         boolean result = talkCommentService.deleteTalkComment(userId, deleteTalkLikeVo);
         return ResultUtil.ResultByFlag(result);
     }

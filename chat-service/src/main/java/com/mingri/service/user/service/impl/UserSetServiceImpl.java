@@ -3,9 +3,9 @@ package com.mingri.service.user.service.impl;
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.mingri.service.user.repo.dto.SetsDto;
-import com.mingri.service.user.repo.req.UpdateUserSetVo;
-import com.mingri.service.user.repo.entity.UserSet;
+import com.mingri.model.vo.user.dto.SetsDto;
+import com.mingri.model.vo.user.req.UpdateUserSetReq;
+import com.mingri.model.vo.user.entity.UserSet;
 import com.mingri.service.user.repo.mapper.UserSetMapper;
 import com.mingri.service.user.service.UserSetService;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ public class UserSetServiceImpl extends ServiceImpl<UserSetMapper, UserSet> impl
     }
 
     @Override
-    public boolean updateUserSet(String userId, UpdateUserSetVo updateUserSetVo) {
+    public boolean updateUserSet(String userId, UpdateUserSetReq updateUserSetReq) {
         LambdaQueryWrapper<UserSet> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(UserSet::getUserId, userId);
         UserSet userSet = getOne(queryWrapper);
@@ -43,9 +43,9 @@ public class UserSetServiceImpl extends ServiceImpl<UserSetMapper, UserSet> impl
         }
         SetsDto sets = userSet.getSets();
         try {
-            Field field = SetsDto.class.getDeclaredField(updateUserSetVo.getKey());
+            Field field = SetsDto.class.getDeclaredField(updateUserSetReq.getKey());
             field.setAccessible(true);
-            field.set(sets, updateUserSetVo.getValue());
+            field.set(sets, updateUserSetReq.getValue());
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
             return false;

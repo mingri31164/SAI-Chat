@@ -1,8 +1,8 @@
 package com.mingri.service.chat.repo.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mingri.service.chat.repo.dto.FriendDetailsDto;
-import com.mingri.service.chat.repo.entity.Friend;
+import com.mingri.model.vo.chat.friend.dto.FriendDetailsDto;
+import com.mingri.model.vo.chat.friend.entity.Friend;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 

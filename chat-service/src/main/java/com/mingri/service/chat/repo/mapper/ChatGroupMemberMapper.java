@@ -1,9 +1,9 @@
 package com.mingri.service.chat.repo.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mingri.service.chat.repo.dto.MemberListDto;
-import com.mingri.service.chat.repo.entity.ChatGroupMember;
-import com.mingri.service.chat.repo.req.chatlist.MemberListVo;
+import com.mingri.model.vo.chat.chatgroup.dto.MemberListDto;
+import com.mingri.model.vo.chat.chatgroup.entity.ChatGroupMember;
+import com.mingri.model.vo.chat.chatlist.req.MemberListReq;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -25,5 +25,5 @@ public interface ChatGroupMemberMapper extends BaseMapper<ChatGroupMember> {
             "WHERE cgm.`chat_group_id` = #{memberListVo.chatGroupId} " +
             "ORDER BY cgm.`create_time` ASC " +
             "LIMIT #{memberListVo.index}, #{memberListVo.num} ")
-    List<MemberListDto> memberListPage(String userId, MemberListVo memberListVo);
+    List<MemberListDto> memberListPage(String userId, MemberListReq memberListVo);
 }
