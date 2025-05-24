@@ -61,7 +61,7 @@ public class NotifyServiceImpl extends ServiceImpl<NotifyMapper, Notify> impleme
 //                .eq(Notify::getToId, friendApplyNotifyVo.getUserId())
 //                .eq(Notify::getType, NotifyType.Friend_Apply);
 //        if (count(queryWrapper) > 0) {
-//            throw new LinyuException("请勿重复申请");
+//            throw new BaseException("请勿重复申请");
 //        }
         Notify notify = new Notify();
         notify.setId(IdUtil.randomUUID());

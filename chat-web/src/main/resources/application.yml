@@ -116,7 +116,7 @@ rocketmq:
   enabled: false
   name-server: 117.72.48.167:9876
   producer:
-    group: linyu_group
+    group: mingri_group
     send-message-timeout: 5000
     retry-times-when-send-failed: 3
     retry-times-when-send-async-failed: 3

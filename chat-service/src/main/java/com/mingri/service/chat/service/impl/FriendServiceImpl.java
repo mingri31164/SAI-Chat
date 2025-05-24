@@ -293,7 +293,7 @@ public class FriendServiceImpl extends ServiceImpl<FriendMapper, Friend> impleme
 //                || !notify.getType().equals(NotifyType.Friend_Apply)
 //                || !notify.getStatus().equals(FriendApplyStatus.Wait)
 //        ) {
-//            throw new LinyuException("没有添加好友申请");
+//            throw new BaseException("没有添加好友申请");
 //        }
         //更新通知
 //        notify.setStatus(FriendApplyStatus.Reject);

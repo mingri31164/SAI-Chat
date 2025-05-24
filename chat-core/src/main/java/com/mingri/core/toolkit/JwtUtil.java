@@ -15,7 +15,7 @@ public class JwtUtil implements Serializable {
     private static final long serialVersionUID = -5625635588908941275L;
 
     // 令牌秘钥
-    private static String secret = "linyu-E7Ymu64s";
+    private static String secret = "mingri-E7Ymu64s";
 
     // 令牌有效期
     private static int days = 30;

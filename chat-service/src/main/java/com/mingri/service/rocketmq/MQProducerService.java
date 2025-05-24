@@ -20,7 +20,7 @@ public class MQProducerService {
     @Value("${rocketmq.enabled}")
     private boolean enabled;
 
-    private static final String topic = "linyu";
+    private static final String topic = "mingri";
 
     @Resource
     private RocketMQTemplate rocketMQTemplate;

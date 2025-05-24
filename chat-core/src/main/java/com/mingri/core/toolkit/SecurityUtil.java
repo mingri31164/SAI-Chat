@@ -17,7 +17,7 @@ public final class SecurityUtil {
 
     private static final KeyPair keyPair;
     private static final BCryptPasswordEncoder passwordEncoder;
-    private static final String AesKey = "linyuAaaZzzLinyu";
+    private static final String AesKey = "mingriAaaZzzMingri";
 
     static {
         try {
