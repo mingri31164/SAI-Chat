@@ -1,6 +1,7 @@
-package com.mingri.service.admin;
+package com.mingri.service.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mingri.model.vo.admin.dto.ConversationDto;
 import com.mingri.model.vo.admin.req.conversation.DeleteConversationReq;
 import com.mingri.model.vo.admin.req.conversation.DisableConversationReq;
 import com.mingri.model.vo.admin.req.conversation.ResetSecretReq;

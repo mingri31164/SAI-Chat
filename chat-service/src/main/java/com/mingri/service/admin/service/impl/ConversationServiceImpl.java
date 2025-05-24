@@ -1,16 +1,18 @@
-package com.mingri.service.admin;
+package com.mingri.service.admin.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mingri.model.constant.ConversationStatus;
 import com.mingri.model.exception.BaseException;
+import com.mingri.model.vo.admin.dto.ConversationDto;
 import com.mingri.model.vo.admin.req.conversation.DeleteConversationReq;
 import com.mingri.model.vo.admin.req.conversation.DisableConversationReq;
 import com.mingri.model.vo.admin.req.conversation.ResetSecretReq;
 import com.mingri.model.vo.admin.req.conversation.UndisableConversationReq;
 import com.mingri.model.vo.admin.entity.Conversation;
 import com.mingri.service.admin.repo.mapper.ConversationMapper;
+import com.mingri.service.admin.service.ConversationService;
 import com.mingri.service.user.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

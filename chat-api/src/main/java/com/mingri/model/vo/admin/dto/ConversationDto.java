@@ -1,4 +1,4 @@
-package com.mingri.service.admin;
+package com.mingri.model.vo.admin.dto;
 
 import com.mingri.model.vo.admin.entity.Conversation;
 import lombok.Data;

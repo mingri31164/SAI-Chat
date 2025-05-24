@@ -1,7 +1,7 @@
 package com.mingri.service.interceptor;
 
 import com.mingri.core.config.UserInfoArgumentResolver;
-import com.mingri.service.admin.ConversationService;
+import com.mingri.service.admin.service.ConversationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
