@@ -24,10 +24,6 @@ mingri:
     port: 465
     user: 3116430062@qq.com
     expireTime: 180 #3分钟
-  jwt:
-    secret-key: csd_admin
-    expire-time: 7200000
-    token-name: x-token
   minio:
     endpoint: 127.0.0.1:9000
     bucketName: chat
@@ -35,9 +31,13 @@ mingri:
     accessKey:
     secretKey:
   rocketmq:
-    enabled: ${mingri.rocketmq.enabled}
-    name-server: ${mingri.rocketmq.name-server}
-    group: ${mingri.rocketmq.group}
+    enabled: false
+    name-server: 117.72.48.167:9876
+    group: mingri_group
+  jwt:
+    secret-key: csd_admin
+    expire-time: 7200000
+    token-name: x-token
 
 
 

@@ -10,28 +10,6 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss.SSS
     time-zone: Asia/Shanghai
 
-  config:
-    import:
-      - application-dal.yml
-      - application-email.yml
-      - application-rabbitmq.yml
-      - application-ai.yml
-
-  mail:
-    password: ${mingri.mail.password}
-    host: ${mingri.mail.host}
-    port: ${mingri.mail.port}
-    username: ${mingri.mail.user}
-    from: ${mingri.mail.from}
-    expireTime: ${mingri.mail.expireTime}
-    default-encoding: UTF-8
-    properties:
-      mail:
-        smtp:
-          auth: true
-          ssl:
-            enable: true
-
   datasource:
     dynamic:
       primary: master
@@ -57,14 +35,74 @@ spring:
       port: ${mingri.redis.port}
       password: ${mingri.redis.password}
       database: ${mingri.redis.database}
-      pool-size: 10
-      min-idle-size: 5
-      idle-timeout: 30000
-      connect-timeout: 5000
-      retry-attempts: 3
-      retry-interval: 1000
-      ping-interval: 60000
-      keep-alive: true
+
+  mail:
+    password: ${mingri.mail.password}
+    host: ${mingri.mail.host}
+    port: ${mingri.mail.port}
+    username: ${mingri.mail.user}
+    from: ${mingri.mail.from}
+    expireTime: ${mingri.mail.expireTime}
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+
+minio:
+  endpoint: ${mingri.minio.endpoint}
+  access-key: ${mingri.minio.accessKey}
+  secret-key: ${mingri.minio.secretKey}
+  bucket-name: ${mingri.minio.bucketName}
+  file-bucket-name: ${mingri.minio.fileBucketName}
+
+
+rocketmq:
+  enabled: ${mingri.rocketmq.enabled}
+  name-server: ${mingri.rocketmq.name-server}
+  producer:
+    group: ${mingri.rocketmq.group}
+    send-message-timeout: 5000
+    retry-times-when-send-failed: 3
+    retry-times-when-send-async-failed: 3
+
+security:
+  jwt:
+    # 设置jwt签名加密时使用的秘钥
+    secret-key: ${mingri.jwt.secret-key}
+    # 设置jwt过期时间
+    expire-time: ${mingri.jwt.expire-time}
+    # 设置前端传递过来的令牌名称
+    token-name: ${mingri.jwt.token-name}
+
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.mingri.controller
+
+
+knife4j:
+  enable: true
+  #是否启用接口文档登录认证
+  basic:
+    enable: false
+    username: admin
+    password: 123456
+  setting:
+    language: zh_cn
+    enable-version: true
+    enable-swagger-models: true
+    swagger-model-name: 客户端模块
 
 #mybatis:
 #  #mapper配置文件
@@ -86,6 +124,7 @@ mybatis-plus:
     # 全局枚举处理器
     default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
 
+
 logging:
   level:
     com:
@@ -94,55 +133,16 @@ logging:
         service: info
         controller: info
 
-minio:
-  endpoint: ${mingri.minio.endpoint}
-  access-key: ${mingri.minio.accessKey}
-  secret-key: ${mingri.minio.secretKey}
-  bucket-name: ${mingri.minio.bucketName}
-  file-bucket-name: ${mingri.minio.fileBucketName}
 
 
-security:
-  jwt:
-    # 设置jwt签名加密时使用的秘钥
-    secret-key: ${mingri.jwt.secret-key}
-    # 设置jwt过期时间
-    expire-time: ${mingri.jwt.expire-time}
-    # 设置前端传递过来的令牌名称
-    token-name: ${mingri.jwt.token-name}
 
 
-rocketmq:
-  enabled: false
-  name-server: 117.72.48.167:9876
-  producer:
-    group: mingri_group
-    send-message-timeout: 5000
-    retry-times-when-send-failed: 3
-    retry-times-when-send-async-failed: 3
 
-springdoc:
-  api-docs:
-    path: /v3/api-docs
-  swagger-ui:
-    path: /swagger-ui.html
-    tags-sorter: alpha
-    operations-sorter: alpha
-  group-configs:
-    - group: 'default'
-      paths-to-match: '/**'
-      packages-to-scan: com.mingri.controller
 
-knife4j:
-  enable: true
-  #是否启用接口文档登录认证
-  basic:
-    enable: false
-    username: admin
-    password: 123456
-  setting:
-    language: zh_cn
-    enable-version: true
-    enable-swagger-models: true
-    swagger-model-name: 客户端模块
+
+
+
+
+
+
 
