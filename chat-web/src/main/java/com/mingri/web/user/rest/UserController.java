@@ -2,11 +2,14 @@ package com.mingri.web.user.rest;
 
 import cn.hutool.json.JSONObject;
 import com.mingri.core.annotation.UrlFree;
+import com.mingri.core.annotation.UserRole;
 import com.mingri.core.annotation.Userid;
 import com.mingri.core.toolkit.MinioUtil;
 import com.mingri.core.toolkit.RedisUtils;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.core.toolkit.SecurityUtil;
+import com.mingri.model.exception.BaseException;
+import com.mingri.service.chat.service.FriendService;
 import com.mingri.service.mail.VerificationCodeService;
 import com.mingri.service.mail.repo.EmailVerifyByAccountVo;
 import com.mingri.service.mail.repo.EmailVerifyVo;
@@ -16,11 +19,17 @@ import com.mingri.service.user.repo.req.*;
 import com.mingri.service.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,6 +50,9 @@ public class UserController {
 
     @Resource
     VerificationCodeService verificationCodeService;
+
+    @Resource
+    FriendService friendService;
 
     /**
      * 用户查询
@@ -159,6 +171,53 @@ public class UserController {
         String url = minioUtil.upload(file.getInputStream(), fileName, type, size);
         url += "?t=" + System.currentTimeMillis();
         userService.updateUserPortrait(userId, url);
+        return ResultUtil.Succeed(url);
+    }
+
+
+    /**
+     * 获取文件
+     *
+     * @return
+     */
+    @GetMapping("/get/file")
+    public ResponseEntity<InputStreamResource> getFile(@Userid String userId,
+                                                       @UserRole String role,
+                                                       @RequestHeader("targetId") String targetId,
+                                                       @RequestHeader("fileName") String fileName) {
+        boolean isFriend = friendService.isFriendIgnoreSpecial(userId, targetId);
+        if (!isFriend && !userId.equals(targetId)
+                && com.mingri.model.constant.UserRole.User.equals(role)) {
+            throw new BaseException("双方非好友");
+        }
+        InputStream inputStream = minioUtil.getObject(targetId + "/img/" + fileName);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(new InputStreamResource(inputStream));
+    }
+
+    /**
+     * 获取图片内容
+     *
+     * @return
+     */
+    @GetMapping("/get/img")
+    public JSONObject getImg(@Userid String userId,
+                             @UserRole String role,
+                             @RequestParam("targetId") String targetId,
+                             @RequestParam("fileName") String fileName) {
+        boolean isFriend = friendService.isFriendIgnoreSpecial(userId, targetId);
+        if (!isFriend && !userId.equals(targetId) &&
+                com.mingri.model.constant.UserRole.User.equals(role)) {
+            throw new BaseException("双方非好友");
+        }
+        String name = targetId + "/img/" + fileName;
+        String url = (String) redisUtils.get(name);
+        if (StringUtils.isBlank(url)) {
+            url = minioUtil.previewFile(name);
+            redisUtils.set(name, url, 7 * 24 * 60 * 60);
+        }
         return ResultUtil.Succeed(url);
     }
 
