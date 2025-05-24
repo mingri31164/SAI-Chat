@@ -1,4 +1,4 @@
-package com.mingri.model.vo.admin.req.entity;
+package com.mingri.model.vo.admin.entity;
 
 
 import com.baomidou.mybatisplus.annotation.FieldFill;

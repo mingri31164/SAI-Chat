@@ -1,6 +1,6 @@
 package com.mingri.service.admin;
 
-import com.mingri.model.vo.admin.req.entity.Conversation;
+import com.mingri.model.vo.admin.entity.Conversation;
 import lombok.Data;
 
 @Data

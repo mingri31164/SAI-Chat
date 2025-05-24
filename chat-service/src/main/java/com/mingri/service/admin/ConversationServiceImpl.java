@@ -9,7 +9,7 @@ import com.mingri.model.vo.admin.req.conversation.DeleteConversationReq;
 import com.mingri.model.vo.admin.req.conversation.DisableConversationReq;
 import com.mingri.model.vo.admin.req.conversation.ResetSecretReq;
 import com.mingri.model.vo.admin.req.conversation.UndisableConversationReq;
-import com.mingri.model.vo.admin.req.entity.Conversation;
+import com.mingri.model.vo.admin.entity.Conversation;
 import com.mingri.service.admin.repo.mapper.ConversationMapper;
 import com.mingri.service.user.service.UserService;
 import org.springframework.stereotype.Service;

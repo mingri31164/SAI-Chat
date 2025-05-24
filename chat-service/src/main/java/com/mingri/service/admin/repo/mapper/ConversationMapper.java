@@ -1,7 +1,7 @@
 package com.mingri.service.admin.repo.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mingri.model.vo.admin.req.entity.Conversation;
+import com.mingri.model.vo.admin.entity.Conversation;
 import com.mingri.service.admin.ConversationDto;
 import org.apache.ibatis.annotations.Select;
 

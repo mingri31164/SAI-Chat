@@ -15,9 +15,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import java.util.Map;
 
-/**
- * @author: dwh
- **/
+
 public class UserInfoArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
