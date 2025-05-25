@@ -1,4 +1,4 @@
-package com.mingri.web.video;
+package com.mingri.web.chatlist.rest;
 
 import cn.hutool.json.JSONObject;
 import com.mingri.core.annotation.Userid;

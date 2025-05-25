@@ -1,4 +1,4 @@
-package com.mingri.web.chatgroup.rest;
+package com.mingri.web.addressbook.chatgroup.rest;
 
 
 import cn.hutool.json.JSONObject;

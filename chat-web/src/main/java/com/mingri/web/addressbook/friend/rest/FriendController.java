@@ -1,4 +1,4 @@
-package com.mingri.web.friend.rest;
+package com.mingri.web.addressbook.friend.rest;
 
 
 import cn.hutool.json.JSONObject;
