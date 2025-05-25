@@ -1,7 +1,9 @@
 package com.mingri.service.user.service;
 
 import cn.hutool.json.JSONObject;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mingri.model.vo.admin.req.user.*;
 import com.mingri.model.vo.user.req.*;
 import com.mingri.model.vo.user.dto.UserDto;
 import com.mingri.model.vo.user.req.login.LoginReq;
@@ -16,6 +18,8 @@ import java.util.List;
  * 用户表 服务类
  */
 public interface UserService extends IService<User> {
+
+    // 客户端
 
     List<UserDto> searchUser(SearchUserReq searchUserReq);
 
@@ -55,4 +59,25 @@ public interface UserService extends IService<User> {
 
     boolean allUserOffline();
 
+
+
+
+    // 管理端
+    Page<User> userList(UserListVo userListVo);
+
+    boolean createUser(CreateUserVo createUserVo);
+
+    boolean updateUser(UpdateUserVo updateUserVo);
+
+    boolean disableUser(String userid, DisableUserVo disableUserVo);
+
+    boolean undisableUser(UndisableUserVo undisableUserVo);
+
+    boolean deleteUser(String userid, DeleteUserVo deleteUserVo);
+
+    boolean restPassword(ResetPasswordVo resetPasswordVo);
+
+    boolean setAdmin(String userid, SetAdminVo setAdminVo);
+
+    boolean cancelAdmin(String userid, CancelAdminVo cancelAdminVo);
 }

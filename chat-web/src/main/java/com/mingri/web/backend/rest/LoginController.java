@@ -1,4 +1,4 @@
-package com.mingri.web.admin.rest;
+package com.mingri.web.backend.rest;
 
 import cn.hutool.json.JSONObject;
 import com.mingri.core.annotation.UrlFree;
