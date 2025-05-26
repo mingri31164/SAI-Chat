@@ -219,7 +219,7 @@ CREATE TABLE `notify`  (
 -- ----------------------------
 -- Records of notify
 -- ----------------------------
-INSERT INTO `notify` VALUES ('1', '0', '0', 'system', NULL, '{\"img\":\"http://139.196.241.208:9000/linyu/notify/welcome.png\",\"text\":\"欢迎使用林语~\"}', NULL, '2024-07-24 11:33:05.000', '2024-07-24 11:33:05.000');
+INSERT INTO `notify` VALUES ('1', '0', '0', 'system', NULL, '{\"img\":\"http://139.9.51.109:9000/chat/8e025d0c-0b72-413f-9e28-bebe6fe458b6-portrait.jpg?t=1748100880597\",\"text\":\"欢迎使用SAI聊天室~\"}', NULL, '2025-05-26 11:33:05.000', '2025-05-26 11:33:05.000');
 
 -- ----------------------------
 -- Table structure for statistic
