@@ -130,14 +130,14 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         if (!isFriend) throw new BaseException("双方非好友");
         Message message = sendMessage(userId, sendMsgReq,sendMsgReq.getMsgContent(), MsgSource.User, type);
         MsgContent msgContent = message.getMsgContent();
-        // TODO 获取好友信息
+
         FriendDetailsDto friendDetails = friendService.getFriendDetails(sendMsgReq.getToUserId(), userId);
         msgContent.setFormUserId(userId);
         msgContent.setFormUserName(StringUtils.isNotBlank(friendDetails.getRemark())
                 ? friendDetails.getRemark() : friendDetails.getName());
         msgContent.setFormUserPortrait(friendDetails.getPortrait());
-        // TODO 更新聊天列表
-//        chatListService.updateChatList(message.getToId(), userId, msgContent, MsgSource.User);
+
+        chatListService.updateChatList(message.getToId(), userId, msgContent, MsgSource.User);
         try {
             mqProducerService.sendMsgToUser(message);
         } catch (Exception e) {
@@ -155,8 +155,8 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         msgContent.setFormUserName(user.getName());
         msgContent.setFormUserPortrait(user.getPortrait());
         Message message = sendMessage(userId, sendMsgReq, msgContent, MsgSource.Group, type);
-        // TODO 更新聊天列表
-//        chatListService.updateChatListGroup(message.getToId(), message.getMsgContent());
+
+        chatListService.updateChatListGroup(message.getToId(), message.getMsgContent());
         try {
             mqProducerService.sendMsgToGroup(message);
         } catch (Exception e) {

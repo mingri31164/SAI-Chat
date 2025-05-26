@@ -9,6 +9,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 @Slf4j
@@ -18,9 +19,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configurable
 @EnableAsync
 @Import(RocketMQAutoConfiguration.class)
-public class ChatApplicationRun {
+public class SAIChatApplicationRun {
     public static void main(String[] args) {
-        SpringApplication.run(ChatApplicationRun.class, args);
+        SpringApplication.run(SAIChatApplicationRun.class, args);
         log.info("server started");
     }
 

@@ -8,6 +8,7 @@ import com.mingri.model.vo.chat.chatlist.req.CreateChatListReq;
 import com.mingri.model.vo.chat.chatlist.req.DeleteChatListReq;
 import com.mingri.model.vo.chat.chatlist.req.DetailChatListReq;
 import com.mingri.model.vo.chat.chatlist.req.TopChatListReq;
+import com.mingri.model.vo.chat.message.dto.MsgContent;
 
 /**
  * 聊天列表 服务类
@@ -33,5 +34,9 @@ public interface ChatListService extends IService<ChatList> {
     void removeByUserId(String userId, String friendId);
 
     ChatList getChatListByUserIdAndFromId(String userId, String toId);
+
+    void updateChatList(String toId, String userId, MsgContent msgContent, String user);
+
+    void updateChatListGroup(String toId, MsgContent msgContent);
 
 }

@@ -1,19 +1,23 @@
 package com.mingri.service.chat.service.impl;
 
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mingri.model.constant.MsgSource;
 import com.mingri.model.constant.UserRole;
 import com.mingri.model.exception.BaseException;
+import com.mingri.model.vo.chat.chatgroup.entity.ChatGroupMember;
 import com.mingri.model.vo.chat.chatlist.dto.ChatListDto;
 import com.mingri.model.vo.chat.chatlist.entity.ChatList;
+import com.mingri.model.vo.chat.message.dto.MsgContent;
 import com.mingri.service.chat.repo.mapper.ChatListMapper;
 import com.mingri.model.vo.chat.chatlist.req.CreateChatListReq;
 import com.mingri.model.vo.chat.chatlist.req.DeleteChatListReq;
 import com.mingri.model.vo.chat.chatlist.req.DetailChatListReq;
 import com.mingri.model.vo.chat.chatlist.req.TopChatListReq;
+import com.mingri.service.chat.service.ChatGroupMemberService;
 import com.mingri.service.chat.service.ChatListService;
 import com.mingri.service.chat.service.FriendService;
 import org.springframework.context.annotation.Lazy;
@@ -35,6 +39,9 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
     @Resource
     @Lazy
     FriendService friendService;
+
+    @Resource
+    ChatGroupMemberService chatGroupMemberService;
 
 
     private List<ChatList> getChatListByUserIdAndIsTop(String userId, boolean isTop) {
@@ -180,6 +187,54 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
         queryWrapper.eq(ChatList::getUserId, userId)
                 .eq(ChatList::getFromId, fromId);
         return getOne(queryWrapper);
+    }
+
+    @Override
+    public void updateChatList(String toUserId, String fromUserId, MsgContent msgContent, String type) {
+        //判断聊天列表是否存在
+        LambdaQueryWrapper<ChatList> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(ChatList::getUserId, toUserId)
+                .eq(ChatList::getFromId, fromUserId);
+        ChatList chatList = getOne(queryWrapper);
+        if (null == chatList) {
+            //新建
+            chatList = new ChatList();
+            chatList.setId(IdUtil.randomUUID());
+            chatList.setIsTop(false);
+            chatList.setUserId(toUserId);
+            chatList.setType(type);
+            chatList.setFromId(fromUserId);
+            if (toUserId.equals(msgContent.getFormUserId())) {
+                chatList.setUnreadNum(0);
+            } else {
+                chatList.setUnreadNum(1);
+            }
+            chatList.setLastMsgContent(msgContent);
+            save(chatList);
+        } else {
+            //更新
+            if (toUserId.equals(msgContent.getFormUserId())) {
+                chatList.setUnreadNum(0);
+            } else {
+                chatList.setUnreadNum(chatList.getUnreadNum() + 1);
+            }
+            chatList.setLastMsgContent(msgContent);
+            updateById(chatList);
+            //更新自己的聊天列表
+            LambdaUpdateWrapper<ChatList> updateWrapper = new LambdaUpdateWrapper();
+            updateWrapper.set(ChatList::getLastMsgContent, JSONUtil.toJsonStr(msgContent))
+                    .eq(ChatList::getUserId, fromUserId)
+                    .eq(ChatList::getFromId, toUserId);
+            update(new ChatList(), updateWrapper);
+        }
+    }
+
+    @Override
+    public void updateChatListGroup(String groupId, MsgContent msgContent) {
+        List<ChatGroupMember> members = chatGroupMemberService.getGroupMember(groupId);
+        for (ChatGroupMember member : members) {
+            updateChatList(member.getUserId(), groupId, msgContent, MsgSource.Group);
+        }
     }
 
 }
