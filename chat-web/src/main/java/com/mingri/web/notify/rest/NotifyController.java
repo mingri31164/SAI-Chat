@@ -25,8 +25,6 @@ public class NotifyController {
 
     /**
      * 好有通知列表
-     *
-     * @return
      */
     @GetMapping("/friend/list")
     public JSONObject friendListNotify(@Userid String userId) {
@@ -37,8 +35,6 @@ public class NotifyController {
 
     /**
      * 好有申请通知
-     *
-     * @return
      */
     @PostMapping("/friend/apply")
     public JSONObject friendApplyNotify(@Userid String userId, @RequestBody FriendApplyNotifyReq friendApplyNotifyReq) {
@@ -48,8 +44,6 @@ public class NotifyController {
 
     /**
      * 通知已读
-     *
-     * @return
      */
     @PostMapping("/read")
     public JSONObject readNotify(@Userid String userId, @RequestBody ReadNotifyReq readNotifyReq) {
@@ -59,8 +53,6 @@ public class NotifyController {
 
     /**
      * 系统通知列表
-     *
-     * @return
      */
     @GetMapping("/system/list")
     public JSONObject SystemListNotify(@Userid String userId) {

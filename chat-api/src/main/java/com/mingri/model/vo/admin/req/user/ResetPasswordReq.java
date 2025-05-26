@@ -3,6 +3,6 @@ package com.mingri.model.vo.admin.req.user;
 import lombok.Data;
 
 @Data
-public class ResetPasswordVo {
+public class ResetPasswordReq {
     private String userId;
 }

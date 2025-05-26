@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class DisableUserVo {
+public class CancelAdminReq {
     @NotNull(message = "用户不能为空")
     private String userId;
 }

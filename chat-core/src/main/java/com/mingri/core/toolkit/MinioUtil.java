@@ -31,9 +31,7 @@ public class MinioUtil {
 
 
     /**
-     * 创建存储bucket
-     *
-     * @return Boolean
+     * 创建存储bucket Boolean
      */
     public Boolean init() {
         try {
@@ -52,9 +50,7 @@ public class MinioUtil {
     }
 
     /**
-     * 查看存储bucket是否存在
-     *
-     * @return boolean
+     * 查看存储bucket是否存在 boolean
      */
     public Boolean bucketExists(String bucketName) {
         Boolean found;
@@ -68,9 +64,7 @@ public class MinioUtil {
     }
 
     /**
-     * 创建存储bucket
-     *
-     * @return Boolean
+     * 创建存储bucket Boolean
      */
     public Boolean makeBucket(String bucketName) {
         try {
@@ -85,9 +79,7 @@ public class MinioUtil {
     }
 
     /**
-     * 删除存储bucket
-     *
-     * @return Boolean
+     * 删除存储bucket Boolean
      */
     public Boolean removeBucket(String bucketName) {
         try {
@@ -321,9 +313,7 @@ public class MinioUtil {
 
 
     /**
-     * 查看文件对象
-     *
-     * @return 存储bucket内文件对象信息
+     * 查看文件对象 存储bucket内文件对象信息
      */
     public List<Item> listObjects() {
         Iterable<Result<Item>> results = minioClient.listObjects(

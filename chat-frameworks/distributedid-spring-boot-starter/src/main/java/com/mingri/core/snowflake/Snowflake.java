@@ -189,9 +189,7 @@ public class Snowflake implements Serializable, IdGenerator {
     }
 
     /**
-     * 下一个ID
-     *
-     * @return ID
+     * 下一个ID ID
      */
     public synchronized long nextId() {
         long timestamp = genTime();
@@ -223,9 +221,7 @@ public class Snowflake implements Serializable, IdGenerator {
     }
 
     /**
-     * 下一个ID（字符串形式）
-     *
-     * @return ID 字符串形式
+     * 下一个ID（字符串形式） ID 字符串形式
      */
     public String nextIdStr() {
         return Long.toString(nextId());
@@ -253,9 +249,7 @@ public class Snowflake implements Serializable, IdGenerator {
     }
 
     /**
-     * 生成时间戳
-     *
-     * @return 时间戳
+     * 生成时间戳 时间戳
      */
     private long genTime() {
         return this.useSystemClock ? SystemClock.now() : System.currentTimeMillis();

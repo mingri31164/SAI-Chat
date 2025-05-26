@@ -26,64 +26,64 @@ public class UserController {
 
     @PostMapping("/page")
     @UrlResource("admin")
-    public JSONObject userList(@RequestBody UserListVo userListVo) {
-        Page<User> result = userService.userList(userListVo);
+    public JSONObject userList(@RequestBody UserListReq userListReq) {
+        Page<User> result = userService.userList(userListReq);
         return ResultUtil.Succeed(result);
     }
 
     @PostMapping("/create")
     @UrlResource("admin")
-    public JSONObject createUser(@RequestBody CreateUserVo createUserVo) {
-        boolean result = userService.createUser(createUserVo);
+    public JSONObject createUser(@RequestBody CreateUserReq createUserReq) {
+        boolean result = userService.createUser(createUserReq);
         return ResultUtil.ResultByFlag(result);
     }
 
     @PostMapping("/update")
     @UrlResource("admin")
-    public JSONObject updateUser(@RequestBody UpdateUserVo updateUserVo) {
-        boolean result = userService.updateUser(updateUserVo);
+    public JSONObject updateUser(@RequestBody UpdateUserReq updateUserReq) {
+        boolean result = userService.updateUser(updateUserReq);
         return ResultUtil.ResultByFlag(result);
     }
 
     @PostMapping("/disable")
     @UrlResource("admin")
-    public JSONObject disableUser(@Userid String userid, @RequestBody DisableUserVo disableUserVo) {
-        boolean result = userService.disableUser(userid, disableUserVo);
+    public JSONObject disableUser(@Userid String userid, @RequestBody DisableUserReq disableUserReq) {
+        boolean result = userService.disableUser(userid, disableUserReq);
         return ResultUtil.ResultByFlag(result);
     }
 
     @PostMapping("/undisable")
     @UrlResource("admin")
-    public JSONObject undisableUser(@RequestBody UndisableUserVo undisableUserVo) {
-        boolean result = userService.undisableUser(undisableUserVo);
+    public JSONObject undisableUser(@RequestBody UndisableUserReq undisableUserReq) {
+        boolean result = userService.undisableUser(undisableUserReq);
         return ResultUtil.ResultByFlag(result);
     }
 
     @PostMapping("/delete")
     @UrlResource("admin")
-    public JSONObject deleteUser(@Userid String userid, @RequestBody DeleteUserVo deleteUserVo) {
-        boolean result = userService.deleteUser(userid, deleteUserVo);
+    public JSONObject deleteUser(@Userid String userid, @RequestBody DeleteUserReq deleteUserReq) {
+        boolean result = userService.deleteUser(userid, deleteUserReq);
         return ResultUtil.ResultByFlag(result);
     }
 
     @PostMapping("/reset/password")
     @UrlResource("admin")
-    public JSONObject restPassword(@RequestBody ResetPasswordVo resetPasswordVo) {
-        boolean result = userService.restPassword(resetPasswordVo);
+    public JSONObject restPassword(@RequestBody ResetPasswordReq resetPasswordReq) {
+        boolean result = userService.restPassword(resetPasswordReq);
         return ResultUtil.ResultByFlag(result);
     }
 
     @PostMapping("/set/admin")
     @UrlResource("admin")
-    public JSONObject setAdmin(@Userid String userid, @RequestBody SetAdminVo setAdminVo) {
-        boolean result = userService.setAdmin(userid, setAdminVo);
+    public JSONObject setAdmin(@Userid String userid, @RequestBody SetAdminReq setAdminReq) {
+        boolean result = userService.setAdmin(userid, setAdminReq);
         return ResultUtil.ResultByFlag(result);
     }
 
     @PostMapping("/cancel/admin")
     @UrlResource("admin")
-    public JSONObject cancelAdmin(@Userid String userid, @RequestBody CancelAdminVo cancelAdminVo) {
-        boolean result = userService.cancelAdmin(userid, cancelAdminVo);
+    public JSONObject cancelAdmin(@Userid String userid, @RequestBody CancelAdminReq cancelAdminReq) {
+        boolean result = userService.cancelAdmin(userid, cancelAdminReq);
         return ResultUtil.ResultByFlag(result);
     }
 }

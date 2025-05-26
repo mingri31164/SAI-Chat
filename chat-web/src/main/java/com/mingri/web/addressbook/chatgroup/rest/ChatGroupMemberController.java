@@ -43,8 +43,6 @@ public class ChatGroupMemberController {
 
     /**
      * 设置聊天背景
-     *
-     * @return
      */
     @PostMapping("/set-chat-background")
     public JSONObject setChatBackground(@Userid String userId,

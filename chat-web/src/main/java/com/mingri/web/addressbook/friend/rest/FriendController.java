@@ -33,8 +33,6 @@ public class FriendController {
 
     /**
      * 获取好友列表
-     *
-     * @return
      */
     @GetMapping("/list")
     public JSONObject getFriendList(@Userid String userId) {
@@ -44,8 +42,6 @@ public class FriendController {
 
     /**
      * 获取好友列表
-     *
-     * @return
      */
     @GetMapping("/list/flat")
     public JSONObject getFriendListFlat(@Userid String userId, @RequestParam(defaultValue = "") String friendInfo) {
@@ -64,8 +60,6 @@ public class FriendController {
 
     /**
      * 获取好友列表(未读消息数)
-     *
-     * @return
      */
     @GetMapping("/list/flat/unread")
     public JSONObject getFriendListFlatUnread(@Userid String userId, @RequestParam(defaultValue = "") String friendInfo) {
@@ -75,8 +69,6 @@ public class FriendController {
 
     /**
      * 获取好友详情
-     *
-     * @return
      */
     @GetMapping("/details/{friendId}")
     public JSONObject getFriendDetails(@Userid String userId, @PathVariable String friendId) {
@@ -86,8 +78,6 @@ public class FriendController {
 
     /**
      * 搜索好友
-     *
-     * @return
      */
     @PostMapping("/search")
     public JSONObject searchFriends(@Userid String userId, @RequestBody SearchReq searchVo) {
@@ -97,8 +87,6 @@ public class FriendController {
 
     /**
      * 同意好友请求
-     *
-     * @return
      */
     @PostMapping("/agree")
     public JSONObject agreeFriendApply(@Userid String userId, @RequestBody AgreeFriendApplyReq agreeFriendApplyVo) {
@@ -108,8 +96,6 @@ public class FriendController {
 
     /**
      * 同意好友请求
-     *
-     * @return
      */
     @PostMapping("/agree/id")
     public JSONObject agreeFriendApplyFromId(@Userid String userId, @RequestBody AgreeFriendApplyReq agreeFriendApplyVo) {
@@ -119,8 +105,6 @@ public class FriendController {
 
     /**
      * 拒绝好友请求
-     *
-     * @return
      */
     @PostMapping("/reject")
     public JSONObject refuseFriendApply(@Userid String userId, @RequestBody RejectFriendApplyReq friendApplyVo) {
@@ -131,8 +115,6 @@ public class FriendController {
 
     /**
      * 扫码好友请求
-     *
-     * @return
      */
     @PostMapping("/add/qr")
     public JSONObject addFriendByQr(@Userid String userId, @RequestBody AddFriendByQrReq AddFriendByQrVo) {
@@ -143,8 +125,6 @@ public class FriendController {
 
     /**
      * 设置好友备注
-     *
-     * @return
      */
     @PostMapping("/set/remark")
     public JSONObject setRemark(@Userid String userId, @RequestBody SetRemarkReq setRemarkVo) {
@@ -154,8 +134,6 @@ public class FriendController {
 
     /**
      * 设置好友分组
-     *
-     * @return
      */
     @PostMapping("/set/group")
     public JSONObject setGroup(@Userid String userId, @RequestBody SetGroupReq setGroupVo) {
@@ -165,8 +143,6 @@ public class FriendController {
 
     /**
      * 删除好友
-     *
-     * @return
      */
     @PostMapping("/delete")
     public JSONObject deleteFriend(@Userid String userId, @RequestBody DeleteFriendReq deleteFriendVo) {
@@ -176,8 +152,6 @@ public class FriendController {
 
     /**
      * 特别关心
-     *
-     * @return
      */
     @PostMapping("/carefor")
     public JSONObject careForFriend(@Userid String userId, @RequestBody CareForFriendReq careForFriendVo) {
@@ -187,8 +161,6 @@ public class FriendController {
 
     /**
      * 特别关心
-     *
-     * @return
      */
     @PostMapping("/uncarefor")
     public JSONObject unCareForFriend(@Userid String userId, @RequestBody UnCareForFriendReq unCareForFriendReq) {
@@ -198,8 +170,6 @@ public class FriendController {
 
     /**
      * 设置聊天背景
-     *
-     * @return
      */
     @PostMapping("/set-chat-background")
     public JSONObject setChatBackground(@Userid String userId,

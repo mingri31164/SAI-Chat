@@ -3,7 +3,7 @@ package com.mingri.model.vo.admin.req.statistic;
 import lombok.Data;
 
 @Data
-public class LoginDetailsVo {
+public class LoginDetailsReq {
     //起始
     private int index;
     //查询条数

@@ -19,8 +19,6 @@ public abstract class AbstractWorkIdChooseTemplate {
 
     /**
      * 根据自定义策略获取 WorkId 生成器
-     *
-     * @return
      */
     protected abstract WorkIdWrapper chooseWorkId();
 

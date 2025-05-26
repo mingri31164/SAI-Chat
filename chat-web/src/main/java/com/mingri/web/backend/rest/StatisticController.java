@@ -28,11 +28,9 @@ public class StatisticController {
 
     /**
      * 登录详情列表
-     *
-     * @return
      */
     @PostMapping("/login/details")
-    @UrlResource("admin")
+    @UrlResource("")
     public JSONObject loginDetails(@RequestBody LoginDetailsReq loginDetailsReq) {
         List<UserOperatedDto> result = userOperatedService.loginDetails(loginDetailsReq);
         return ResultUtil.Succeed(result);
@@ -40,8 +38,6 @@ public class StatisticController {
 
     /**
      * 登录数量信息
-     *
-     * @return
      */
     @GetMapping("/num/info")
     @UrlResource("admin")
@@ -52,8 +48,6 @@ public class StatisticController {
 
     /**
      * 消息发送数量top10
-     *
-     * @return
      */
     @GetMapping("/top10/msg")
     @UrlResource("admin")

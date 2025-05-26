@@ -3,7 +3,7 @@ package com.mingri.model.vo.admin.req.user;
 import lombok.Data;
 
 @Data
-public class UserListVo {
+public class UserListReq {
     //起始
     private int currentPage = 1;
     //查询条数

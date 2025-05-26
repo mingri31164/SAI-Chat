@@ -6,9 +6,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class UpdateUserVo {
-    @NotNull(message = "用户不能为空")
-    private String id;
+public class CreateUserReq {
+    @NotNull(message = "账号不能为空")
+    private String account;
     @NotNull(message = "用户名不能为空")
     private String name;
     @Email(message = "邮箱格式有误")

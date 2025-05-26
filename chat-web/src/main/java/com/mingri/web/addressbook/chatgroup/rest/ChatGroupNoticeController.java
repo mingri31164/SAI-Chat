@@ -27,8 +27,6 @@ public class ChatGroupNoticeController {
 
     /**
      * 创建群公告
-     *
-     * @return
      */
     @PostMapping("/create")
     public JSONObject createNotice(@Userid String userId, @RequestBody CreateNoticeReq createNoticeVo) {
@@ -38,8 +36,6 @@ public class ChatGroupNoticeController {
 
     /**
      * 群公告列表
-     *
-     * @return
      */
     @PostMapping("/list")
     public JSONObject noticeList(@Userid String userId, @RequestBody NoticeListReq noticeListVo) {
@@ -49,8 +45,6 @@ public class ChatGroupNoticeController {
 
     /**
      * 删除群公告
-     *
-     * @return
      */
     @PostMapping("/delete")
     public JSONObject deleteNotice(@Userid String userId, @RequestBody DeleteNoticeReq deleteNoticeVo) {
@@ -61,8 +55,6 @@ public class ChatGroupNoticeController {
 
     /**
      * 编辑群公告
-     *
-     * @return
      */
     @PostMapping("/update")
     public JSONObject updateNotice(@Userid String userId, @RequestBody UpdateNoticeReq updateNoticeVo) {

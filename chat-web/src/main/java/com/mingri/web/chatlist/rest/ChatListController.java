@@ -38,8 +38,6 @@ public class ChatListController {
 
     /**
      * 获取聊天列表
-     *
-     * @return
      */
     @GetMapping("/list")
     public JSONObject getChatList(@Userid String userId) {
@@ -49,8 +47,6 @@ public class ChatListController {
 
     /**
      * 搜索好友或群组
-     *
-     * @return
      */
     @PostMapping("/search")
     public JSONObject searchFriends(@Userid String userId, @RequestBody SearchReq searchVo) {
@@ -64,8 +60,6 @@ public class ChatListController {
 
     /**
      * 创建聊天会话
-     *
-     * @return
      */
     @PostMapping("/create")
     public JSONObject createChatList(@Userid String userId, @UserRole String role, @RequestBody CreateChatListReq createChatListVo) {
@@ -75,8 +69,6 @@ public class ChatListController {
 
     /**
      * 删除会话
-     *
-     * @return
      */
     @PostMapping("/delete")
     public JSONObject deleteChatList(@Userid String userId, @RequestBody DeleteChatListReq deleteChatListVo) {
@@ -87,8 +79,6 @@ public class ChatListController {
 
     /**
      * 设置置顶会话
-     *
-     * @return
      */
     @PostMapping("/top")
     public JSONObject topChatList(@Userid String userId, @RequestBody TopChatListReq topChatListVo) {
@@ -98,8 +88,6 @@ public class ChatListController {
 
     /**
      * 消息已读
-     *
-     * @return
      */
     @GetMapping("/read/{targetId}")
     public JSONObject messageRead(@Userid String userId, @PathVariable String targetId) {
@@ -109,8 +97,6 @@ public class ChatListController {
 
     /**
      * 全部已读
-     *
-     * @return
      */
     @GetMapping("/read/all")
     public JSONObject messageReadAll(@Userid String userId) {
@@ -120,8 +106,6 @@ public class ChatListController {
 
     /**
      * 获取详细信息
-     *
-     * @return
      */
     @PostMapping("/detail")
     public JSONObject detailChatList(@Userid String userId, @RequestBody DetailChatListReq detailChatListVo) {

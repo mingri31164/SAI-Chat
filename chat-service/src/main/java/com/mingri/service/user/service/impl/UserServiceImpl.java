@@ -336,29 +336,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     EmailService emailService;
 
     @Override
-    public Page<User> userList(UserListVo userListVo) {
-        Page<User> page = new Page<>(userListVo.getCurrentPage(), userListVo.getPageSize());
+    public Page<User> userList(UserListReq userListReq) {
+        Page<User> page = new Page<>(userListReq.getCurrentPage(), userListReq.getPageSize());
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.select(User::getId, User::getAccount, User::getName, User::getPortrait,
                 User::getSex, User::getBirthday, User::getSignature, User::getPhone,
                 User::getEmail, User::getLastOptTime, User::getStatus, User::getIsOnline,
                 User::getRole, User::getCreateTime, User::getUpdateTime);
-        if (StringUtils.isNotBlank(userListVo.getKeyword())) {
+        if (StringUtils.isNotBlank(userListReq.getKeyword())) {
             queryWrapper.and(query -> {
-                query.like(User::getName, userListVo.getKeyword())
+                query.like(User::getName, userListReq.getKeyword())
                         .or()
-                        .like(User::getAccount, userListVo.getKeyword())
+                        .like(User::getAccount, userListReq.getKeyword())
                         .or()
-                        .like(User::getEmail, userListVo.getKeyword())
+                        .like(User::getEmail, userListReq.getKeyword())
                         .or()
-                        .like(User::getPhone, userListVo.getKeyword());
+                        .like(User::getPhone, userListReq.getKeyword());
             });
         }
-        if (StringUtils.isNotBlank(userListVo.getOnlineStatus())) {
-            if (userListVo.getOnlineStatus().equals("online")) {
+        if (StringUtils.isNotBlank(userListReq.getOnlineStatus())) {
+            if (userListReq.getOnlineStatus().equals("online")) {
                 queryWrapper.eq(User::getIsOnline, true);
             }
-            if (userListVo.getOnlineStatus().equals("offline")) {
+            if (userListReq.getOnlineStatus().equals("offline")) {
                 queryWrapper.eq(User::getIsOnline, false);
             }
         }
@@ -367,81 +367,81 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public boolean createUser(CreateUserVo createUserVo) {
+    public boolean createUser(CreateUserReq createUserReq) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getAccount, createUserVo.getAccount());
+        queryWrapper.eq(User::getAccount, createUserReq.getAccount());
         if (count(queryWrapper) > 0) {
             throw new BaseException("账号已存在~");
         }
         User user = new User();
         user.setId(IdUtil.randomUUID());
-        user.setName(createUserVo.getName());
-        user.setAccount(createUserVo.getAccount());
+        user.setName(createUserReq.getName());
+        user.setAccount(createUserReq.getAccount());
         String password = RandomUtil.randomString(8);
         String passwordHash = SecurityUtil.hashPassword(password);
         user.setStatus(UserStatus.Normal);
         user.setPassword(passwordHash);
         user.setBirthday(new Date());
         user.setSex("男");
-        user.setEmail(createUserVo.getEmail());
+        user.setEmail(createUserReq.getEmail());
         user.setPortrait(minioConfig.getEndpoint() + "/" + minioConfig.getBucketName() + "/default-portrait.jpg");
 
         //密码发送邮件
         if (save(user)) {
             Context context = new Context();
-            context.setVariable("username", createUserVo.getName());
-            context.setVariable("account", createUserVo.getAccount());
+            context.setVariable("username", createUserReq.getName());
+            context.setVariable("account", createUserReq.getAccount());
             context.setVariable("password", password);
-            emailService.sendHtmlMessage(createUserVo.getEmail(), "Mingri用户密码", "email_password_template.html", context);
+            emailService.sendHtmlMessage(createUserReq.getEmail(), "Mingri用户密码", "email_password_template.html", context);
         }
 
         return true;
     }
 
     @Override
-    public boolean updateUser(UpdateUserVo updateUserVo) {
+    public boolean updateUser(UpdateUserReq updateUserReq) {
         LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.set(User::getName, updateUserVo.getName())
-                .set(User::getEmail, updateUserVo.getEmail())
-                .set(User::getPhone, updateUserVo.getPhone())
-                .eq(User::getId, updateUserVo.getId());
+        updateWrapper.set(User::getName, updateUserReq.getName())
+                .set(User::getEmail, updateUserReq.getEmail())
+                .set(User::getPhone, updateUserReq.getPhone())
+                .eq(User::getId, updateUserReq.getId());
         return update(updateWrapper);
     }
 
     @Override
-    public boolean disableUser(String userId, DisableUserVo disableUserVo) {
-        if (userId.equals(disableUserVo.getUserId())) {
+    public boolean disableUser(String userId, DisableUserReq disableUserReq) {
+        if (userId.equals(disableUserReq.getUserId())) {
             throw new BaseException("不能禁用自己~");
         }
         LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.set(User::getStatus, UserStatus.Disable)
-                .eq(User::getId, disableUserVo.getUserId());
+                .eq(User::getId, disableUserReq.getUserId());
         return update(updateWrapper);
     }
 
     @Override
-    public boolean undisableUser(UndisableUserVo undisableUserVo) {
+    public boolean undisableUser(UndisableUserReq undisableUserReq) {
         LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.set(User::getStatus, UserStatus.Normal)
-                .eq(User::getId, undisableUserVo.getUserId());
+                .eq(User::getId, undisableUserReq.getUserId());
         return update(updateWrapper);
     }
 
     @Override
-    public boolean deleteUser(String userId, DeleteUserVo deleteUserVo) {
-        if (userId.equals(deleteUserVo.getUserId())) {
+    public boolean deleteUser(String userId, DeleteUserReq deleteUserReq) {
+        if (userId.equals(deleteUserReq.getUserId())) {
             throw new BaseException("不能删除自己~");
         }
-        User user = getById(deleteUserVo.getUserId());
+        User user = getById(deleteUserReq.getUserId());
         if (UserRole.Third.equals(user.getRole())) {
             throw new BaseException("第三方用户不能删除，请到会话中删除~");
         }
-        return removeById(deleteUserVo.getUserId());
+        return removeById(deleteUserReq.getUserId());
     }
 
     @Override
-    public boolean restPassword(ResetPasswordVo resetPasswordVo) {
-        User user = getById(resetPasswordVo.getUserId());
+    public boolean restPassword(ResetPasswordReq resetPasswordReq) {
+        User user = getById(resetPasswordReq.getUserId());
         if (null == user) {
             throw new BaseException("用户不存在~");
         }
@@ -460,24 +460,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public boolean setAdmin(String userId, SetAdminVo setAdminVo) {
-        if (userId.equals(setAdminVo.getUserId())) {
+    public boolean setAdmin(String userId, SetAdminReq setAdminReq) {
+        if (userId.equals(setAdminReq.getUserId())) {
             throw new BaseException("不能操作自己~");
         }
         LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.set(User::getRole, UserRole.Admin)
-                .eq(User::getId, setAdminVo.getUserId());
+                .eq(User::getId, setAdminReq.getUserId());
         return update(updateWrapper);
     }
 
     @Override
-    public boolean cancelAdmin(String userId, CancelAdminVo cancelAdminVo) {
-        if (userId.equals(cancelAdminVo.getUserId())) {
+    public boolean cancelAdmin(String userId, CancelAdminReq cancelAdminReq) {
+        if (userId.equals(cancelAdminReq.getUserId())) {
             throw new BaseException("不能操作自己~");
         }
         LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.set(User::getRole, UserRole.User)
-                .eq(User::getId, cancelAdminVo.getUserId());
+                .eq(User::getId, cancelAdminReq.getUserId());
         return update(updateWrapper);
     }
 

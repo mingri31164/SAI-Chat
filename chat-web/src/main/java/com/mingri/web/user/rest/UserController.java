@@ -177,8 +177,6 @@ public class UserController {
 
     /**
      * 获取文件
-     *
-     * @return
      */
     @GetMapping("/get/file")
     public ResponseEntity<InputStreamResource> getFile(@Userid String userId,
@@ -199,8 +197,6 @@ public class UserController {
 
     /**
      * 获取图片内容
-     *
-     * @return
      */
     @GetMapping("/get/img")
     public JSONObject getImg(@Userid String userId,

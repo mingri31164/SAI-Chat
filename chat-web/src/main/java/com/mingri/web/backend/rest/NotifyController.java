@@ -1,0 +1,69 @@
+package com.mingri.web.backend.rest;
+
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.json.JSONObject;
+import com.mingri.core.annotation.UrlResource;
+import com.mingri.core.annotation.Userid;
+import com.mingri.core.toolkit.MinioUtil;
+import com.mingri.core.toolkit.ResultUtil;
+import com.mingri.model.exception.BaseException;
+import com.mingri.model.vo.notify.dto.SystemNotifyDto;
+import com.mingri.model.vo.notify.req.DeleteNotifyReq;
+import com.mingri.service.notify.service.NotifyService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
+import java.util.List;
+
+@RestController("AdminNotifyController")
+@RequestMapping("/admin/v1/api/notify")
+@Slf4j
+public class NotifyController {
+
+    @Resource
+    NotifyService notifyService;
+
+    @Resource
+    MinioUtil minioUtil;
+
+    /**
+     * 系统通知列表
+     */
+    @GetMapping("/system/list")
+    @UrlResource("admin")
+    public JSONObject SystemListNotify(@Userid String userId) {
+        List<SystemNotifyDto> result = notifyService.SystemListNotify(userId);
+        return ResultUtil.Succeed(result);
+    }
+
+    /**
+     * 系统通知删除
+     */
+    @PostMapping("/system/delete")
+    @UrlResource("admin")
+    public JSONObject deleteNotify(@RequestBody DeleteNotifyReq deleteNotifyVo) {
+        boolean result = notifyService.deleteNotify(deleteNotifyVo);
+        return ResultUtil.ResultByFlag(result);
+    }
+
+    /**
+     * 系统通知创建
+     */
+    @PostMapping("/system/create")
+    @UrlResource("admin")
+    public JSONObject createNotify(@NotNull(message = "图片不能为空~") @RequestParam("file") MultipartFile file,
+                                   @NotNull(message = "标题不能为空~") @RequestParam("title") String title,
+                                   @NotNull(message = "内容不能为空~") @RequestParam("text") String text) {
+        String url;
+        try {
+            url = minioUtil.upload(file.getInputStream(), "notify/" + IdUtil.randomUUID(), file.getContentType(), file.getSize());
+        } catch (Exception e) {
+            throw new BaseException("图片上传失败~");
+        }
+        boolean result = notifyService.createNotify(url, title, text);
+        return ResultUtil.ResultByFlag(result);
+    }
+}

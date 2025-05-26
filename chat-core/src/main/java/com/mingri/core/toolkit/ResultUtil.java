@@ -29,8 +29,6 @@ public class ResultUtil {
 
     /**
      * 根据条件返回
-     *
-     * @return
      */
     public static JSONObject ResultByFlag(boolean flag) {
         if (flag) {
@@ -42,8 +40,6 @@ public class ResultUtil {
 
     /**
      * 根据条件返回
-     *
-     * @return
      */
     public static JSONObject ResultByFlag(boolean flag, String msg, Object data) {
         if (flag) {
@@ -56,8 +52,6 @@ public class ResultUtil {
 
     /**
      * 成功没有返回数据
-     *
-     * @return
      */
     public static JSONObject Succeed() {
         JSONObject result = new JSONObject();
@@ -68,8 +62,6 @@ public class ResultUtil {
 
     /**
      * 成功有返回数据
-     *
-     * @return
      */
     public static JSONObject Succeed(Object data) {
         JSONObject result = new JSONObject();
@@ -80,8 +72,6 @@ public class ResultUtil {
 
     /**
      * 成功有返回消息和返回数据和提示
-     *
-     * @return
      */
     public static JSONObject Succeed(String msg, Object data) {
         JSONObject result = new JSONObject();
@@ -93,8 +83,6 @@ public class ResultUtil {
 
     /**
      * 失败没有返回数据
-     *
-     * @return
      */
     public static JSONObject Fail() {
         JSONObject result = new JSONObject();
@@ -105,8 +93,6 @@ public class ResultUtil {
 
     /**
      * 失败有返回数据
-     *
-     * @return
      */
     public static JSONObject Fail(String msg) {
         JSONObject result = new JSONObject();
@@ -117,8 +103,6 @@ public class ResultUtil {
 
     /**
      * 自定义的返回
-     *
-     * @return
      */
     public static JSONObject Result(int code, String msg, Object data) {
         JSONObject result = new JSONObject();
@@ -130,8 +114,6 @@ public class ResultUtil {
 
     /**
      * 自定义的返回
-     *
-     * @return
      */
     public static JSONObject Result(int code, String msg) {
         JSONObject result = new JSONObject();
@@ -142,8 +124,6 @@ public class ResultUtil {
 
     /**
      * 失败有返回消息和返回数据
-     *
-     * @return
      */
     public static JSONObject Fail(String msg, Object data) {
         JSONObject result = new JSONObject();
@@ -155,8 +135,6 @@ public class ResultUtil {
 
     /**
      * 失败有返回消息和返回数据
-     *
-     * @return
      */
     public static JSONObject TokenInvalid() {
         JSONObject result = new JSONObject();
@@ -167,8 +145,6 @@ public class ResultUtil {
 
     /**
      * 失败有返回消息和返回数据
-     *
-     * @return
      */
     public static JSONObject Forbidden() {
         JSONObject result = new JSONObject();

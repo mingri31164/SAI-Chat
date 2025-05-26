@@ -50,7 +50,7 @@ public class UrlPassRunner implements ApplicationRunner {
                         urlList.add(url.replaceAll("\\{[^\\}]+\\}", "**"));
                     }
                 }
-                // 免验证url
+                // 需要权限校验的url
                 if (annotation.annotationType().equals(UrlResource.class)) {
                     UrlResource urlResource = (UrlResource) annotation;
                     String value = urlResource.value();

@@ -63,21 +63,21 @@ public interface UserService extends IService<User> {
 
 
     // 管理端
-    Page<User> userList(UserListVo userListVo);
+    Page<User> userList(UserListReq userListReq);
 
-    boolean createUser(CreateUserVo createUserVo);
+    boolean createUser(CreateUserReq createUserReq);
 
-    boolean updateUser(UpdateUserVo updateUserVo);
+    boolean updateUser(UpdateUserReq updateUserReq);
 
-    boolean disableUser(String userid, DisableUserVo disableUserVo);
+    boolean disableUser(String userid, DisableUserReq disableUserReq);
 
-    boolean undisableUser(UndisableUserVo undisableUserVo);
+    boolean undisableUser(UndisableUserReq undisableUserReq);
 
-    boolean deleteUser(String userid, DeleteUserVo deleteUserVo);
+    boolean deleteUser(String userid, DeleteUserReq deleteUserReq);
 
-    boolean restPassword(ResetPasswordVo resetPasswordVo);
+    boolean restPassword(ResetPasswordReq resetPasswordReq);
 
-    boolean setAdmin(String userid, SetAdminVo setAdminVo);
+    boolean setAdmin(String userid, SetAdminReq setAdminReq);
 
-    boolean cancelAdmin(String userid, CancelAdminVo cancelAdminVo);
+    boolean cancelAdmin(String userid, CancelAdminReq cancelAdminReq);
 }
