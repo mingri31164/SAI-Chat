@@ -17,6 +17,7 @@ import com.mingri.model.vo.notify.entity.Notify;
 import com.mingri.service.notify.repo.mapper.NotifyMapper;
 import com.mingri.model.vo.notify.req.DeleteNotifyReq;
 import com.mingri.service.websocket.WebSocketService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,6 +33,11 @@ public class NotifyServiceImpl extends ServiceImpl<NotifyMapper, Notify> impleme
     NotifyMapper notifyMapper;
     @Resource
     WebSocketService webSocketService;
+
+    // TODO 后续考虑更好地解决循环依赖问题
+    @Lazy
+    @Resource
+    FriendService friendService;
 
 
 
@@ -50,19 +56,18 @@ public class NotifyServiceImpl extends ServiceImpl<NotifyMapper, Notify> impleme
 
     @Override
     public boolean friendApplyNotify(String userId, FriendApplyNotifyReq friendApplyNotifyReq) {
-        // TODO 在不引起循环依赖的前提下调用friendService
-//        if (friendService.isFriend(userId, friendApplyNotifyReq.getUserId())) {
-//            throw new BaseException("ta已是您的好友");
-//        }
+        if (friendService.isFriend(userId, friendApplyNotifyReq.getUserId())) {
+            throw new BaseException("ta已是您的好友");
+        }
 
-        // TODO 重复申请处理
-//        LambdaQueryWrapper<Notify> queryWrapper = new LambdaQueryWrapper<>();
-//        queryWrapper.eq(Notify::getFromId, userId)
-//                .eq(Notify::getToId, friendApplyNotifyVo.getUserId())
-//                .eq(Notify::getType, NotifyType.Friend_Apply);
-//        if (count(queryWrapper) > 0) {
-//            throw new BaseException("请勿重复申请");
-//        }
+        LambdaQueryWrapper<Notify> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Notify::getFromId, userId)
+                .eq(Notify::getToId, friendApplyNotifyReq.getUserId())
+                .eq(Notify::getType, NotifyType.Friend_Apply);
+        if (count(queryWrapper) > 0) {
+            throw new BaseException("请勿重复申请");
+        }
+
         Notify notify = new Notify();
         notify.setId(IdUtil.randomUUID());
         notify.setFromId(userId);
