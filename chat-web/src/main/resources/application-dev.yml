@@ -3,7 +3,7 @@ mingri:
     master:
       host: 127.0.0.1
       port: 3306 #3339
-      database: mini-chat
+      database: sai-chat
       username: root
       password: 123456
     slave:
