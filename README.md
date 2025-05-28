@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="128px" src=".github/logo.png" />
+  <img width="128px" src="https://github.com/mingri31164/SAI-Chat/blob/main/docs/.github/sai-logo.png" />
 </p>
 <h1 align="center">SAI林语</h1>
 <p align="center">该代码仓库为 SAI林语聊天室 后端端相关代码</p>
@@ -20,6 +20,34 @@
 
 登录信息统计、用户管理、在线聊天、系统通知管理、第三方会话管理等。
 
+
+## 技术选型
+
+| 技术选型            | 说明      |
+|-----------------|---------|
+| SpringBoot      | 脚手架     |
+| SpringAI        | 大模型集成框架 |
+| Spring Security | 权限框架    |
+| Mybatis-Plus    | ORM框架   |
+| MySQL           | 关系型数据库  |
+| Redis           | 缓存      |
+| Caffeine        | 本地缓存    |
+| RocketMQ        | 消息队列    |
+| Netty           | 网络通信框架  |
+| SLF4J           | 日志框架    |
+
+
+## 项目架构
+
+```Bash
+SAI-Chat
+├── chat-ai  #  大模型应用模块，如RAG、MCP等
+├── chat-api  #  通用的枚举、实体类定义
+├── chat-core # 核心组件模块，如配置、工具类等
+├── chat-frameworks  #  自定义组件模块，如线程池、事件监听组件等
+├── chat-service # 业务相关的主要逻辑
+└── chat-web  # 项目启动入口，Web模块
+```
 
 # 客户端截图
 
