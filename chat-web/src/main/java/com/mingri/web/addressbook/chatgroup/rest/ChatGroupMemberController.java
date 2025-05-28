@@ -10,6 +10,8 @@ import com.mingri.model.vo.chat.chatgroup.dto.MemberListDto;
 import com.mingri.model.vo.chat.chatgroup.entity.ChatGroupMember;
 import com.mingri.model.vo.chat.chatlist.req.MemberListReq;
 import com.mingri.service.chat.service.ChatGroupMemberService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,8 +22,9 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/v1/api/chat-group-member")
+@Tag(name = "聊天群成员接口")
 @RequiredArgsConstructor
+@RequestMapping("/v1/api/chat-group-member")
 public class ChatGroupMemberController {
 
     @Resource
@@ -30,12 +33,14 @@ public class ChatGroupMemberController {
     private final MinioUtil minioUtil;
 
     @PostMapping("/list")
+    @Operation(summary = "获取群成员列表（Map）")
     public JSONObject memberList(@Userid String userId, @RequestBody MemberListReq memberListVo) {
         Map<String, MemberListDto> result = chatGroupMemberService.memberList(userId, memberListVo);
         return ResultUtil.Succeed(result);
     }
 
     @PostMapping("/list/page")
+    @Operation(summary = "获取群成员列表（List）")
     public JSONObject memberListPage(@Userid String userId, @RequestBody MemberListReq memberListVo) {
         List<MemberListDto> result = chatGroupMemberService.memberListPage(userId, memberListVo);
         return ResultUtil.Succeed(result);
@@ -45,6 +50,7 @@ public class ChatGroupMemberController {
      * 设置聊天背景
      */
     @PostMapping("/set-chat-background")
+    @Operation(summary = "设置聊天背景")
     public JSONObject setChatBackground(@Userid String userId,
                                         @RequestParam("groupId") String groupId,
                                         @RequestParam("name") String name,

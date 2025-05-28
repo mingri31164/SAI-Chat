@@ -12,6 +12,8 @@ import com.mingri.model.vo.user.dto.login.QrCodeResult;
 import com.mingri.model.vo.user.req.login.qr.ResultReq;
 import com.mingri.model.vo.user.req.login.qr.StatusReq;
 import com.mingri.service.user.service.QrCodeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.simpleframework.xml.Path;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
 @RestController
+@Tag(name = "二维码基础接口")
 @RequestMapping("/qr")
-@Slf4j
 public class QrCodeController {
 
     @Resource
@@ -30,6 +32,7 @@ public class QrCodeController {
     QrCodeService qrCodeService;
 
     @GetMapping("/code")
+    @Operation(summary = "创建二维码")
     @UrlFree
     public JSONObject code(@UserIp String userIp, @Userid String userId, @Path("action") String action) {
         String key = qrCodeService.createQrCode(action, userIp, userId);
@@ -37,6 +40,7 @@ public class QrCodeController {
     }
 
     @PostMapping("/code/result")
+    @Operation(summary = "获取二维码")
     @UrlFree
     public JSONObject result(@RequestBody ResultReq resultReq) {
         String result = (String) redisUtils.get(resultReq.getKey());
@@ -48,6 +52,7 @@ public class QrCodeController {
     }
 
     @GetMapping("/code/status")
+    @Operation(summary = "获取二维码状态")
     public JSONObject status(@RequestBody StatusReq statusReq) {
         String result = (String) redisUtils.get(statusReq.getKey());
         if (null == result) {

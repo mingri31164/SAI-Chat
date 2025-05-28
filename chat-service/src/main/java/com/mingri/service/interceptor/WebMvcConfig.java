@@ -30,10 +30,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
 
-    //	使用 addCorsMappings() 无效，而使用 CorsFilter 有效的核心原因是：
-    //addCorsMappings() 注册的 CORS 配置 只对 Spring MVC 的 DispatcherServlet 有效，
-    // 而某些请求（如你提到的 login 接口）可能在被其他 Filter 或拦截器处理时就已经触发 CORS 校验失败了。
-    // 而CorsFilter可以作用于所有请求（包括 Spring Security、拦截器、预检请求 OPTIONS）
+//     使用 addCorsMappings() 无效，而使用 CorsFilter 有效的核心原因是：
+//     addCorsMappings() 注册的 CORS 配置 只对 Spring MVC 的 DispatcherServlet 有效，
+//     而某些请求（如你提到的 login 接口）可能在被其他 Filter 或拦截器处理时就已经触发 CORS 校验失败了。
+//     而CorsFilter可以作用于所有请求（包括 Spring Security、拦截器、预检请求 OPTIONS）
 //    @Override
 //    public void addCorsMappings(CorsRegistry registry) {
 //        registry.addMapping("/**")

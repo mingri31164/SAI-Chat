@@ -38,9 +38,3 @@ mingri:
     secret-key: csd_admin
     expire-time: 7200000
     token-name: x-token
-
-
-
-
-
-

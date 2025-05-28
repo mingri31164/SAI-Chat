@@ -18,6 +18,8 @@ import com.mingri.model.vo.chat.chatlist.req.TopChatListReq;
 import com.mingri.model.vo.chat.friend.req.SearchReq;
 import com.mingri.service.chat.service.ChatListService;
 import com.mingri.service.chat.service.FriendService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +28,7 @@ import java.util.List;
 
 
 @RestController
+@Tag(name = "聊天列表接口")
 @RequiredArgsConstructor
 @RequestMapping("/v1/api/chat-list")
 public class ChatListController {
@@ -40,6 +43,7 @@ public class ChatListController {
      * 获取聊天列表
      */
     @GetMapping("/list")
+    @Operation(summary = "获取聊天列表")
     public JSONObject getChatList(@Userid String userId) {
         ChatListDto chatList = chatListService.getChatList(userId);
         return ResultUtil.Succeed(chatList);
@@ -49,6 +53,7 @@ public class ChatListController {
      * 搜索好友或群组
      */
     @PostMapping("/search")
+    @Operation(summary = "搜索好友或群组")
     public JSONObject searchFriends(@Userid String userId, @RequestBody SearchReq searchVo) {
         ChatDto chatDto = new ChatDto();
         List<FriendDetailsDto> friends = friendService.searchFriends(userId, searchVo);
@@ -62,6 +67,7 @@ public class ChatListController {
      * 创建聊天会话
      */
     @PostMapping("/create")
+    @Operation(summary = "创建聊天会话")
     public JSONObject createChatList(@Userid String userId, @UserRole String role, @RequestBody CreateChatListReq createChatListVo) {
         ChatList result = chatListService.createChatList(userId, role, createChatListVo);
         return ResultUtil.Succeed(result);
@@ -71,6 +77,7 @@ public class ChatListController {
      * 删除会话
      */
     @PostMapping("/delete")
+    @Operation(summary = "删除聊天会话")
     public JSONObject deleteChatList(@Userid String userId, @RequestBody DeleteChatListReq deleteChatListVo) {
         boolean result = chatListService.deleteChatList(userId, deleteChatListVo);
         return ResultUtil.ResultByFlag(result);
@@ -81,6 +88,7 @@ public class ChatListController {
      * 设置置顶会话
      */
     @PostMapping("/top")
+    @Operation(summary = "置顶聊天会话")
     public JSONObject topChatList(@Userid String userId, @RequestBody TopChatListReq topChatListVo) {
         boolean result = chatListService.topChatList(userId, topChatListVo);
         return ResultUtil.ResultByFlag(result);
@@ -90,6 +98,7 @@ public class ChatListController {
      * 消息已读
      */
     @GetMapping("/read/{targetId}")
+    @Operation(summary = "设置消息已读")
     public JSONObject messageRead(@Userid String userId, @PathVariable String targetId) {
         boolean result = chatListService.messageRead(userId, targetId);
         return ResultUtil.ResultByFlag(result);
@@ -99,6 +108,7 @@ public class ChatListController {
      * 全部已读
      */
     @GetMapping("/read/all")
+    @Operation(summary = "设置消息全部已读")
     public JSONObject messageReadAll(@Userid String userId) {
         boolean result = chatListService.messageReadAll(userId);
         return ResultUtil.ResultByFlag(result);
@@ -108,6 +118,7 @@ public class ChatListController {
      * 获取详细信息
      */
     @PostMapping("/detail")
+    @Operation(summary = "获取聊天会话详细信息")
     public JSONObject detailChatList(@Userid String userId, @RequestBody DetailChatListReq detailChatListVo) {
         ChatList result = chatListService.detailChartList(userId, detailChatListVo);
         return ResultUtil.Succeed(result);

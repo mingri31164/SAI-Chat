@@ -10,6 +10,8 @@ import com.mingri.model.exception.BaseException;
 import com.mingri.model.vo.notify.dto.SystemNotifyDto;
 import com.mingri.model.vo.notify.req.DeleteNotifyReq;
 import com.mingri.service.notify.service.NotifyService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,9 +20,11 @@ import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+
+
 @RestController("AdminNotifyController")
+@Tag(name = "管理端-通知管理接口")
 @RequestMapping("/admin/v1/api/notify")
-@Slf4j
 public class NotifyController {
 
     @Resource
@@ -33,6 +37,7 @@ public class NotifyController {
      * 系统通知列表
      */
     @GetMapping("/system/list")
+    @Operation(summary = "获取系统通知列表")
     @UrlResource("admin")
     public JSONObject SystemListNotify(@Userid String userId) {
         List<SystemNotifyDto> result = notifyService.SystemListNotify(userId);
@@ -43,6 +48,7 @@ public class NotifyController {
      * 系统通知删除
      */
     @PostMapping("/system/delete")
+    @Operation(summary = "删除系统通知")
     @UrlResource("admin")
     public JSONObject deleteNotify(@RequestBody DeleteNotifyReq deleteNotifyVo) {
         boolean result = notifyService.deleteNotify(deleteNotifyVo);
@@ -53,6 +59,7 @@ public class NotifyController {
      * 系统通知创建
      */
     @PostMapping("/system/create")
+    @Operation(summary = "创建系统通知")
     @UrlResource("admin")
     public JSONObject createNotify(@NotNull(message = "图片不能为空~") @RequestParam("file") MultipartFile file,
                                    @NotNull(message = "标题不能为空~") @RequestParam("title") String title,

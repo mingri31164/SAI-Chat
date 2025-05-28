@@ -10,6 +10,8 @@ import com.mingri.model.vo.admin.req.conversation.DisableConversationReq;
 import com.mingri.model.vo.admin.req.conversation.ResetSecretReq;
 import com.mingri.model.vo.admin.req.conversation.UndisableConversationReq;
 import com.mingri.service.admin.service.ConversationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,9 +20,11 @@ import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+
+
 @RestController("AdminConversationController")
+@Tag(name = "管理端-会话管理接口")
 @RequestMapping("/admin/v1/api/conversation")
-@Slf4j
 public class ConversationController {
 
     @Resource
@@ -28,10 +32,9 @@ public class ConversationController {
 
     /**
      * 创建会话
-     *
-     * @return
      */
     @PostMapping("/create")
+    @Operation(summary = "创建会话")
     @UrlResource("admin")
     public JSONObject createConversation(@NotNull(message = "头像不能为空~") @RequestParam("portrait") MultipartFile portrait,
                                          @NotNull(message = "名称不能为空~") @RequestParam("name") String name) {
@@ -41,10 +44,9 @@ public class ConversationController {
 
     /**
      * 修改会话
-     *
-     * @return
      */
     @PostMapping("/update")
+    @Operation(summary = "修改会话")
     @UrlResource("admin")
     public JSONObject updateConversation(@NotNull(message = "头像不能为空~") @RequestParam("portrait") MultipartFile portrait,
                                          @NotNull(message = "名称不能为空~") @RequestParam("name") String name,
@@ -55,10 +57,9 @@ public class ConversationController {
 
     /**
      * 会话列表
-     *
-     * @return
      */
     @GetMapping("/list")
+    @Operation(summary = "获取会话列表")
     @UrlResource("admin")
     public JSONObject conversationList() {
         List<ConversationDto> result = conversationService.conversationList();
@@ -67,10 +68,9 @@ public class ConversationController {
 
     /**
      * 删除会话
-     *
-     * @return
      */
     @PostMapping("/delete")
+    @Operation(summary = "删除会话")
     @UrlResource("admin")
     public JSONObject deleteConversation(@RequestBody DeleteConversationReq deleteConversationReq) {
         boolean result = conversationService.deleteConversation(deleteConversationReq);
@@ -79,10 +79,9 @@ public class ConversationController {
 
     /**
      * 重置会话秘钥
-     *
-     * @return
      */
     @PostMapping("/reset/secret")
+    @Operation(summary = "重置会话秘钥")
     @UrlResource("admin")
     public JSONObject resetSecret(@RequestBody ResetSecretReq resetSecretReq) {
         boolean result = conversationService.resetSecret(resetSecretReq);
@@ -92,10 +91,9 @@ public class ConversationController {
 
     /**
      * 禁用会话
-     *
-     * @return
      */
     @PostMapping("/disable")
+    @Operation(summary = "禁用会话")
     @UrlResource("admin")
     public JSONObject disableConversation(@RequestBody DisableConversationReq disableConversationReq) {
         boolean result = conversationService.disableConversation(disableConversationReq);
@@ -104,10 +102,9 @@ public class ConversationController {
 
     /**
      * 解禁会话
-     *
-     * @return
      */
     @PostMapping("/undisable")
+    @Operation(summary = "解禁会话")
     @UrlResource("admin")
     public JSONObject undisableConversation(@RequestBody UndisableConversationReq undisableConversationReq) {
         boolean result = conversationService.undisableConversation(undisableConversationReq);

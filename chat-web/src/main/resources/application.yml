@@ -78,19 +78,6 @@ security:
     token-name: ${mingri.jwt.token-name}
 
 
-springdoc:
-  api-docs:
-    path: /v3/api-docs
-  swagger-ui:
-    path: /swagger-ui.html
-    tags-sorter: alpha
-    operations-sorter: alpha
-  group-configs:
-    - group: 'default'
-      paths-to-match: '/**'
-      packages-to-scan: com.mingri.controller
-
-
 knife4j:
   enable: true
   #是否启用接口文档登录认证

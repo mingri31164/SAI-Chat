@@ -2,7 +2,7 @@
   <img width="128px" src="https://github.com/mingri31164/SAI-Chat/blob/main/docs/.github/sai-logo.png" />
 </p>
 <h1 align="center">SAI林语</h1>
-<p align="center">该代码仓库为 SAI林语聊天室 后端端相关代码</p>
+<p align="center">该代码仓库为 SAI林语聊天室 后端相关代码</p>
 <p align="center">客户端地址：https://github.com/DWHengr/linyu-client</p>
 
 # 简绍
@@ -41,12 +41,12 @@
 
 ```Bash
 SAI-Chat
-├── chat-ai  #  大模型应用模块，如RAG、MCP等
-├── chat-api  #  通用的枚举、实体类定义
+├── chat-ai # 大模型应用模块，如RAG、MCP等
+├── chat-api # 通用的枚举、实体类定义
 ├── chat-core # 核心组件模块，如配置、工具类等
-├── chat-frameworks  #  自定义组件模块，如线程池、事件监听组件等
+├── chat-frameworks # 自定义组件模块，如线程池、事件监听组件等
 ├── chat-service # 业务相关的主要逻辑
-└── chat-web  # 项目启动入口，Web模块
+└── chat-web # 项目启动入口，Web模块
 ```
 
 # 客户端截图

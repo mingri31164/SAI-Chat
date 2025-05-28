@@ -17,6 +17,8 @@ import com.mingri.service.mail.repo.EmailVerifyReq;
 import com.mingri.model.vo.user.dto.UserDto;
 import com.mingri.model.vo.user.entity.User;
 import com.mingri.service.user.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -35,8 +37,8 @@ import java.util.List;
 
 
 @RestController
+@Tag(name = "用户基础接口")
 @RequestMapping("/v1/api/user")
-@Slf4j
 public class UserController {
 
     @Resource
@@ -58,6 +60,7 @@ public class UserController {
      * 用户查询
      */
     @PostMapping("/search")
+    @Operation(summary = "查询用户")
     public JSONObject searchUser(@RequestBody SearchUserReq searchUserReq) {
         List<UserDto> result = userService.searchUser(searchUserReq);
         return ResultUtil.Succeed(result);
@@ -67,6 +70,7 @@ public class UserController {
      * 获取用户每项未读数
      */
     @GetMapping("/unread")
+    @Operation(summary = "获取用户每项未读数")
     public JSONObject unreadInfo(@Userid String userId) {
         HashMap result = userService.unreadInfo(userId);
         return ResultUtil.Succeed(result);
@@ -76,6 +80,7 @@ public class UserController {
      * 邮箱验证码
      */
     @PostMapping("/email/verify")
+    @Operation(summary = "获取邮箱验证码")
     @UrlFree
     public JSONObject emailVerify(@RequestBody EmailVerifyReq emailVerifyReq) {
         verificationCodeService.emailVerificationCode(emailVerifyReq.getEmail());
@@ -86,6 +91,7 @@ public class UserController {
      * 邮箱验证码(通过账号)
      */
     @PostMapping("/email/verify/by/account")
+    @Operation(summary = "获取邮箱验证码（通过账号）")
     @UrlFree
     public JSONObject emailVerifyByAccount(@RequestBody EmailVerifyByAccountReq emailVerifyByAccountReq) {
         userService.emailVerifyByAccount(emailVerifyByAccountReq.getAccount());
@@ -97,6 +103,7 @@ public class UserController {
      */
     @UrlFree
     @PostMapping("/register")
+    @Operation(summary = "用户注册")
     public JSONObject register(@RequestBody RegisterReq registerReq) {
         String decryptedPassword = SecurityUtil.decryptPassword(registerReq.getPassword());
         registerReq.setPassword(decryptedPassword);
@@ -109,6 +116,7 @@ public class UserController {
      */
     @UrlFree
     @PostMapping("/forget")
+    @Operation(summary = "忘记密码")
     public JSONObject forget(@RequestBody ForgetReq forgetReq) {
         String decryptedPassword = SecurityUtil.decryptPassword(forgetReq.getPassword());
         forgetReq.setPassword(decryptedPassword);
@@ -120,6 +128,7 @@ public class UserController {
      * 获取当前用户信息
      */
     @GetMapping("/info")
+    @Operation(summary = "忘记密码")
     public JSONObject info(@Userid String userId) {
         UserDto result = userService.info(userId);
         return ResultUtil.Succeed(result);
@@ -129,6 +138,7 @@ public class UserController {
      * 修改当前用户信息
      */
     @PostMapping("/update")
+    @Operation(summary = "修改当前用户信息")
     public JSONObject update(@Userid String userId, @RequestBody UpdateReq updateReq) {
         boolean result = userService.updateUserInfo(userId, updateReq);
         return ResultUtil.ResultByFlag(result);
@@ -138,6 +148,7 @@ public class UserController {
      * 修改密码
      */
     @PostMapping("/update/password")
+    @Operation(summary = "修改密码")
     public JSONObject updateUserPassword(@Userid String userId, @RequestBody UpdatePasswordReq updateVo) {
         String decryptedPassword = SecurityUtil.decryptPassword(updateVo.getConfirmPassword());
         updateVo.setConfirmPassword(decryptedPassword);
@@ -149,6 +160,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/upload/portrait")
+    @Operation(summary = "修改用户头像")
     public JSONObject upload(HttpServletRequest request,
                              @Userid String userId,
                              @RequestHeader("name") String name,
@@ -162,6 +174,7 @@ public class UserController {
     }
 
     @PostMapping(value = "upload/portrait/form")
+    @Operation(summary = "修改用户头像（表单）")
     public JSONObject uploadFrom(@Userid String userId,
                                  @RequestParam("name") String name,
                                  @RequestParam("type") String type,
@@ -179,6 +192,7 @@ public class UserController {
      * 获取文件
      */
     @GetMapping("/get/file")
+    @Operation(summary = "获取文件")
     public ResponseEntity<InputStreamResource> getFile(@Userid String userId,
                                                        @UserRole String role,
                                                        @RequestHeader("targetId") String targetId,
@@ -199,6 +213,7 @@ public class UserController {
      * 获取图片内容
      */
     @GetMapping("/get/img")
+    @Operation(summary = "获取图片内容")
     public JSONObject getImg(@Userid String userId,
                              @UserRole String role,
                              @RequestParam("targetId") String targetId,

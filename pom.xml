@@ -40,6 +40,7 @@
         <hutool-all.version>5.8.20</hutool-all.version>
         <minio.version>8.2.1</minio.version>
         <rocketmq.version>2.2.3</rocketmq.version>
+        <knife4j>3.0.2</knife4j>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -195,6 +196,13 @@
                 <groupId>io.minio</groupId>
                 <artifactId>minio</artifactId>
                 <version>${minio.version}</version>
+            </dependency>
+
+<!--            knife4j-->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j}</version>
             </dependency>
 
         </dependencies>
