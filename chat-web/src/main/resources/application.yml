@@ -3,80 +3,24 @@ server:
 
 spring:
   application:
-    name: mini-chat
+    name: SAI-Chat
+  main:
+    allow-circular-references: true
+    allow-bean-definition-overriding: true
+  config:
+    import:
+      - application-ai.yml
+      - application-dal.yml
+      - application-email.yml
+      - application-middleware.yml
   profiles:
     active: dev
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss.SSS
     time-zone: Asia/Shanghai
 
-  datasource:
-    dynamic:
-      primary: master
-      datasource:
-        master:
-          url: jdbc:mysql://${mingri.datasource.master.host}:${mingri.datasource.master.port}/${mingri.datasource.master.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
-          username: ${mingri.datasource.master.username}
-          password: ${mingri.datasource.master.password}
-          driver-class-name: com.mysql.cj.jdbc.Driver
-          hikari:
-            max-lifetime: 70000
-#        slave:
-#          url: jdbc:mysql://${mingri.datasource.slave.host}:${mingri.datasource.slave.port}/${mingri.datasource.slave.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
-#          username: ${mingri.datasource.slave.username}
-#          password: ${mingri.datasource.slave.password}
-#          driver-class-name: com.mysql.cj.jdbc.Driver
-#          hikari:
-#            max-lifetime: 70000
-
-  data:
-    redis:
-      host: ${mingri.redis.host}
-      port: ${mingri.redis.port}
-      password: ${mingri.redis.password}
-      database: ${mingri.redis.database}
-
-  mail:
-    password: ${mingri.mail.password}
-    host: ${mingri.mail.host}
-    port: ${mingri.mail.port}
-    username: ${mingri.mail.user}
-    from: ${mingri.mail.from}
-    expireTime: ${mingri.mail.expireTime}
-    default-encoding: UTF-8
-    properties:
-      mail:
-        smtp:
-          auth: true
-          ssl:
-            enable: true
-
-minio:
-  endpoint: ${mingri.minio.endpoint}
-  access-key: ${mingri.minio.accessKey}
-  secret-key: ${mingri.minio.secretKey}
-  bucket-name: ${mingri.minio.bucketName}
-  file-bucket-name: ${mingri.minio.fileBucketName}
-
-
-rocketmq:
-  enabled: ${mingri.rocketmq.enabled}
-  name-server: ${mingri.rocketmq.name-server}
-  producer:
-    group: ${mingri.rocketmq.group}
-    send-message-timeout: 5000
-    retry-times-when-send-failed: 3
-    retry-times-when-send-async-failed: 3
-
-security:
-  jwt:
-    # 设置jwt签名加密时使用的秘钥
-    secret-key: ${mingri.jwt.secret-key}
-    # 设置jwt过期时间
-    expire-time: ${mingri.jwt.expire-time}
-    # 设置前端传递过来的令牌名称
-    token-name: ${mingri.jwt.token-name}
-
+database:
+  name: sai-chat
 
 knife4j:
   enable: true
@@ -89,30 +33,7 @@ knife4j:
     language: zh_cn
     enable-version: true
     enable-swagger-models: true
-    swagger-model-name: 客户端模块
-
-#mybatis:
-#  #mapper配置文件
-#  mapper-locations: classpath:mapper/*.xml
-#  type-aliases-package: com.mingri.entity
-#  configuration:
-#    #开启驼峰命名
-#    map-underscore-to-camel-case: true
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
-voice:
-  model: "/model/faster-whisper-small/"
-  transitionApi: "http://123.207.210.163:8000/v1/audio/transcriptions"
-
-logging:
-  level:
-    com:
-      mingri:
-        mapper: debug
-        service: info
-        controller: info
+    swagger-model-name: 客户端请求对象
 
 
 

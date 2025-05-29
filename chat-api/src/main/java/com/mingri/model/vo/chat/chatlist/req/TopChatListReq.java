@@ -16,7 +16,4 @@ public class TopChatListReq {
         return isTop;
     }
 
-    public void setIsTop(boolean top) {
-        isTop = top;
-    }
 }

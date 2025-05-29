@@ -3,13 +3,11 @@ mingri:
     master:
       host: 127.0.0.1
       port: 3306 #3339
-      database: sai-chat
       username: root
       password: 123456
     slave:
       host: 127.0.0.1
       port: 3340
-      database: mini-chat
       username: root
       password: 123456
   redis:
@@ -34,7 +32,14 @@ mingri:
     enabled: true
     name-server: 127.0.0.1:9876
     group: mingri_group
-  jwt:
-    secret-key: csd_admin
-    expire-time: 7200000
-    token-name: x-token
+#  ai:
+#    datasource:
+#      base-url: 127.0.0.1:3306
+#      database: ai-rag-knowledge
+#      username: root
+#      password: 123456
+#    ollama:
+#      base-url: http://127.0.0.1:11434
+#    openai:
+#      base-url: https://api.xiaoai.plus
+#      api-key:

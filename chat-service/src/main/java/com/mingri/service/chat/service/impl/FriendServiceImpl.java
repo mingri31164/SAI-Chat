@@ -137,8 +137,8 @@ public class FriendServiceImpl extends ServiceImpl<FriendMapper, Friend> impleme
     }
 
     @Override
-    public List<FriendDetailsDto> searchFriends(String userId, SearchReq searchVo) {
-        return friendMapper.searchFriends(userId, "%" + searchVo.getSearchInfo() + "%");
+    public List<FriendDetailsDto> searchFriends(String userId, SearchReq searchReq) {
+        return friendMapper.searchFriends(userId, "%" + searchReq.getSearchInfo() + "%");
     }
 
     /**

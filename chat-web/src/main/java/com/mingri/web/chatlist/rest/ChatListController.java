@@ -54,11 +54,11 @@ public class ChatListController {
      */
     @PostMapping("/search")
     @Operation(summary = "搜索好友或群组")
-    public JSONObject searchFriends(@Userid String userId, @RequestBody SearchReq searchVo) {
+    public JSONObject searchFriends(@Userid String userId, @RequestBody SearchReq searchReq) {
         ChatDto chatDto = new ChatDto();
-        List<FriendDetailsDto> friends = friendService.searchFriends(userId, searchVo);
+        List<FriendDetailsDto> friends = friendService.searchFriends(userId, searchReq);
         chatDto.setFriend(friends);
-        List<ChatGroup> chatGroups = chatGroupMapper.getListFromSearch(userId, searchVo.getSearchInfo());
+        List<ChatGroup> chatGroups = chatGroupMapper.getListFromSearch(userId, searchReq.getSearchInfo());
         chatDto.setGroup(chatGroups);
         return ResultUtil.Succeed(chatDto);
     }

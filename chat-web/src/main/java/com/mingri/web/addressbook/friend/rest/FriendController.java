@@ -89,8 +89,8 @@ public class FriendController {
      */
     @PostMapping("/search")
     @Operation(summary = "搜索好友")
-    public JSONObject searchFriends(@Userid String userId, @RequestBody SearchReq searchVo) {
-        List<FriendDetailsDto> result = friendService.searchFriends(userId, searchVo);
+    public JSONObject searchFriends(@Userid String userId, @RequestBody SearchReq searchReq) {
+        List<FriendDetailsDto> result = friendService.searchFriends(userId, searchReq);
         return ResultUtil.Succeed(result);
     }
 

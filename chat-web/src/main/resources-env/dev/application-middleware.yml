@@ -1,0 +1,17 @@
+# 对象存储中间件
+minio:
+  endpoint: ${mingri.minio.endpoint}
+  access-key: ${mingri.minio.accessKey}
+  secret-key: ${mingri.minio.secretKey}
+  bucket-name: ${mingri.minio.bucketName}
+  file-bucket-name: ${mingri.minio.fileBucketName}
+
+# 消息中间件
+rocketmq:
+  enabled: ${mingri.rocketmq.enabled}
+  name-server: ${mingri.rocketmq.name-server}
+  producer:
+    group: ${mingri.rocketmq.group}
+    send-message-timeout: 5000
+    retry-times-when-send-failed: 3
+    retry-times-when-send-async-failed: 3

@@ -16,7 +16,7 @@ public interface FriendService extends IService<Friend> {
 
     boolean updateGroupId(String userId, String oldGroupId, String newGroupId);
 
-    List<FriendDetailsDto> searchFriends(String userId, SearchReq searchVo);
+    List<FriendDetailsDto> searchFriends(String userId, SearchReq searchReq);
 
     boolean isFriendIgnoreSpecial(String userId, String toId);
 

@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    # 向量数据库
+    driver-class-name: org.postgresql.Driver
+    username: ${mingri.ai.datasource.username}
+    password: ${mingri.ai.datasource.password}
+    url: jdbc:postgresql://${mingri.ai.datasource.base-url}/${mingri.ai.datasource.database}
+    type: com.zaxxer.hikari.HikariDataSource
+  ai:
+    ollama:
+      base-url: ${mingri.ai.ollama.base-url}
+      embedding-model: text-embedding-ada-002
+      embedding:
+        options:
+          num-batch: 512
+        model: nomic-embed-text
+    openai:
+      base-url: ${mingri.ai.openai.base-url}
+      api-key: ${mingri.ai.openai.api-key}
+      embedding-model: text-embedding-ada-002
+    rag:
+      embed: nomic-embed-text #nomic-embed-text、text-embedding-ada-002
+
+
+voice:
+  model: "/model/faster-whisper-small/"
+  transitionApi: "http://123.207.210.163:8000/v1/audio/transcriptions"

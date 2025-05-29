@@ -35,7 +35,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                         // 信息
                         .contact(new Contact().name("mingri31164").email("3116430062@qq.com").url("地址"))
                         // 简介
-                        .description("mini-chat项目API文档")
+                        .description("SAI-Chat项目API文档")
                         // 版本
                         .version("v1")
                         // 许可证
