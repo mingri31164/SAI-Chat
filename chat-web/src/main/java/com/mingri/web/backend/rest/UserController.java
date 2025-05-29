@@ -2,15 +2,14 @@ package com.mingri.web.backend.rest;
 
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.mingri.core.annotation.UrlResource;
-import com.mingri.core.annotation.Userid;
+import com.mingri.core.permission.UrlResource;
+import com.mingri.core.argument.Userid;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.model.vo.admin.req.user.*;
 import com.mingri.model.vo.user.entity.User;
 import com.mingri.service.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

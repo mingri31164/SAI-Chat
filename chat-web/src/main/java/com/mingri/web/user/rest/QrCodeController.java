@@ -2,9 +2,9 @@ package com.mingri.web.user.rest;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.mingri.core.annotation.UrlFree;
-import com.mingri.core.annotation.UserIp;
-import com.mingri.core.annotation.Userid;
+import com.mingri.core.permission.UrlFree;
+import com.mingri.core.argument.UserIp;
+import com.mingri.core.argument.Userid;
 import com.mingri.core.toolkit.RedisUtils;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.model.exception.BaseException;
@@ -14,7 +14,6 @@ import com.mingri.model.vo.user.req.login.qr.StatusReq;
 import com.mingri.service.user.service.QrCodeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.extern.slf4j.Slf4j;
 import org.simpleframework.xml.Path;
 import org.springframework.web.bind.annotation.*;
 

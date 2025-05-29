@@ -3,7 +3,7 @@ package com.mingri.web.addressbook.chatgroup.rest;
 
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.mingri.core.annotation.Userid;
+import com.mingri.core.argument.Userid;
 import com.mingri.core.toolkit.MinioUtil;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.model.vo.chat.chatgroup.dto.MemberListDto;

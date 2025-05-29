@@ -3,10 +3,10 @@ package com.mingri.web.addressbook.friend.rest;
 
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.mingri.core.annotation.Userid;
+import com.mingri.core.argument.Userid;
 import com.mingri.core.toolkit.MinioUtil;
 import com.mingri.core.toolkit.ResultUtil;
-import com.mingri.core.toolkit.SecurityUtil;
+import com.mingri.core.permission.SecurityUtil;
 import com.mingri.model.vo.chat.friend.req.*;
 import com.mingri.model.vo.chat.friend.dto.FriendDetailsDto;
 import com.mingri.model.vo.chat.friend.dto.FriendListDto;

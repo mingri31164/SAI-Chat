@@ -1,4 +1,4 @@
-package com.mingri.core.toolkit;
+package com.mingri.core.permission;
 
 import org.springframework.stereotype.Component;
 

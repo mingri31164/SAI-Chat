@@ -1,7 +1,7 @@
 package com.mingri.web.backend.rest;
 
-import com.mingri.core.annotation.UrlFree;
-import com.mingri.core.annotation.Userid;
+import com.mingri.core.permission.UrlFree;
+import com.mingri.core.argument.Userid;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.model.vo.chat.message.req.expose.ThirdsendMsgReq;
 import com.mingri.service.chat.service.MessageService;

@@ -16,6 +16,8 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TalkContentDto {
+
+//    @SensitiveField(bind = "content")
     private String text;
     private List<String> img;
 }

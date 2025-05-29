@@ -1,7 +1,7 @@
 package com.mingri.web.addressbook.group.rest;
 
 import cn.hutool.json.JSONObject;
-import com.mingri.core.annotation.Userid;
+import com.mingri.core.argument.Userid;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.model.vo.chat.group.dto.GroupListDto;
 import com.mingri.model.vo.chat.group.req.CreateGroupReq;
@@ -10,7 +10,6 @@ import com.mingri.model.vo.chat.group.req.UpdateGroupReq;
 import com.mingri.service.chat.service.GroupService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

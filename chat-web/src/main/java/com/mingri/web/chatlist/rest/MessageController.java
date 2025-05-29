@@ -2,8 +2,8 @@ package com.mingri.web.chatlist.rest;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.mingri.core.annotation.UserRole;
-import com.mingri.core.annotation.Userid;
+import com.mingri.core.argument.UserRole;
+import com.mingri.core.argument.Userid;
 import com.mingri.core.toolkit.MinioUtil;
 import com.mingri.core.toolkit.RedisUtils;
 import com.mingri.core.toolkit.ResultUtil;
@@ -20,7 +20,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;

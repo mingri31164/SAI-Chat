@@ -3,7 +3,7 @@ package com.mingri.service.user.service;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.json.JSONUtil;
 import com.mingri.core.toolkit.RedisUtils;
-import com.mingri.core.toolkit.SecurityUtil;
+import com.mingri.core.permission.SecurityUtil;
 import com.mingri.model.exception.BaseException;
 import com.mingri.model.vo.user.dto.UserDto;
 import com.mingri.model.vo.user.dto.login.QrCodeResult;

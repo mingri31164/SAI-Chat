@@ -2,7 +2,7 @@ package com.mingri.web.notify.rest;
 
 
 import cn.hutool.json.JSONObject;
-import com.mingri.core.annotation.Userid;
+import com.mingri.core.argument.Userid;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.model.vo.chat.friend.dto.FriendNotifyDto;
 import com.mingri.model.vo.notify.dto.SystemNotifyDto;
@@ -11,7 +11,6 @@ import com.mingri.model.vo.notify.req.ReadNotifyReq;
 import com.mingri.service.notify.service.NotifyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

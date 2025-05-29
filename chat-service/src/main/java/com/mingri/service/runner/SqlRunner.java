@@ -15,6 +15,7 @@ public class SqlRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        // 项目启动时让所有用户离线
         userService.allUserOffline();
     }
 }

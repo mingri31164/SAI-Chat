@@ -1,7 +1,7 @@
 package com.mingri.web.user.rest;
 
 import cn.hutool.json.JSONObject;
-import com.mingri.core.annotation.Userid;
+import com.mingri.core.argument.Userid;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.model.vo.user.req.UpdateUserSetReq;
 import com.mingri.model.vo.user.entity.UserSet;

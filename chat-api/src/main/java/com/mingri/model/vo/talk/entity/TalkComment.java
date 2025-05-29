@@ -42,6 +42,7 @@ public class TalkComment implements Serializable {
     /**
      * 评论内容
      */
+//    @SensitiveField(bind = "content")
     @TableField("content")
     private String content;
 

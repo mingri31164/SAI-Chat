@@ -1,7 +1,7 @@
 package com.mingri.web.backend.rest;
 
 import cn.hutool.json.JSONObject;
-import com.mingri.core.annotation.UrlResource;
+import com.mingri.core.permission.UrlResource;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.model.vo.admin.dto.ConversationDto;
 import com.mingri.model.vo.admin.entity.Conversation;
@@ -12,7 +12,6 @@ import com.mingri.model.vo.admin.req.conversation.UndisableConversationReq;
 import com.mingri.service.admin.service.ConversationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

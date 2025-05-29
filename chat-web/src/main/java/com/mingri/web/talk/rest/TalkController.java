@@ -3,7 +3,7 @@ package com.mingri.web.talk.rest;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.json.JSONObject;
-import com.mingri.core.annotation.Userid;
+import com.mingri.core.argument.Userid;
 import com.mingri.core.toolkit.MinioUtil;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.model.vo.talk.dto.TalkListDto;
@@ -14,13 +14,8 @@ import com.mingri.model.vo.talk.req.DetailsTalkReq;
 import com.mingri.model.vo.talk.req.TalkListReq;
 import com.mingri.service.talk.service.TalkService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

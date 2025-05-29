@@ -1,7 +1,7 @@
 package com.mingri.web.talk.rest;
 
 import cn.hutool.json.JSONObject;
-import com.mingri.core.annotation.Userid;
+import com.mingri.core.argument.Userid;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.model.vo.talk.dto.LikeListDto;
 import com.mingri.model.vo.talk.req.CreateTalkLikeReq;

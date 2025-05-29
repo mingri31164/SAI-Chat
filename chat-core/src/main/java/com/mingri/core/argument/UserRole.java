@@ -1,4 +1,4 @@
-package com.mingri.core.annotation;
+package com.mingri.core.argument;
 
 import java.lang.annotation.*;
 

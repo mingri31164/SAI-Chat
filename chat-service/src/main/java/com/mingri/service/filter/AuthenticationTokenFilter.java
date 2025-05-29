@@ -2,7 +2,7 @@ package com.mingri.service.filter;
 
 import com.mingri.core.toolkit.JwtUtil;
 import com.mingri.core.toolkit.ResultUtil;
-import com.mingri.core.toolkit.UrlPermitUtil;
+import com.mingri.core.permission.UrlPermitUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -1,8 +1,5 @@
-package com.mingri.service.runner;
+package com.mingri.core.permission;
 
-import com.mingri.core.annotation.UrlFree;
-import com.mingri.core.annotation.UrlResource;
-import com.mingri.core.toolkit.UrlPermitUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;

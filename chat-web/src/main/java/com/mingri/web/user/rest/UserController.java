@@ -1,13 +1,13 @@
 package com.mingri.web.user.rest;
 
 import cn.hutool.json.JSONObject;
-import com.mingri.core.annotation.UrlFree;
-import com.mingri.core.annotation.UserRole;
-import com.mingri.core.annotation.Userid;
+import com.mingri.core.permission.UrlFree;
+import com.mingri.core.argument.UserRole;
+import com.mingri.core.argument.Userid;
 import com.mingri.core.toolkit.MinioUtil;
 import com.mingri.core.toolkit.RedisUtils;
 import com.mingri.core.toolkit.ResultUtil;
-import com.mingri.core.toolkit.SecurityUtil;
+import com.mingri.core.permission.SecurityUtil;
 import com.mingri.model.exception.BaseException;
 import com.mingri.model.vo.user.req.*;
 import com.mingri.service.chat.service.FriendService;
@@ -20,7 +20,6 @@ import com.mingri.service.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;

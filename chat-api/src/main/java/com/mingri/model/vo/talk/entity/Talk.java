@@ -56,6 +56,7 @@ public class Talk implements Serializable {
     /**
      * 最近评论内容
      */
+//    @SensitiveField(bind = "content")
     @TableField("latest_comment")
     private String latestComment;
 

@@ -48,6 +48,7 @@ public class Message implements Serializable {
     /**
      * 消息内容
      */
+//    @SensitiveField(bind = "content")
     @TableField(value = "msg_content", typeHandler = JacksonTypeHandler.class)
     private MsgContent msgContent;
 

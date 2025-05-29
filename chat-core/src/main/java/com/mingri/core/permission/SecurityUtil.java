@@ -1,4 +1,4 @@
-package com.mingri.core.toolkit;
+package com.mingri.core.permission;
 
 import com.mingri.model.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;

@@ -2,8 +2,8 @@ package com.mingri.web.backend.rest;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.json.JSONObject;
-import com.mingri.core.annotation.UrlResource;
-import com.mingri.core.annotation.Userid;
+import com.mingri.core.permission.UrlResource;
+import com.mingri.core.argument.Userid;
 import com.mingri.core.toolkit.MinioUtil;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.model.exception.BaseException;
@@ -12,7 +12,6 @@ import com.mingri.model.vo.notify.req.DeleteNotifyReq;
 import com.mingri.service.notify.service.NotifyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

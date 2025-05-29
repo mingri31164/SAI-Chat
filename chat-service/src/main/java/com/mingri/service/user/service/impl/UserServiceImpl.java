@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mingri.core.config.MinioConfig;
+import com.mingri.core.permission.SecurityUtil;
 import com.mingri.core.toolkit.*;
 import com.mingri.model.constant.NotifyType;
 import com.mingri.model.constant.UserRole;
