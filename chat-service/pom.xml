@@ -172,6 +172,13 @@
             <scope>compile</scope>
         </dependency>
 
+        <!--动态线程池组件（暂定为开关）-->
+<!--        <dependency>-->
+<!--            <artifactId>chat-frameworks</artifactId>-->
+<!--            <groupId>com.mingri</groupId>-->
+<!--            <version>1.0-SNAPSHOT</version>-->
+<!--        </dependency>-->
+
     </dependencies>
 
     <build>
