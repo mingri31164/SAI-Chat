@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mingri.service.notify.repo.mapper.NotifyMapper">
 
-    <resultMap id="SystemNotifyDtoResultMap" type="com.mingri.model.vo.notify.dto.SystemNotifyDto">
+    <resultMap id="SystemNotifyDtoResultMap" type="com.mingri.service.notify.repo.vo.dto.SystemNotifyDto">
         <result property="id" column="id"/>
         <result property="createTime" column="create_time"/>
         <result property="type" column="type"/>

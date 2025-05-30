@@ -5,8 +5,8 @@ import cn.hutool.json.JSONUtil;
 import com.mingri.core.toolkit.RedisUtils;
 import com.mingri.core.permission.SecurityUtil;
 import com.mingri.model.exception.BaseException;
-import com.mingri.model.vo.user.dto.UserDto;
-import com.mingri.model.vo.user.dto.login.QrCodeResult;
+import com.mingri.service.user.repo.vo.dto.UserDto;
+import com.mingri.service.user.repo.vo.dto.login.QrCodeResult;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

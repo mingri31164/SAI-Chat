@@ -2,12 +2,12 @@ package com.mingri.service.notify.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.model.vo.chat.friend.dto.FriendNotifyDto;
-import com.mingri.model.vo.notify.dto.SystemNotifyDto;
-import com.mingri.model.vo.notify.req.FriendApplyNotifyReq;
-import com.mingri.model.vo.notify.req.ReadNotifyReq;
-import com.mingri.model.vo.notify.entity.Notify;
-import com.mingri.model.vo.notify.req.DeleteNotifyReq;
+import com.mingri.service.chat.repo.vo.friend.dto.FriendNotifyDto;
+import com.mingri.service.notify.repo.vo.dto.SystemNotifyDto;
+import com.mingri.service.notify.repo.vo.req.FriendApplyNotifyReq;
+import com.mingri.service.notify.repo.vo.req.ReadNotifyReq;
+import com.mingri.service.notify.repo.vo.entity.Notify;
+import com.mingri.service.notify.repo.vo.req.DeleteNotifyReq;
 
 import java.util.List;
 

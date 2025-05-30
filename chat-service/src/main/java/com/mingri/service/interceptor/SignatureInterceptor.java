@@ -1,7 +1,7 @@
 package com.mingri.service.interceptor;
 
 import com.mingri.core.toolkit.SignatureUtils;
-import com.mingri.model.vo.admin.entity.Conversation;
+import com.mingri.service.admin.repo.vo.entity.Conversation;
 import com.mingri.service.admin.service.ConversationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

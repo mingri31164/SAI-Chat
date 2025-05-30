@@ -18,5 +18,5 @@ public class SensitiveProperties {
     /**
      * 开启敏感词过滤
      */
-    private boolean enable;
+    private boolean enabled;
 }

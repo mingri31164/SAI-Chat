@@ -1,8 +1,10 @@
 package com.mingri.service;
 
+import org.apache.rocketmq.spring.autoconfigure.RocketMQAutoConfiguration;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 
 
 @AutoConfiguration
@@ -14,5 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
         "com.mingri.service.talk.repo.mapper",
         "com.mingri.service.admin.repo.mapper"
 })
+@Import(RocketMQAutoConfiguration.class)
 public class ServiceAutoConfig {
+
 }

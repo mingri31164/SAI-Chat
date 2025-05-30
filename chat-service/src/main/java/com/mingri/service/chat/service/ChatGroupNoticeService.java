@@ -1,11 +1,11 @@
 package com.mingri.service.chat.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.model.vo.chat.chatgroup.entity.ChatGroupNotice;
-import com.mingri.model.vo.chat.chatgroup.req.CreateNoticeReq;
-import com.mingri.model.vo.chat.chatgroup.req.DeleteNoticeReq;
-import com.mingri.model.vo.chat.chatgroup.req.NoticeListReq;
-import com.mingri.model.vo.chat.chatgroup.req.UpdateNoticeReq;
+import com.mingri.service.chat.repo.vo.chatgroup.entity.ChatGroupNotice;
+import com.mingri.service.chat.repo.vo.chatgroup.req.CreateNoticeReq;
+import com.mingri.service.chat.repo.vo.chatgroup.req.DeleteNoticeReq;
+import com.mingri.service.chat.repo.vo.chatgroup.req.NoticeListReq;
+import com.mingri.service.chat.repo.vo.chatgroup.req.UpdateNoticeReq;
 
 import java.util.List;
 

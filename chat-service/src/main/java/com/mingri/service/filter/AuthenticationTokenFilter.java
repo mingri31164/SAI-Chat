@@ -21,8 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-@Component
 @Slf4j
+@Component
 public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
     private final String TokenName = "x-token";
@@ -69,7 +69,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
             out.flush();
             out.close();
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.debug(e.getMessage());
         }
     }
 

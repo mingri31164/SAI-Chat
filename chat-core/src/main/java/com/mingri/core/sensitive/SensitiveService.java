@@ -33,7 +33,7 @@ public class SensitiveService {
      * @return
      */
     public boolean contains(String str) {
-        if (BooleanUtil.isTrue(sensitiveProperties.isEnable())) {
+        if (BooleanUtil.isTrue(sensitiveProperties.isEnabled())) {
             return SensitiveWordHelper.contains(str);
         }
         return false;
@@ -45,7 +45,7 @@ public class SensitiveService {
      * @return
      */
     public String replace(String str) {
-        if (BooleanUtil.isTrue(sensitiveProperties.isEnable())) {
+        if (BooleanUtil.isTrue(sensitiveProperties.isEnabled())) {
             return SensitiveWordHelper.replace(str);
         }
         return str;
@@ -53,5 +53,13 @@ public class SensitiveService {
 
     public List<String> findAll(String str) {
         return SensitiveWordHelper.findAll(str);
+    }
+
+    /**
+     * 全局静态敏感词替换（不依赖Spring注入，适合工具类调用）
+     */
+    public static String staticReplace(String str) {
+        // 这里直接用SensitiveWordHelper，配置开关可根据需要调整
+        return SensitiveWordHelper.replace(str);
     }
 }

@@ -2,13 +2,13 @@ package com.mingri.service.chat.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.model.vo.chat.chatlist.dto.ChatListDto;
-import com.mingri.model.vo.chat.chatlist.entity.ChatList;
-import com.mingri.model.vo.chat.chatlist.req.CreateChatListReq;
-import com.mingri.model.vo.chat.chatlist.req.DeleteChatListReq;
-import com.mingri.model.vo.chat.chatlist.req.DetailChatListReq;
-import com.mingri.model.vo.chat.chatlist.req.TopChatListReq;
-import com.mingri.model.vo.chat.message.dto.MsgContent;
+import com.mingri.service.chat.repo.vo.chatlist.dto.ChatListDto;
+import com.mingri.service.chat.repo.vo.chatlist.entity.ChatList;
+import com.mingri.service.chat.repo.vo.chatlist.req.CreateChatListReq;
+import com.mingri.service.chat.repo.vo.chatlist.req.DeleteChatListReq;
+import com.mingri.service.chat.repo.vo.chatlist.req.DetailChatListReq;
+import com.mingri.service.chat.repo.vo.chatlist.req.TopChatListReq;
+import com.mingri.service.chat.repo.vo.message.dto.MsgContent;
 
 /**
  * 聊天列表 服务类

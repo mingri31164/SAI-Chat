@@ -1,7 +1,7 @@
 package com.mingri.service.chat.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.model.vo.chat.message.entity.MessageRetraction;
+import com.mingri.service.chat.repo.vo.message.entity.MessageRetraction;
 
 /**
  * 消息撤回内容表 服务类

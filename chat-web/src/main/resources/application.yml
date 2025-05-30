@@ -19,8 +19,13 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss.SSS
     time-zone: Asia/Shanghai
 
+# 数据库名称
 database:
   name: sai-chat
+
+# 是否开启敏感词过滤
+sensitive:
+  enabled: true
 
 knife4j:
   enable: true

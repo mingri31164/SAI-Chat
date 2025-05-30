@@ -3,7 +3,7 @@ package com.mingri.web.chatlist.rest;
 import cn.hutool.json.JSONObject;
 import com.mingri.core.argument.Userid;
 import com.mingri.core.toolkit.ResultUtil;
-import com.mingri.model.vo.video.*;
+import com.mingri.service.chat.repo.vo.video.*;
 import com.mingri.service.chat.service.VideoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

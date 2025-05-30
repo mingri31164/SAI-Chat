@@ -4,17 +4,17 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.mingri.core.argument.UserRole;
 import com.mingri.core.argument.Userid;
-import com.mingri.core.toolkit.MinioUtil;
+import com.mingri.core.minio.MinioUtil;
 import com.mingri.core.toolkit.RedisUtils;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.model.constant.MsgType;
-import com.mingri.model.vo.chat.message.entity.Message;
-import com.mingri.model.vo.chat.message.entity.MessageRetraction;
-import com.mingri.model.vo.chat.message.dto.MsgContent;
-import com.mingri.model.vo.chat.message.req.MessageRecordReq;
-import com.mingri.model.vo.chat.message.req.ReeditMsgReq;
-import com.mingri.model.vo.chat.message.req.RetractionMsgReq;
-import com.mingri.model.vo.chat.message.req.SendMsgReq;
+import com.mingri.service.chat.repo.vo.message.entity.Message;
+import com.mingri.service.chat.repo.vo.message.entity.MessageRetraction;
+import com.mingri.service.chat.repo.vo.message.dto.MsgContent;
+import com.mingri.service.chat.repo.vo.message.req.MessageRecordReq;
+import com.mingri.service.chat.repo.vo.message.req.ReeditMsgReq;
+import com.mingri.service.chat.repo.vo.message.req.RetractionMsgReq;
+import com.mingri.service.chat.repo.vo.message.req.SendMsgReq;
 import com.mingri.service.chat.service.MessageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -50,7 +50,7 @@ public class MessageController {
     RedisUtils redisUtils;
 
     /**
-     * 发送消息给用户
+     * 发送消息
      */
     @PostMapping("/send")
     @Operation(summary = "发送消息")

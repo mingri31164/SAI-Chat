@@ -2,10 +2,10 @@ package com.mingri.service.chat.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.mingri.model.vo.chat.chatgroup.dto.MemberListDto;
-import com.mingri.model.vo.chat.chatgroup.entity.ChatGroupMember;
+import com.mingri.service.chat.repo.vo.chatgroup.dto.MemberListDto;
+import com.mingri.service.chat.repo.vo.chatgroup.entity.ChatGroupMember;
 import com.mingri.service.chat.repo.mapper.ChatGroupMemberMapper;
-import com.mingri.model.vo.chat.chatlist.req.MemberListReq;
+import com.mingri.service.chat.repo.vo.chatlist.req.MemberListReq;
 import com.mingri.service.chat.service.ChatGroupMemberService;
 import org.springframework.stereotype.Service;
 

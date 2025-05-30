@@ -2,12 +2,12 @@ package com.mingri.web.addressbook.chatgroup.rest;
 
 import cn.hutool.json.JSONObject;
 import com.mingri.core.argument.Userid;
-import com.mingri.core.toolkit.MinioUtil;
+import com.mingri.core.minio.MinioUtil;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.model.exception.BaseException;
-import com.mingri.model.vo.chat.chatgroup.dto.ChatGroupDetailsDto;
-import com.mingri.model.vo.chat.chatgroup.req.*;
-import com.mingri.model.vo.chat.chatgroup.entity.ChatGroup;
+import com.mingri.service.chat.repo.vo.chatgroup.dto.ChatGroupDetailsDto;
+import com.mingri.service.chat.repo.vo.chatgroup.entity.ChatGroup;
+import com.mingri.service.chat.repo.vo.chatgroup.req.*;
 import com.mingri.service.chat.service.ChatGroupService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

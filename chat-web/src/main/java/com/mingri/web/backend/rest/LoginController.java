@@ -4,7 +4,7 @@ import cn.hutool.json.JSONObject;
 import com.mingri.core.permission.UrlFree;
 import com.mingri.core.argument.UserIp;
 import com.mingri.core.permission.SecurityUtil;
-import com.mingri.model.vo.user.req.login.LoginReq;
+import com.mingri.service.user.repo.vo.req.login.LoginReq;
 import com.mingri.service.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -1,8 +1,8 @@
 package com.mingri.service.talk.repo.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mingri.model.vo.talk.dto.TalkListDto;
-import com.mingri.model.vo.talk.entity.Talk;
+import com.mingri.service.talk.repo.vo.dto.TalkListDto;
+import com.mingri.service.talk.repo.vo.entity.Talk;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 

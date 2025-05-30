@@ -1,7 +1,7 @@
 package com.mingri.service.chat.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.mingri.model.vo.chat.message.entity.MessageRetraction;
+import com.mingri.service.chat.repo.vo.message.entity.MessageRetraction;
 import com.mingri.service.chat.repo.mapper.MessageRetractionMapper;
 import com.mingri.service.chat.service.MessageRetractionService;
 import org.springframework.stereotype.Service;

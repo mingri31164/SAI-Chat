@@ -2,7 +2,7 @@ package com.mingri.service.chat.service;
 
 import cn.hutool.json.JSONObject;
 import com.mingri.model.exception.BaseException;
-import com.mingri.model.vo.video.*;
+import com.mingri.service.chat.repo.vo.video.*;
 import com.mingri.service.websocket.WebSocketService;
 import org.springframework.stereotype.Service;
 

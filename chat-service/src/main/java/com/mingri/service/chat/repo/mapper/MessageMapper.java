@@ -2,8 +2,8 @@ package com.mingri.service.chat.repo.mapper;
 
 import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mingri.model.vo.chat.message.dto.Top10MsgDto;
-import com.mingri.model.vo.chat.message.entity.Message;
+import com.mingri.service.chat.repo.vo.message.dto.Top10MsgDto;
+import com.mingri.service.chat.repo.vo.message.entity.Message;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;

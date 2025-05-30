@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @EnableTransactionManagement
 @Configurable
 @EnableAsync
-@Import(RocketMQAutoConfiguration.class)
 public class SAIChatApplicationRun {
     public static void main(String[] args) {
         SpringApplication.run(SAIChatApplicationRun.class, args);

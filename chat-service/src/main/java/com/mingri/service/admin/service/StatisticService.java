@@ -1,9 +1,9 @@
 package com.mingri.service.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.model.vo.admin.dto.NumInfoDto;
-import com.mingri.model.vo.admin.entity.Statistic;
-import com.mingri.model.vo.chat.message.dto.Top10MsgDto;
+import com.mingri.service.admin.repo.vo.dto.NumInfoDto;
+import com.mingri.service.admin.repo.vo.entity.Statistic;
+import com.mingri.service.chat.repo.vo.message.dto.Top10MsgDto;
 
 import java.util.Date;
 import java.util.List;

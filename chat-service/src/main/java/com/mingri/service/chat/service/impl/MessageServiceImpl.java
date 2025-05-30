@@ -9,26 +9,27 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.mingri.core.toolkit.MinioUtil;
+import com.mingri.core.minio.MinioUtil;
+import com.mingri.core.sensitive.SensitiveService;
 import com.mingri.model.constant.MessageContentType;
 import com.mingri.model.constant.MsgSource;
 import com.mingri.model.constant.MsgType;
 import com.mingri.model.exception.BaseException;
-import com.mingri.model.vo.chat.friend.dto.FriendDetailsDto;
-import com.mingri.model.vo.chat.message.dto.Top10MsgDto;
-import com.mingri.model.vo.chat.chatlist.entity.ChatList;
-import com.mingri.model.vo.chat.message.entity.Message;
-import com.mingri.model.vo.chat.message.entity.MessageRetraction;
-import com.mingri.model.vo.chat.message.dto.MsgContent;
-import com.mingri.model.vo.chat.message.req.SendMsgReq;
+import com.mingri.service.chat.repo.vo.friend.dto.FriendDetailsDto;
+import com.mingri.service.chat.repo.vo.message.dto.Top10MsgDto;
+import com.mingri.service.chat.repo.vo.chatlist.entity.ChatList;
+import com.mingri.service.chat.repo.vo.message.entity.Message;
+import com.mingri.service.chat.repo.vo.message.entity.MessageRetraction;
+import com.mingri.service.chat.repo.vo.message.dto.MsgContent;
+import com.mingri.service.chat.repo.vo.message.req.SendMsgReq;
 import com.mingri.service.chat.repo.mapper.MessageMapper;
-import com.mingri.model.vo.chat.message.req.expose.ThirdsendMsgReq;
-import com.mingri.model.vo.chat.message.req.MessageRecordReq;
-import com.mingri.model.vo.chat.message.req.ReeditMsgReq;
-import com.mingri.model.vo.chat.message.req.RetractionMsgReq;
+import com.mingri.service.chat.repo.vo.message.req.expose.ThirdsendMsgReq;
+import com.mingri.service.chat.repo.vo.message.req.MessageRecordReq;
+import com.mingri.service.chat.repo.vo.message.req.ReeditMsgReq;
+import com.mingri.service.chat.repo.vo.message.req.RetractionMsgReq;
 import com.mingri.service.chat.service.*;
 import com.mingri.service.rocketmq.MQProducerService;
-import com.mingri.model.vo.user.entity.User;
+import com.mingri.service.user.repo.vo.entity.User;
 import com.mingri.service.user.service.UserService;
 import com.mingri.service.websocket.WebSocketService;
 import lombok.extern.slf4j.Slf4j;
@@ -67,7 +68,8 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     MessageRetractionService  messageRetractionService;
     @Resource
     ChatGroupMemberService  chatGroupMemberService;
-
+    @Resource
+    SensitiveService  sensitiveService;
 
 
     private Message getMessage(String userId, MsgContent msgContent, String source, String type, String toUserId) {
@@ -96,6 +98,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
             content.set("type", fileType);
             msgContent.setContent(content.toJSONString(0));
         }
+
         message.setMsgContent(msgContent);
         return message;
     }
@@ -136,6 +139,9 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         msgContent.setFormUserName(StringUtils.isNotBlank(friendDetails.getRemark())
                 ? friendDetails.getRemark() : friendDetails.getName());
         msgContent.setFormUserPortrait(friendDetails.getPortrait());
+        // 消息敏感词过滤
+        msgContent.setContent(sensitiveService.replace(msgContent.getContent()));
+
 
         chatListService.updateChatList(message.getToId(), userId, msgContent, MsgSource.User);
         try {
@@ -154,6 +160,8 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         MsgContent msgContent = sendMsgReq.getMsgContent();
         msgContent.setFormUserName(user.getName());
         msgContent.setFormUserPortrait(user.getPortrait());
+        // 消息敏感词过滤
+        msgContent.setContent(sensitiveService.replace(msgContent.getContent()));
         Message message = sendMessage(userId, sendMsgReq, msgContent, MsgSource.Group, type);
 
         chatListService.updateChatListGroup(message.getToId(), message.getMsgContent());

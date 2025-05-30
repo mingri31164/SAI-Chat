@@ -1,10 +1,10 @@
 package com.mingri.service.chat.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.model.vo.chat.friend.req.*;
-import com.mingri.model.vo.chat.friend.dto.FriendDetailsDto;
-import com.mingri.model.vo.chat.friend.dto.FriendListDto;
-import com.mingri.model.vo.chat.friend.entity.Friend;
+import com.mingri.service.chat.repo.vo.friend.dto.FriendDetailsDto;
+import com.mingri.service.chat.repo.vo.friend.dto.FriendListDto;
+import com.mingri.service.chat.repo.vo.friend.entity.Friend;
+import com.mingri.service.chat.repo.vo.friend.req.*;
 
 import java.util.List;
 

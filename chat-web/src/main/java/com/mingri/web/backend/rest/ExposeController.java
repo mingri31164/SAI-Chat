@@ -3,7 +3,7 @@ package com.mingri.web.backend.rest;
 import com.mingri.core.permission.UrlFree;
 import com.mingri.core.argument.Userid;
 import com.mingri.core.toolkit.ResultUtil;
-import com.mingri.model.vo.chat.message.req.expose.ThirdsendMsgReq;
+import com.mingri.service.chat.repo.vo.message.req.expose.ThirdsendMsgReq;
 import com.mingri.service.chat.service.MessageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

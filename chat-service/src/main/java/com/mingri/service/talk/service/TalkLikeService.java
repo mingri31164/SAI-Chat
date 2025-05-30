@@ -1,11 +1,11 @@
 package com.mingri.service.talk.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.model.vo.talk.dto.LikeListDto;
-import com.mingri.model.vo.talk.entity.TalkLike;
-import com.mingri.model.vo.talk.req.CreateTalkLikeReq;
-import com.mingri.model.vo.talk.req.DeleteTalkLikeReq;
-import com.mingri.model.vo.talk.req.TalkLikeListReq;
+import com.mingri.service.talk.repo.vo.dto.LikeListDto;
+import com.mingri.service.talk.repo.vo.entity.TalkLike;
+import com.mingri.service.talk.repo.vo.req.CreateTalkLikeReq;
+import com.mingri.service.talk.repo.vo.req.DeleteTalkLikeReq;
+import com.mingri.service.talk.repo.vo.req.TalkLikeListReq;
 
 import java.util.List;
 

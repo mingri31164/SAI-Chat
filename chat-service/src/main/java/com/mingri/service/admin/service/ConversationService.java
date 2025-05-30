@@ -1,12 +1,12 @@
 package com.mingri.service.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.model.vo.admin.dto.ConversationDto;
-import com.mingri.model.vo.admin.req.conversation.DeleteConversationReq;
-import com.mingri.model.vo.admin.req.conversation.DisableConversationReq;
-import com.mingri.model.vo.admin.req.conversation.ResetSecretReq;
-import com.mingri.model.vo.admin.req.conversation.UndisableConversationReq;
-import com.mingri.model.vo.admin.entity.Conversation;
+import com.mingri.service.admin.repo.vo.dto.ConversationDto;
+import com.mingri.service.admin.repo.vo.req.conversation.DeleteConversationReq;
+import com.mingri.service.admin.repo.vo.req.conversation.DisableConversationReq;
+import com.mingri.service.admin.repo.vo.req.conversation.ResetSecretReq;
+import com.mingri.service.admin.repo.vo.req.conversation.UndisableConversationReq;
+import com.mingri.service.admin.repo.vo.entity.Conversation;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

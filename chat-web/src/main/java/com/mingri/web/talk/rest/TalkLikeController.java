@@ -3,10 +3,10 @@ package com.mingri.web.talk.rest;
 import cn.hutool.json.JSONObject;
 import com.mingri.core.argument.Userid;
 import com.mingri.core.toolkit.ResultUtil;
-import com.mingri.model.vo.talk.dto.LikeListDto;
-import com.mingri.model.vo.talk.req.CreateTalkLikeReq;
-import com.mingri.model.vo.talk.req.DeleteTalkLikeReq;
-import com.mingri.model.vo.talk.req.TalkLikeListReq;
+import com.mingri.service.talk.repo.vo.dto.LikeListDto;
+import com.mingri.service.talk.repo.vo.req.CreateTalkLikeReq;
+import com.mingri.service.talk.repo.vo.req.DeleteTalkLikeReq;
+import com.mingri.service.talk.repo.vo.req.TalkLikeListReq;
 import com.mingri.service.talk.service.TalkLikeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
+
 
 /**
  * 说说点赞 前端控制器
@@ -49,5 +50,6 @@ public class TalkLikeController {
         boolean result = talkLikeService.deleteTalkLike(userId, deleteTalkLikeReq);
         return ResultUtil.ResultByFlag(result);
     }
+
 }
 

@@ -1,7 +1,7 @@
 package com.mingri.service.talk.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.model.vo.talk.entity.TalkPermission;
+import com.mingri.service.talk.repo.vo.entity.TalkPermission;
 
 /**
  * 说说查看权限 服务类

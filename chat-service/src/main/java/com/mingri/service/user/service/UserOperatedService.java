@@ -1,9 +1,9 @@
 package com.mingri.service.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.model.vo.user.dto.UserOperatedDto;
-import com.mingri.model.vo.user.req.LoginDetailsReq;
-import com.mingri.model.vo.user.entity.UserOperated;
+import com.mingri.service.user.repo.vo.dto.UserOperatedDto;
+import com.mingri.service.user.repo.vo.req.LoginDetailsReq;
+import com.mingri.service.user.repo.vo.entity.UserOperated;
 
 import java.util.Date;
 import java.util.List;

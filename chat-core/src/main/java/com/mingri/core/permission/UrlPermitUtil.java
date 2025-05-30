@@ -24,6 +24,7 @@ public class UrlPermitUtil {
         urls.add("/swagger-ui.html");
         urls.add("/doc.html");
         urls.add("/webjars/**");
+        urls.add("/test/**");
     }
 
     public boolean verifyUrl(String permitUrl, List<String> urlArr) {

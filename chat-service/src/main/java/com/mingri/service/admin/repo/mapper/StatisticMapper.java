@@ -1,7 +1,7 @@
 package com.mingri.service.admin.repo.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mingri.model.vo.admin.entity.Statistic;
+import com.mingri.service.admin.repo.vo.entity.Statistic;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;

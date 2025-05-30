@@ -1,10 +1,11 @@
 package com.mingri.service.rocketmq;
 
-import com.mingri.model.vo.chat.message.entity.Message;
+import com.mingri.service.chat.repo.vo.message.entity.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,7 @@ public class MQProducerService {
     private static final String topic = "mingri";
 
     @Resource
-    private RocketMQTemplate rocketMQTemplate;
+    RocketMQTemplate rocketMQTemplate;
 
     /**
      * 普通发送

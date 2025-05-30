@@ -3,12 +3,12 @@ package com.mingri.service.user.service;
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mingri.model.vo.admin.req.user.*;
-import com.mingri.model.vo.user.req.*;
-import com.mingri.model.vo.user.dto.UserDto;
-import com.mingri.model.vo.user.req.login.LoginReq;
-import com.mingri.model.vo.user.req.login.QrCodeLoginReq;
-import com.mingri.model.vo.user.entity.User;
+import com.mingri.service.user.repo.vo.dto.UserDto;
+import com.mingri.service.user.repo.vo.req.*;
+import com.mingri.service.user.repo.vo.req.login.LoginReq;
+import com.mingri.service.user.repo.vo.req.login.QrCodeLoginReq;
+import com.mingri.service.user.repo.vo.entity.User;
+import com.mingri.service.admin.repo.vo.req.user.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
