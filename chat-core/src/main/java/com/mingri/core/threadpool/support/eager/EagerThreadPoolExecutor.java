@@ -1,10 +1,7 @@
 package com.mingri.core.threadpool.support.eager;
 
 import java.lang.reflect.Proxy;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.RejectedExecutionHandler;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -17,8 +14,9 @@ public class EagerThreadPoolExecutor extends ThreadPoolExecutor {
                                    long keepAliveTime,
                                    TimeUnit unit,
                                    TaskQueue<Runnable> workQueue,
+                                   ThreadFactory threadFactory,
                                    RejectedExecutionHandler handler) {
-        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, handler);
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
 
         //内部创建代理拒绝策略类
         RejectedExecutionHandler rejectedExecutionHandler = (RejectedExecutionHandler) Proxy.newProxyInstance(
