@@ -124,7 +124,7 @@ public class DynamicThreadPoolAutoConfig {
      * @Date: 2024/10/17 0:52
      **/
     @Bean(name = "dynamicThreadPoolRedisTopic")
-    public RTopic threadPoolConfigAdjustListener
+    public RTopic registerThreadPoolRedisTopic
     (RedissonClient redissonClient,
      ThreadPoolConfigAdjustListener threadPoolConfigAdjustListener) {
         RTopic topic = redissonClient.getTopic

@@ -25,6 +25,7 @@ public class UrlPermitUtil {
         urls.add("/doc.html");
         urls.add("/webjars/**");
         urls.add("/test/**");
+        urls.add("/api/v1/dynamic/thread/pool/**");
     }
 
     public boolean verifyUrl(String permitUrl, List<String> urlArr) {

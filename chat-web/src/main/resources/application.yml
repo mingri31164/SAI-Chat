@@ -11,6 +11,7 @@ spring:
     import:
       - application-ai.yml
       - application-dal.yml
+      - application-dtp.yml
       - application-email.yml
       - application-middleware.yml
   profiles:

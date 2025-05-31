@@ -23,7 +23,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
     public GroupedOpenApi publicApi() {
         return GroupedOpenApi.builder()
                 .group("SAI-Chat接口文档")
-                .packagesToScan("com.mingri.web")
+                .packagesToScan("com.mingri")
                 .pathsToMatch("/**")
                 .build();
     }

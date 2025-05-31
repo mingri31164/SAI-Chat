@@ -174,10 +174,11 @@
 
         <!--动态线程池组件（暂定为开关）-->
 <!--        <dependency>-->
-<!--            <artifactId>chat-frameworks</artifactId>-->
 <!--            <groupId>com.mingri</groupId>-->
+<!--            <artifactId>dynamic-thread-pool-spring-boot-starter</artifactId>-->
 <!--            <version>1.0-SNAPSHOT</version>-->
 <!--        </dependency>-->
+
 
     </dependencies>
 
