@@ -27,6 +27,8 @@ public class SAIChatApplicationRun {
         log.info("server started");
     }
 
+
+    // 动态线程池测试
 //    @Bean
 //    public ApplicationRunner applicationRunner(ExecutorService threadPoolExecutor01) {
 //        return args -> {

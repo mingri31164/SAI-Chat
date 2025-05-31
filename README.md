@@ -49,6 +49,8 @@ SAI-Chat
 └── chat-web # 项目启动入口，Web模块
 ```
 
+
+
 # 客户端截图
 
 ## 登录
@@ -65,7 +67,7 @@ SAI-Chat
 
 ## 通讯列表
 
-![4](https://github.com/user-attachments/assets/b1f4ff7b-8ecc-4baa-b38d-bbf7099dec19)
+![4](https://github.com/mingri31164/SAI-Chat/blob/main/docs/.github/friend.png)
 
 ## 朋友圈
 
@@ -75,36 +77,28 @@ SAI-Chat
 
 ![6](https://github.com/user-attachments/assets/b7eb922d-9aec-4607-b004-6921e178facb)
 
-## 系统设置
-
-![7](https://github.com/user-attachments/assets/714144de-92bc-42f4-89bb-2a2696884693)
-
-## 其他
-
-![8](https://github.com/user-attachments/assets/43555b11-0a8b-4850-b6fa-0d4d099bc34a)
-
 # 管理端截图
-
-## 登录
-
-![9](https://github.com/user-attachments/assets/2fead35c-1176-4031-8c5d-d94d42af7bdb)
 
 ## 首页
 
-![10](https://github.com/user-attachments/assets/cbca1555-53a0-4107-90ea-25e7f9f441e4)
+![7](https://github.com/user-attachments/assets/cbca1555-53a0-4107-90ea-25e7f9f441e4)
 
 ## 在线聊天
 
-![11](https://github.com/user-attachments/assets/acb99729-48d4-47cf-b837-9fcac7221c5d)
+![8](https://github.com/user-attachments/assets/acb99729-48d4-47cf-b837-9fcac7221c5d)
 
 ## 用户管理
 
-![12](https://github.com/user-attachments/assets/afa3b6de-54f9-4927-9fd5-f5e97dcb8884)
+![9](https://github.com/user-attachments/assets/afa3b6de-54f9-4927-9fd5-f5e97dcb8884)
 
 ## 系统通知管理
 
-![13](https://github.com/user-attachments/assets/fff0cb8e-0339-4df7-9935-bc552b788e9e)
+![10](https://github.com/user-attachments/assets/fff0cb8e-0339-4df7-9935-bc552b788e9e)
 
-## 第三方会话管理
+## 后台线程池管理
 
-![14](https://github.com/user-attachments/assets/38de0173-b2d0-4afb-bba0-dab06aaad920)
+![11](https://github.com/mingri31164/SAI-Chat/blob/main/docs/.github/threadpool.png)
+
+## AI Agent智能体
+
+![12](https://github.com/mingri31164/SAI-Chat/blob/main/docs/.github/rag.png)
