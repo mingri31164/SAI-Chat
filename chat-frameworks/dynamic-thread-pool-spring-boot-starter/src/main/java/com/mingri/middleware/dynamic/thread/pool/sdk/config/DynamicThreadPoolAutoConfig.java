@@ -14,6 +14,7 @@ import org.redisson.api.RTopic;
 import org.redisson.codec.JsonJacksonCodec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -37,7 +38,12 @@ import org.apache.commons.lang.StringUtils;
 @Configuration
 @EnableConfigurationProperties(DynamicThreadPoolAutoProperties.class)
 @EnableScheduling
-@Slf4j
+@ConditionalOnProperty(
+        prefix = "dynamic.thread.pool.config",
+        name = "enabled",
+        havingValue = "true",
+        matchIfMissing = false // 配置缺失时默认开启
+)
 public class DynamicThreadPoolAutoConfig {
 
     private final Logger logger = LoggerFactory.getLogger(DynamicThreadPoolAutoConfig.class);

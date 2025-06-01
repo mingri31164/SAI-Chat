@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RList;
 import org.redisson.api.RTopic;
 import org.redisson.api.RedissonClient;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -22,6 +23,12 @@ import java.util.List;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/v1/dynamic/thread/pool/")
+@ConditionalOnProperty(
+        prefix = "dynamic.thread.pool.config",
+        name = "enabled",
+        havingValue = "true",
+        matchIfMissing = false // 配置缺失时默认开启
+)
 public class DynamicThreadPoolController {
 
     @Resource

@@ -42,7 +42,7 @@
             <artifactId>knife4j-spring-boot-starter</artifactId>
         </dependency>
 
-        <!--动态线程池组件（暂定为开关）-->
+        <!--动态线程池组件-->
         <dependency>
             <groupId>com.mingri</groupId>
             <artifactId>dynamic-thread-pool-spring-boot-starter</artifactId>
