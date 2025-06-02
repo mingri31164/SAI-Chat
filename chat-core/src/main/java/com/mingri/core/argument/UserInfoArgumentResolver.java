@@ -1,9 +1,5 @@
 package com.mingri.core.argument;
 
-import com.mingri.core.argument.UserInfo;
-import com.mingri.core.argument.UserIp;
-import com.mingri.core.argument.UserRole;
-import com.mingri.core.argument.Userid;
 import com.mingri.core.toolkit.IpUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;

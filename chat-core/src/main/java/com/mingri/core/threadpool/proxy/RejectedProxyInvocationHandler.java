@@ -29,7 +29,8 @@ public class RejectedProxyInvocationHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         rejectCount.incrementAndGet();
         try {
-            log.error("线程池执行拒绝策略{}次, 此处模拟报警...", rejectCount.get());
+            // TODO 后续接入飞书
+            log.error("线程池执行拒绝策略, 此处模拟报警...");
             return method.invoke(target, args);
         } catch (InvocationTargetException ex) {
             throw ex.getCause();

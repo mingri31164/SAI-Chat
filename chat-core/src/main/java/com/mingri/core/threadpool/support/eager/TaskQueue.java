@@ -7,7 +7,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 快速消费线程池的阻塞队列
+ * 快速消费任务队列
  */
 public class TaskQueue<R extends Runnable> extends LinkedBlockingQueue<Runnable> {
 
@@ -32,7 +32,6 @@ public class TaskQueue<R extends Runnable> extends LinkedBlockingQueue<Runnable>
         // 如果当前线程池数量大于最大线程数，任务加入阻塞队列
         return super.offer(runnable);
     }
-
 
     public boolean retryOffer(Runnable o, long timeout, TimeUnit unit) throws InterruptedException {
         if (executor.isShutdown()) {

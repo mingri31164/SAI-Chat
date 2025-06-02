@@ -22,6 +22,7 @@ spring:
       embed: nomic-embed-text #nomic-embed-text、text-embedding-ada-002
 
 
+# 语音识别模型
 voice:
   model: "/model/faster-whisper-small/"
   transitionApi: "http://123.207.210.163:8000/v1/audio/transcriptions"

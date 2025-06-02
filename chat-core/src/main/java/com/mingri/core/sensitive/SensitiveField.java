@@ -8,6 +8,8 @@ import java.lang.annotation.Target;
 /**
  * @author: qing
  * @Date: 2024/8/3
+ * @description: 对mybatis查询出来的敏感词进行过滤
+ *               对字段插入会敏感词时需自行通过sensitiveService.replace进行过滤
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})

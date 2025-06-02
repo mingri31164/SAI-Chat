@@ -18,13 +18,15 @@ public class UrlPermitUtil {
     {
         urls.add("/ws/**");
 
-        // 放行 Swagger 相关接口
+        // Swagger 相关接口
         urls.add("/v3/api-docs/**");
         urls.add("/swagger-ui/**");
         urls.add("/swagger-ui.html");
         urls.add("/doc.html");
         urls.add("/webjars/**");
         urls.add("/test/**");
+
+        // 动态线程池组件 相关接口
         urls.add("/api/v1/dynamic/thread/pool/**");
     }
 

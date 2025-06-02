@@ -15,6 +15,7 @@ public final class ThreadFactoryBuilder implements Builder<ThreadFactory> {
 
     private String namePrefix;
 
+    // 是否为守护线程
     private Boolean daemon;
 
     private Integer priority;
