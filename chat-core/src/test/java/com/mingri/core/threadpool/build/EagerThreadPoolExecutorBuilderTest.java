@@ -3,6 +3,7 @@ package com.mingri.core.threadpool.build;
 import com.mingri.core.threadpool.support.eager.EagerThreadPoolExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Bean;
 
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;

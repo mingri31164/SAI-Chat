@@ -32,6 +32,7 @@ import com.mingri.service.rocketmq.MQProducerService;
 import com.mingri.service.user.repo.vo.entity.User;
 import com.mingri.service.user.service.UserService;
 import com.mingri.service.websocket.WebSocketService;
+import com.mingri.toolkit.SnowflakeIdUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -76,7 +77,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         Message previousMessage = messageMapper.getPreviousShowTimeMsg(userId, toUserId);
         //存入数据库
         Message message = new Message();
-        message.setId(IdUtil.randomUUID());
+        message.setId(SnowflakeIdUtil.nextIdStr());
         message.setFromId(userId);
         message.setSource(source);
         message.setToId(toUserId);
@@ -92,7 +93,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
             JSONObject content = JSONUtil.parseObj(msgContent.getContent());
             String name = (String) content.get("name");
             String fileType = name.substring(name.lastIndexOf(".") + 1);
-            String fileName = userId + "/" + toUserId + "/" + IdUtil.randomUUID() + "." + fileType;
+            String fileName = userId + "/" + toUserId + "/" + SnowflakeIdUtil.nextIdStr() + "." + fileType;
             content.set("fileName", fileName);
             content.set("url", minioUtil.getUrl(fileName));
             content.set("type", fileType);
@@ -245,7 +246,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         //只有文本才保存，之前的消息内容
         if (MessageContentType.Text.equals(msgContent.getType())) {
             MessageRetraction messageRetraction = new MessageRetraction();
-            messageRetraction.setMsgId(IdUtil.randomUUID());
+            messageRetraction.setMsgId(SnowflakeIdUtil.nextIdStr());
             messageRetraction.setMsgId(message.getId());
             messageRetraction.setMsgContent(msgContent);
             messageRetractionService.save(messageRetraction);

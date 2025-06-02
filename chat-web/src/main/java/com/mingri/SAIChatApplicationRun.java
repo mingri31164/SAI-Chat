@@ -1,5 +1,6 @@
 package com.mingri;
 
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.boot.ApplicationRunner;
@@ -13,6 +14,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import com.mingri.core.threadpool.support.eager.EagerThreadPoolExecutor;
 
 
 @Slf4j
@@ -28,9 +31,11 @@ public class SAIChatApplicationRun {
     }
 
 
+
+
     // 动态线程池测试
 //    @Bean
-//    public ApplicationRunner applicationRunner(ExecutorService threadPoolExecutor01) {
+//    public ApplicationRunner applicationRunner1(ExecutorService threadPoolExecutor01) {
 //        return args -> {
 //            while (true){
 //                // 创建一个随机时间生成器
@@ -60,4 +65,36 @@ public class SAIChatApplicationRun {
 //        };
 //    }
 
+
+
+
+    // 动态线程池+快速消费线程池测试
+//    @Bean
+//    public ApplicationRunner applicationRunner2(EagerThreadPoolExecutor threadPoolExecutor02) {
+//        return args -> {
+//            // 提交大量任务，观察线程池扩容与队列变化
+//            for (int i = 0; i < 20; i++) {
+//                int taskId = i;
+//                threadPoolExecutor02.submit(() -> {
+//                    try {
+//                        int sleepTime = new Random().nextInt(3) + 1;
+//                        System.out.printf("[任务%d] 执行中，线程：%s，休眠%d秒\n", taskId, Thread.currentThread().getName(), sleepTime);
+//                        TimeUnit.SECONDS.sleep(sleepTime);
+//                        System.out.printf("[任务%d] 完成，线程：%s\n", taskId, Thread.currentThread().getName());
+//                    } catch (InterruptedException e) {
+//                        Thread.currentThread().interrupt();
+//                    }
+//                });
+//                // 每次提交后打印线程池状态
+//                System.out.printf("[提交任务%d] 核心线程数：%d，最大线程数：%d，当前线程数：%d，队列长度：%d\n",
+//                        i,
+//                        threadPoolExecutor02.getCorePoolSize(),
+//                        threadPoolExecutor02.getMaximumPoolSize(),
+//                        threadPoolExecutor02.getPoolSize(),
+//                        threadPoolExecutor02.getQueue().size()
+//                );
+//                Thread.sleep(200); // 控制提交速度，便于观察
+//            }
+//        };
+//    }
 }

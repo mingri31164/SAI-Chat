@@ -8,6 +8,7 @@ import com.mingri.service.user.repo.vo.req.UpdateUserSetReq;
 import com.mingri.service.user.repo.vo.entity.UserSet;
 import com.mingri.service.user.repo.mapper.UserSetMapper;
 import com.mingri.service.user.service.UserSetService;
+import com.mingri.toolkit.SnowflakeIdUtil;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
@@ -25,7 +26,7 @@ public class UserSetServiceImpl extends ServiceImpl<UserSetMapper, UserSet> impl
         UserSet userSet = getOne(queryWrapper);
         if (null == userSet) {
             userSet = new UserSet();
-            userSet.setId(IdUtil.randomUUID());
+            userSet.setId(SnowflakeIdUtil.nextIdStr());
             userSet.setUserId(userId);
             userSet.setSets(SetsDto.defaultSets());
             save(userSet);

@@ -14,6 +14,7 @@ import com.mingri.service.talk.repo.vo.req.DetailsTalkReq;
 import com.mingri.service.talk.repo.vo.req.TalkListReq;
 import com.mingri.service.talk.service.TalkPermissionService;
 import com.mingri.service.talk.service.TalkService;
+import com.mingri.toolkit.SnowflakeIdUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,7 +45,7 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements Ta
     public Talk createTalk(String userId, CreateTalkReq createTalkReq) {
         //新增说说
         Talk talk = new Talk();
-        String talkId = IdUtil.randomUUID();
+        String talkId = SnowflakeIdUtil.nextIdStr();
         talk.setId(talkId);
         talk.setUserId(userId);
         TalkContentDto talkContentDto = new TalkContentDto();
@@ -57,7 +58,7 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements Ta
         List<String> permissions = createTalkReq.getPermission();
         if (null == permissions || permissions.isEmpty()) {
             TalkPermission talkPermission = new TalkPermission();
-            talkPermission.setId(IdUtil.randomUUID());
+            talkPermission.setId(SnowflakeIdUtil.nextIdStr());
             talkPermission.setTalkId(talkId);
             talkPermission.setPermission("all");
             talkPermissionService.save(talkPermission);
@@ -65,7 +66,7 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements Ta
             List<TalkPermission> talkPermissionList = new ArrayList<>();
             for (String permission : permissions) {
                 TalkPermission talkPermission = new TalkPermission();
-                talkPermission.setId(IdUtil.randomUUID());
+                talkPermission.setId(SnowflakeIdUtil.nextIdStr());
                 talkPermission.setTalkId(talkId);
                 talkPermission.setPermission(permission);
                 talkPermissionList.add(talkPermission);

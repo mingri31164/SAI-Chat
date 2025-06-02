@@ -179,6 +179,13 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
+        <!--雪花算法id生成组件-->
+        <dependency>
+            <groupId>com.mingri</groupId>
+            <artifactId>distributedid-spring-boot-starter</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
 
 
     </dependencies>

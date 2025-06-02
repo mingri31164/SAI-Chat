@@ -10,6 +10,7 @@ import com.mingri.model.exception.BaseException;
 import com.mingri.service.notify.repo.vo.dto.SystemNotifyDto;
 import com.mingri.service.notify.repo.vo.req.DeleteNotifyReq;
 import com.mingri.service.notify.service.NotifyService;
+import com.mingri.toolkit.SnowflakeIdUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
@@ -65,7 +66,7 @@ public class NotifyController {
                                    @NotNull(message = "内容不能为空~") @RequestParam("text") String text) {
         String url;
         try {
-            url = minioUtil.upload(file.getInputStream(), "notify/" + IdUtil.randomUUID(), file.getContentType(), file.getSize());
+            url = minioUtil.upload(file.getInputStream(), "notify/" + SnowflakeIdUtil.nextIdStr(), file.getContentType(), file.getSize());
         } catch (Exception e) {
             throw new BaseException("图片上传失败~");
         }

@@ -13,6 +13,7 @@ import com.mingri.service.chat.repo.vo.group.entity.Group;
 import com.mingri.service.chat.repo.mapper.GroupMapper;
 import com.mingri.service.chat.service.FriendService;
 import com.mingri.service.chat.service.GroupService;
+import com.mingri.toolkit.SnowflakeIdUtil;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,7 +48,7 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
             throw new BaseException("分组名已存在~");
         }
         Group group = new Group();
-        group.setId(IdUtil.randomUUID());
+        group.setId(SnowflakeIdUtil.nextIdStr());
         group.setUserId(userId);
         group.setName(createGroupReq.getGroupName());
         return save(group);

@@ -15,6 +15,7 @@ import com.mingri.service.chat.repo.vo.chatgroup.req.UpdateNoticeReq;
 import com.mingri.service.chat.service.ChatGroupMemberService;
 import com.mingri.service.chat.service.ChatGroupNoticeService;
 import com.mingri.service.chat.service.ChatGroupService;
+import com.mingri.toolkit.SnowflakeIdUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,7 +53,7 @@ public class ChatGroupNoticeServiceImpl extends ServiceImpl<ChatGroupNoticeMappe
         if (!chatGroup.getOwnerUserId().equals(userId))
             throw new BaseException("您不是群主~");
         ChatGroupNotice chatGroupNotice = new ChatGroupNotice();
-        chatGroupNotice.setId(IdUtil.randomUUID());
+        chatGroupNotice.setId(SnowflakeIdUtil.nextIdStr());
         chatGroupNotice.setChatGroupId(createNoticeVo.getGroupId());
         chatGroupNotice.setNoticeContent(createNoticeVo.getContent());
         chatGroupNotice.setUserId(userId);

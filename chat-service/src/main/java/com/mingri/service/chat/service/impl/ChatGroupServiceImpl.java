@@ -29,6 +29,7 @@ import com.mingri.service.chat.service.ChatListService;
 import com.mingri.service.chat.service.MessageService;
 import com.mingri.service.user.repo.vo.entity.User;
 import com.mingri.service.user.service.UserService;
+import com.mingri.toolkit.SnowflakeIdUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,7 +71,7 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
     @Transactional(rollbackFor = RuntimeException.class)
     public boolean createChatGroup(String userId, CreateChatGroupReq createChatGroupVo) {
         ChatGroup chatGroup = new ChatGroup();
-        chatGroup.setId(IdUtil.randomUUID());
+        chatGroup.setId(SnowflakeIdUtil.nextIdStr());
         Random random = new Random();
         int randomNumber = random.nextInt(1000000000);
         String randomString = String.format("%10d", randomNumber);
@@ -88,7 +89,7 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
         chatGroup.setPortrait(minioConfig.getEndpoint() + "/" + minioConfig.getBucketName() + "/default-group-portrait.png");
         if (createChatGroupVo.getNotice() != null){
             ChatGroupNotice chatGroupNotice = new ChatGroupNotice();
-            chatGroupNotice.setId(IdUtil.randomUUID());
+            chatGroupNotice.setId(SnowflakeIdUtil.nextIdStr());
             chatGroupNotice.setChatGroupId(chatGroup.getId());
             chatGroupNotice.setNoticeContent(createChatGroupVo.getNotice());
             chatGroupNotice.setUserId(userId);
@@ -99,14 +100,14 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
         boolean isSava = save(chatGroup);
         //添加自己
         ChatGroupMember chatGroupMember = new ChatGroupMember();
-        chatGroupMember.setId(IdUtil.randomUUID());
+        chatGroupMember.setId(SnowflakeIdUtil.nextIdStr());
         chatGroupMember.setChatGroupId(chatGroup.getId());
         chatGroupMember.setUserId(userId);
         chatGroupMemberService.save(chatGroupMember);
         if (isSava && null != createChatGroupVo.getUsers()) {
             for (CreateChatGroupReq.User user : createChatGroupVo.getUsers()) {
                 chatGroupMember = new ChatGroupMember();
-                chatGroupMember.setId(IdUtil.randomUUID());
+                chatGroupMember.setId(SnowflakeIdUtil.nextIdStr());
                 chatGroupMember.setChatGroupId(chatGroup.getId());
                 chatGroupMember.setUserId(user.getUserId());
                 chatGroupMember.setGroupRemark(user.getName());
@@ -172,7 +173,7 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
                 continue;
             }
             ChatGroupMember member = new ChatGroupMember();
-            member.setId(IdUtil.randomUUID());
+            member.setId(SnowflakeIdUtil.nextIdStr());
             member.setUserId(inviteUserid);
             member.setChatGroupId(inviteMemberVo.getGroupId());
             members.add(member);

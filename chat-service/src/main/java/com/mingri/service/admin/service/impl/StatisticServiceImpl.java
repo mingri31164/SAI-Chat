@@ -13,6 +13,7 @@ import com.mingri.service.admin.service.StatisticService;
 import com.mingri.service.chat.service.MessageService;
 import com.mingri.service.user.service.UserOperatedService;
 import com.mingri.service.websocket.WebSocketService;
+import com.mingri.toolkit.SnowflakeIdUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -42,7 +43,7 @@ public class StatisticServiceImpl extends ServiceImpl<StatisticMapper, Statistic
         Statistic statistic = getOne(queryWrapper);
         if (null == statistic) {
             statistic = new Statistic();
-            statistic.setId(IdUtil.randomUUID());
+            statistic.setId(SnowflakeIdUtil.nextIdStr());
         }
         statistic.setDate(yesterday);
         statistic.setLoginNum(loginNum);

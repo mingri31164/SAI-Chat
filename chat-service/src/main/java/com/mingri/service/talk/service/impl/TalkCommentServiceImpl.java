@@ -11,6 +11,7 @@ import com.mingri.service.talk.repo.vo.req.DeleteTalkCommentReq;
 import com.mingri.service.talk.repo.vo.req.TalkCommentListReq;
 import com.mingri.service.talk.service.TalkCommentService;
 import com.mingri.service.talk.service.TalkService;
+import com.mingri.toolkit.SnowflakeIdUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +40,7 @@ public class TalkCommentServiceImpl extends ServiceImpl<TalkCommentMapper, TalkC
         talkService.updateById(talk);
 
         TalkComment talkComment = new TalkComment();
-        talkComment.setId(IdUtil.randomUUID());
+        talkComment.setId(SnowflakeIdUtil.nextIdStr());
         talkComment.setTalkId(createTalkCommentVo.getTalkId());
         talkComment.setUserId(userId);
         talkComment.setContent(createTalkCommentVo.getComment());

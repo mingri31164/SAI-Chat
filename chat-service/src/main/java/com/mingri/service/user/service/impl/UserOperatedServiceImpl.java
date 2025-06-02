@@ -8,6 +8,7 @@ import com.mingri.service.user.repo.vo.req.LoginDetailsReq;
 import com.mingri.service.user.repo.vo.entity.UserOperated;
 import com.mingri.service.user.repo.mapper.UserOperatedMapper;
 import com.mingri.service.user.service.UserOperatedService;
+import com.mingri.toolkit.SnowflakeIdUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,7 +24,7 @@ public class UserOperatedServiceImpl extends ServiceImpl<UserOperatedMapper, Use
     @Override
     public boolean recordLogin(String id, String ip) {
         UserOperated operated = new UserOperated();
-        operated.setId(IdUtil.randomUUID());
+        operated.setId(SnowflakeIdUtil.nextIdStr());
         operated.setUserId(id);
         operated.setContent(ip);
         operated.setType(UserOperatedType.Login);

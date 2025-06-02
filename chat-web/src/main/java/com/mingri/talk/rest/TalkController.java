@@ -13,6 +13,7 @@ import com.mingri.service.talk.repo.vo.req.DeleteTalkReq;
 import com.mingri.service.talk.repo.vo.req.DetailsTalkReq;
 import com.mingri.service.talk.repo.vo.req.TalkListReq;
 import com.mingri.service.talk.service.TalkService;
+import com.mingri.toolkit.SnowflakeIdUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -85,7 +86,7 @@ public class TalkController {
                                     @RequestHeader("name") String name,
                                     @RequestHeader("type") String type,
                                     @RequestHeader("size") long size) throws IOException {
-        String imgName = IdUtil.randomUUID() + name.substring(name.lastIndexOf("."));
+        String imgName = SnowflakeIdUtil.nextIdStr() + name.substring(name.lastIndexOf("."));
         String imgPath = userId + "/img/" + imgName;
         minioUtil.uploadFile(request.getInputStream(), imgPath, size);
         Talk talk = talkService.updateTalkImg(userId, talkId, imgName);
@@ -120,7 +121,7 @@ public class TalkController {
                                     @RequestParam("talkId") String talkId,
                                     @RequestParam("name") String name,
                                     @RequestParam("size") long size) throws IOException {
-        String imgName = IdUtil.randomUUID() + name.substring(name.lastIndexOf("."));
+        String imgName = SnowflakeIdUtil.nextIdStr() + name.substring(name.lastIndexOf("."));
         String imgPath = userId + "/img/" + imgName;
         minioUtil.uploadFile(file.getInputStream(), imgPath, size);
         Talk talk = talkService.updateTalkImg(userId, talkId, imgName);

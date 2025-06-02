@@ -17,6 +17,7 @@ import com.mingri.service.notify.repo.vo.entity.Notify;
 import com.mingri.service.notify.repo.mapper.NotifyMapper;
 import com.mingri.service.notify.repo.vo.req.DeleteNotifyReq;
 import com.mingri.service.websocket.WebSocketService;
+import com.mingri.toolkit.SnowflakeIdUtil;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -69,7 +70,7 @@ public class NotifyServiceImpl extends ServiceImpl<NotifyMapper, Notify> impleme
         }
 
         Notify notify = new Notify();
-        notify.setId(IdUtil.randomUUID());
+        notify.setId(SnowflakeIdUtil.nextIdStr());
         notify.setFromId(userId);
         notify.setToId(friendApplyNotifyReq.getUserId());
         notify.setType(NotifyType.Friend_Apply);
@@ -113,7 +114,7 @@ public class NotifyServiceImpl extends ServiceImpl<NotifyMapper, Notify> impleme
         content.setText(text);
         content.setTitle(title);
         Notify notify = new Notify();
-        notify.setId(IdUtil.randomUUID());
+        notify.setId(SnowflakeIdUtil.nextIdStr());
         notify.setType(NotifyType.System);
         notify.setToId("all");
         notify.setFromId("system");

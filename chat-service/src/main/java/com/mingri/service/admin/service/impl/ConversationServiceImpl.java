@@ -14,6 +14,7 @@ import com.mingri.service.admin.repo.vo.entity.Conversation;
 import com.mingri.service.admin.repo.mapper.ConversationMapper;
 import com.mingri.service.admin.service.ConversationService;
 import com.mingri.service.user.service.UserService;
+import com.mingri.toolkit.SnowflakeIdUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,10 +47,10 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     public Conversation createConversation(MultipartFile portrait, String name) {
         String userId = userService.createThirdPartyUser(portrait, name);
         Conversation conversation = new Conversation();
-        conversation.setId(IdUtil.randomUUID());
+        conversation.setId(SnowflakeIdUtil.nextIdStr());
         conversation.setUserId(userId);
-        conversation.setAccessKey(IdUtil.randomUUID().replace("-", ""));
-        conversation.setSecretKey(IdUtil.randomUUID().replace("-", ""));
+        conversation.setAccessKey(SnowflakeIdUtil.nextIdStr().replace("-", ""));
+        conversation.setSecretKey(SnowflakeIdUtil.nextIdStr().replace("-", ""));
         conversation.setStatus(ConversationStatus.Normal);
         save(conversation);
         return conversation;
@@ -91,8 +92,8 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
         if (null == conversation) {
             throw new BaseException("会话不存在~");
         }
-        conversation.setAccessKey(IdUtil.randomUUID().replace("-", ""));
-        conversation.setSecretKey(IdUtil.randomUUID().replace("-", ""));
+        conversation.setAccessKey(SnowflakeIdUtil.nextIdStr().replace("-", ""));
+        conversation.setSecretKey(SnowflakeIdUtil.nextIdStr().replace("-", ""));
         return updateById(conversation);
     }
 

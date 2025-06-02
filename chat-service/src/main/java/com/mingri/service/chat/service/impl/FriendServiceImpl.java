@@ -27,6 +27,7 @@ import com.mingri.service.rocketmq.MQProducerService;
 import com.mingri.service.user.repo.vo.entity.User;
 import com.mingri.service.user.service.UserService;
 import com.mingri.service.websocket.WebSocketService;
+import com.mingri.toolkit.SnowflakeIdUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -340,7 +341,7 @@ public class FriendServiceImpl extends ServiceImpl<FriendMapper, Friend> impleme
                 .eq(Friend::getFriendId, targetId);
         if (count(queryWrapper) <= 0) {
             Friend friend = new Friend();
-            friend.setId(IdUtil.randomUUID());
+            friend.setId(SnowflakeIdUtil.nextIdStr());
             friend.setUserId(userId);
             friend.setFriendId(targetId);
             return save(friend);

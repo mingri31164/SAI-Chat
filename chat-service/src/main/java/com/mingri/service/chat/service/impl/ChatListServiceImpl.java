@@ -20,6 +20,7 @@ import com.mingri.service.chat.repo.vo.chatlist.req.TopChatListReq;
 import com.mingri.service.chat.service.ChatGroupMemberService;
 import com.mingri.service.chat.service.ChatListService;
 import com.mingri.service.chat.service.FriendService;
+import com.mingri.toolkit.SnowflakeIdUtil;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -110,7 +111,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
         if (null != chatList)
             return chatList;
         chatList = new ChatList();
-        chatList.setId(IdUtil.randomUUID());
+        chatList.setId(SnowflakeIdUtil.nextIdStr());
         chatList.setUserId(userId);
         chatList.setType(createChatListVo.getType());
         chatList.setFromId(createChatListVo.getToId());
@@ -199,7 +200,7 @@ public class ChatListServiceImpl extends ServiceImpl<ChatListMapper, ChatList> i
         if (null == chatList) {
             //新建
             chatList = new ChatList();
-            chatList.setId(IdUtil.randomUUID());
+            chatList.setId(SnowflakeIdUtil.nextIdStr());
             chatList.setIsTop(false);
             chatList.setUserId(toUserId);
             chatList.setType(type);

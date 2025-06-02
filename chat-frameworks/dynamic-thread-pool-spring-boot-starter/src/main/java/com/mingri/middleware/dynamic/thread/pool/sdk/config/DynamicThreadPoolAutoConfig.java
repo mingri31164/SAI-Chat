@@ -94,6 +94,7 @@ public class DynamicThreadPoolAutoConfig {
 
         // 获取缓存数据，设置本地线程池配置
         Set<String> threadPoolKeys = threadPoolExecutorMap.keySet();
+        logger.info("接收到线程池信息：{}",  threadPoolKeys);
         for (String threadPoolKey : threadPoolKeys) {
             ThreadPoolConfigEntity threadPoolConfigEntity = redissonClient.<ThreadPoolConfigEntity>getBucket(RegistryEnumVO.THREAD_POOL_CONFIG_PARAMETER_LIST_KEY.getKey() + "_" + applicationName + "_" + threadPoolKey).get();
             if (null == threadPoolConfigEntity) continue;

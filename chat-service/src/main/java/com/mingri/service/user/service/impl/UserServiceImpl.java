@@ -33,6 +33,7 @@ import com.mingri.service.user.repo.mapper.UserMapper;
 import com.mingri.service.user.service.UserOperatedService;
 import com.mingri.service.user.service.UserService;
 import com.mingri.service.websocket.WebSocketService;
+import com.mingri.toolkit.SnowflakeIdUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -70,8 +71,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     WebSocketService webSocketService;
     @Resource
     MinioUtil minioUtil;
-
-
 
 
 
@@ -148,7 +147,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new BaseException("账号已存在~");
         }
         User user = new User();
-        user.setId(IdUtil.randomUUID());
+        user.setId(SnowflakeIdUtil.nextIdStr());
         user.setName(registerReq.getUsername());
         user.setAccount(registerReq.getAccount());
         String passwordHash = SecurityUtil.hashPassword(registerReq.getPassword());
@@ -175,7 +174,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         queryWrapper.eq(User::getAccount, forgetReq.getAccount())
                 .eq(User::getEmail, user.getEmail());
 //        User user = new User();
-//        user.setId(IdUtil.randomUUID());
+//        user.setId(SnowflakeIdUtil.nextIdStr());
 //        user.setAccount(forgetVo.getAccount());
         String passwordHash = SecurityUtil.hashPassword(forgetReq.getPassword());
 //        user.setStatus(UserStatus.Normal);
@@ -273,7 +272,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
     public String createThirdPartyUser(MultipartFile portrait, String name) {
-        String userId = IdUtil.randomUUID();
+        String userId = SnowflakeIdUtil.nextIdStr();
         User user = new User();
         user.setId(userId);
         user.setName(name);
@@ -376,7 +375,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new BaseException("账号已存在~");
         }
         User user = new User();
-        user.setId(IdUtil.randomUUID());
+        user.setId(SnowflakeIdUtil.nextIdStr());
         user.setName(createUserReq.getName());
         user.setAccount(createUserReq.getAccount());
         String password = RandomUtil.randomString(8);

@@ -12,6 +12,7 @@ import com.mingri.service.talk.repo.vo.req.DeleteTalkLikeReq;
 import com.mingri.service.talk.repo.vo.req.TalkLikeListReq;
 import com.mingri.service.talk.service.TalkLikeService;
 import com.mingri.service.talk.service.TalkService;
+import com.mingri.toolkit.SnowflakeIdUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +44,7 @@ public class TalkLikeServiceImpl extends ServiceImpl<TalkLikeMapper, TalkLike> i
             talkService.updateById(talk);
 
             TalkLike talkLike = new TalkLike();
-            talkLike.setId(IdUtil.randomUUID());
+            talkLike.setId(SnowflakeIdUtil.nextIdStr());
             talkLike.setTalkId(createTalkLikeReq.getTalkId());
             talkLike.setUserId(userId);
             return save(talkLike);
