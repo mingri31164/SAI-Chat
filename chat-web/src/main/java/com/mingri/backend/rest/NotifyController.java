@@ -2,6 +2,7 @@ package com.mingri.backend.rest;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.json.JSONObject;
+import com.mingri.core.Idempotent.Idempotent;
 import com.mingri.core.permission.UrlResource;
 import com.mingri.core.argument.Userid;
 import com.mingri.core.minio.MinioUtil;
@@ -58,6 +59,7 @@ public class NotifyController {
     /**
      * 系统通知创建
      */
+    @Idempotent(key = "#title + ':' + #text")
     @PostMapping("/system/create")
     @Operation(summary = "创建系统通知")
     @UrlResource("admin")

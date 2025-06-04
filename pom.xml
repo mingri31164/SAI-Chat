@@ -41,6 +41,7 @@
         <rocketmq.version>2.2.3</rocketmq.version>
         <knife4j.version>3.0.2</knife4j.version>
         <mysql.version>8.0.33</mysql.version>
+        <redisson.version>3.44.0</redisson.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -175,7 +176,7 @@
             <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson-spring-boot-starter</artifactId>
-                <version>3.44.0</version>
+                <version>${redisson.version}</version>
             </dependency>
 
             <dependency>

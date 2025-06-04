@@ -1,6 +1,7 @@
 package com.mingri.backend.rest;
 
 import cn.hutool.json.JSONObject;
+import com.mingri.core.Idempotent.Idempotent;
 import com.mingri.core.permission.UrlResource;
 import com.mingri.core.toolkit.ResultUtil;
 import com.mingri.service.admin.repo.vo.dto.ConversationDto;
@@ -32,6 +33,7 @@ public class ConversationController {
     /**
      * 创建会话
      */
+    @Idempotent(key = "notify + ':' + #name")
     @PostMapping("/create")
     @Operation(summary = "创建会话")
     @UrlResource("admin")

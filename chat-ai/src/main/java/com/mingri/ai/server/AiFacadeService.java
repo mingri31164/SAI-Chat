@@ -12,9 +12,9 @@ public class AiFacadeService {
     @Autowired
     private AudioAiService audioAiService;
 
-    public String chat(String userQuery) {
-        return ragService.chatWithRag(userQuery);
-    }
+//    public String chat(String userQuery) {
+//        return ragService.chatWithRag(userQuery);
+//    }
 
     public String analyzeImage(byte[] imageBytes) {
         return imageAiService.analyzeImage(imageBytes);
@@ -23,4 +23,4 @@ public class AiFacadeService {
     public String transcribeAudio(byte[] audioBytes) {
         return audioAiService.transcribeAudio(audioBytes);
     }
-} 
+}
