@@ -32,10 +32,6 @@ mingri:
     enabled: true
     name-server: 127.0.0.1:9876
     group: mingri_group
-  jwt:
-    secret-key: csd_admin
-    expire-time: 7200000
-    token-name: x-token
 #  ai:
 #    datasource:
 #      base-url: 127.0.0.1:3306

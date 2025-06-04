@@ -11,5 +11,9 @@ public interface IAiService {
 
     Flux<ChatResponse> generateStreamRag(String model, String ragTag, String message);
 
+    /**
+     * 基于上下文的智能对话
+     */
+    String chatWithContext(String userQuery, String context);
 
 }

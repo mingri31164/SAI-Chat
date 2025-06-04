@@ -166,6 +166,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         Message message = sendMessage(userId, sendMsgReq, msgContent, MsgSource.Group, type);
 
         chatListService.updateChatListGroup(message.getToId(), message.getMsgContent());
+        chatListService.messageRead(userId, message.getToId());
         try {
             mqProducerService.sendMsgToGroup(message);
         } catch (Exception e) {

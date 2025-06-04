@@ -13,4 +13,6 @@ public interface IRAGService {
 
     Response<String> analyzeGitRepository(String repoUrl, String userName, String token) throws Exception;
 
+//    String chatWithRag(String userQuery);
+
 }
