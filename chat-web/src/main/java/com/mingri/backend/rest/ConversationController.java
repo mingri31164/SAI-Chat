@@ -33,7 +33,7 @@ public class ConversationController {
     /**
      * 创建会话
      */
-    @Idempotent(key = "notify + ':' + #name")
+    @Idempotent(key = "'conversation' + ':' + #name")
     @PostMapping("/create")
     @Operation(summary = "创建会话")
     @UrlResource("admin")

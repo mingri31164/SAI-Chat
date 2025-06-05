@@ -25,6 +25,10 @@ public class IdempotentAspect {
 
     private final DefaultParameterNameDiscoverer nameDiscoverer = new DefaultParameterNameDiscoverer();
 
+    private final RetryWithBackoff<String> retry = new RetryWithBackoff<>
+            (50, 1000, 5, true);
+
+
     @Around("@annotation(Idempotent)")
     public Object around(ProceedingJoinPoint pjp, Idempotent Idempotent) throws Throwable {
         MethodSignature signature = (MethodSignature) pjp.getSignature();
@@ -47,9 +51,8 @@ public class IdempotentAspect {
         try {
             locked = redissonLock.tryLock(lockKey, Idempotent.expire());
             if (!locked) {
-                // 锁获取失败，短暂sleep后再次重查缓存
-                Thread.sleep(50);
-                cachedResult = resultStore.getResult(resultKey, String.class);
+                // 使用指数退避 + 抖动策略（避免惊群效应）重试获取缓存
+                cachedResult = retry.execute(() -> resultStore.getResult(resultKey, String.class));
                 if (cachedResult != null) {
                     return resultStore.deserializeResult(cachedResult, method.getReturnType());
                 }
