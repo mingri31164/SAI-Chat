@@ -76,9 +76,4 @@ public class OllamaController implements IAiService {
         ));
     }
 
-    @Override
-    public String chatWithContext(String userQuery, String context) {
-        return null;
-    }
-
 }

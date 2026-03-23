@@ -8,7 +8,6 @@ import org.springframework.ai.openai.OpenAiEmbeddingClient;
 import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.PgVectorStore;
-import org.springframework.ai.vectorstore.SimpleVectorStore;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,22 +39,6 @@ public class OllamaConfig {
     public TokenTextSplitter tokenTextSplitter() {
         return new TokenTextSplitter();
     }
-
-    /**
-     * 简化向量库
-     **/
-    @Bean
-    public SimpleVectorStore vectorStore(@Value("${spring.ai.rag.embed}") String model, OllamaApi ollamaApi, OpenAiApi openAiApi) {
-        if ("nomic-embed-text".equalsIgnoreCase(model)) {
-            OllamaEmbeddingClient embeddingClient = new OllamaEmbeddingClient(ollamaApi);
-            embeddingClient.withDefaultOptions(OllamaOptions.create().withModel("nomic-embed-text"));
-            return new SimpleVectorStore(embeddingClient);
-        } else {
-            OpenAiEmbeddingClient embeddingClient = new OpenAiEmbeddingClient(openAiApi);
-            return new SimpleVectorStore(embeddingClient);
-        }
-    }
-
 
     /**
      * 向量数据库存储
