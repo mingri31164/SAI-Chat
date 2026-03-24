@@ -20,7 +20,6 @@ package com.sai.chat.agent.infra.vector;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.IdUtil;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sai.chat.agent.framework.convention.RetrievedChunk;
 import com.sai.chat.agent.framework.exception.ClientException;
@@ -29,6 +28,7 @@ import io.milvus.v2.service.vector.request.DeleteReq;
 import io.milvus.v2.service.vector.request.InsertReq;
 import io.milvus.v2.service.vector.request.UpsertReq;
 import io.milvus.v2.service.vector.request.SearchReq;
+import io.milvus.v2.service.vector.request.data.FloatVec;
 import io.milvus.v2.service.vector.response.InsertResp;
 import io.milvus.v2.service.vector.response.UpsertResp;
 import io.milvus.v2.service.vector.response.DeleteResp;
@@ -39,6 +39,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Milvus 向量存储服务实现
@@ -126,9 +127,10 @@ public class MilvusVectorStoreService implements VectorStoreService {
     // ================== 内部方法 ==================
 
     private List<RetrievedChunk> doSearch(String collection, float[] queryVector, int topK, String filterExpr) {
+        FloatVec queryData = new FloatVec(queryVector);
         SearchReq.SearchReqBuilder reqBuilder = SearchReq.builder()
                 .collectionName(collection)
-                .data(List.of(queryVector))
+                .data(List.of(queryData))
                 .outputFields(List.of("doc_id", "content", "metadata"));
 
         if (filterExpr != null && !filterExpr.isBlank()) {
@@ -139,13 +141,14 @@ public class MilvusVectorStoreService implements VectorStoreService {
         SearchResp resp = milvusClient.search(req);
 
         List<RetrievedChunk> results = new ArrayList<>();
-        List<List<JsonObject>> resultsData = resp.getSearchResults();
+        List<List<SearchResp.SearchResult>> resultsData = resp.getSearchResults();
         if (resultsData != null && !resultsData.isEmpty()) {
-            for (JsonObject hit : resultsData.get(0)) {
+            for (SearchResp.SearchResult hit : resultsData.get(0)) {
+                Map<String, Object> entity = hit.getEntity();
                 RetrievedChunk chunk = RetrievedChunk.builder()
-                        .id(getStringField(hit, "doc_id"))
-                        .text(getStringField(hit, "content"))
-                        .score(1.0f)
+                        .id(getEntityString(entity, "doc_id"))
+                        .text(getEntityString(entity, "content"))
+                        .score(hit.getScore())
                         .build();
                 results.add(chunk);
             }
@@ -230,11 +233,12 @@ public class MilvusVectorStoreService implements VectorStoreService {
         return content.length() > 65535 ? content.substring(0, 65535) : content;
     }
 
-    private String getStringField(JsonObject obj, String field) {
-        if (obj == null || !obj.has(field) || obj.get(field).isJsonNull()) {
+    private String getEntityString(Map<String, Object> entity, String field) {
+        if (entity == null || !entity.containsKey(field)) {
             return null;
         }
-        return obj.get(field).getAsString();
+        Object value = entity.get(field);
+        return value != null ? value.toString() : null;
     }
 
     private JsonArray toJsonArray(float[] v) {

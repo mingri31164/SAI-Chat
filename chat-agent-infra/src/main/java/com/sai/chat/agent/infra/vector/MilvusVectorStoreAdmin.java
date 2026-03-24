@@ -17,24 +17,21 @@
 
 package com.sai.chat.agent.infra.vector;
 
-import com.google.gson.JsonObject;
+import com.sai.chat.agent.framework.errorcode.BaseErrorCode;
 import com.sai.chat.agent.framework.exception.ServiceException;
 import io.milvus.v2.client.MilvusClientV2;
 import io.milvus.v2.service.collection.request.CreateCollectionReq;
+import io.milvus.v2.service.collection.request.DescribeCollectionReq;
 import io.milvus.v2.service.collection.request.DropCollectionReq;
-import io.milvus.v2.service.collection.request.ExistsReq;
-import io.milvus.v2.service.collection.request.GetCollectionInfoReq;
-import io.milvus.v2.service.collection.response.GetCollectionInfoResp;
-import io.milvus.v2.service.collection.response.ExistResp;
+import io.milvus.v2.service.collection.request.HasCollectionReq;
+import io.milvus.v2.service.collection.response.DescribeCollectionResp;
 import io.milvus.v2.service.collection.response.ListCollectionsResp;
-import io.milvus.v2.service.partition.request.CreatePartitionReq;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Milvus 向量空间管理实现
@@ -72,7 +69,7 @@ public class MilvusVectorStoreAdmin implements VectorStoreAdmin {
                 log.debug("Collection 已存在（并发创建）: {}", collection);
                 return;
             }
-            throw new ServiceException("Milvus Collection 创建失败: " + collection, e);
+            throw new ServiceException("Milvus Collection 创建失败: " + collection, e, BaseErrorCode.SERVICE_ERROR);
         }
     }
 
@@ -93,11 +90,11 @@ public class MilvusVectorStoreAdmin implements VectorStoreAdmin {
 
     @Override
     public boolean collectionExists(String collection) {
-        ExistsReq req = ExistsReq.builder()
+        HasCollectionReq req = HasCollectionReq.builder()
                 .collectionName(collection)
                 .build();
-        ExistsResp resp = milvusClient.hasCollection(req);
-        return resp.getCollectionExists();
+        Boolean exists = milvusClient.hasCollection(req);
+        return Boolean.TRUE.equals(exists);
     }
 
     @Override
@@ -106,24 +103,21 @@ public class MilvusVectorStoreAdmin implements VectorStoreAdmin {
             return -1;
         }
 
-        GetCollectionInfoReq req = GetCollectionInfoReq.builder()
+        DescribeCollectionReq req = DescribeCollectionReq.builder()
                 .collectionName(collection)
                 .build();
-        GetCollectionInfoResp resp = milvusClient.getCollectionInfo(req);
+        DescribeCollectionResp resp = milvusClient.describeCollection(req);
 
-        Map<String, String> schema = resp.getSchema();
-        if (schema == null) {
+        CreateCollectionReq.CollectionSchema schema = resp.getCollectionSchema();
+        if (schema == null || schema.getFieldSchemaList() == null) {
             return -1;
         }
-
-        String dimStr = schema.get("dimension");
-        if (dimStr != null) {
-            try {
-                return Integer.parseInt(dimStr);
-            } catch (NumberFormatException ignored) {
+        for (CreateCollectionReq.FieldSchema field : schema.getFieldSchemaList()) {
+            Integer dim = field.getDimension();
+            if (dim != null) {
+                return dim;
             }
         }
-
         return -1;
     }
 

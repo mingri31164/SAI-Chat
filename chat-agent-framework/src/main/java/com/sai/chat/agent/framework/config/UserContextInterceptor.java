@@ -17,6 +17,7 @@
 
 package com.sai.chat.agent.framework.config;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.StrUtil;
 import com.sai.chat.agent.framework.context.LoginUser;
 import com.sai.chat.agent.framework.context.UserContext;
