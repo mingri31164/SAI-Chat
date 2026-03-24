@@ -19,6 +19,10 @@
         <module>chat-ai</module>
         <module>chat-core</module>
         <module>chat-frameworks</module>
+        <module>chat-agent-framework</module>
+        <module>chat-agent-infra</module>
+        <module>chat-agent-mcp-server</module>
+        <module>chat-agent</module>
         <module>chat-web</module>
     </modules>
     <properties>
@@ -41,7 +45,15 @@
         <rocketmq.version>2.2.3</rocketmq.version>
         <knife4j.version>3.0.2</knife4j.version>
         <mysql.version>8.0.33</mysql.version>
-        <redisson.version>3.44.0</redisson.version>
+        <!-- chat-agent 依赖版本 -->
+        <mybatis-plus.version>3.5.14</mybatis-plus.version>
+        <redisson.version>4.0.0</redisson.version>
+        <sa-token.version>1.43.0</sa-token.version>
+        <ttl.version>2.14.5</ttl.version>
+        <okhttp.version>4.12.0</okhttp.version>
+        <milvus-sdk.version>2.6.6</milvus-sdk.version>
+        <tika.version>3.2.3</tika.version>
+        <aws-s3.version>2.40.2</aws-s3.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -198,11 +210,67 @@
                 <version>${minio.version}</version>
             </dependency>
 
-<!--            knife4j-->
+            <!--            knife4j-->
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
+            </dependency>
+
+            <!-- chat-agent 依赖管理 -->
+            <!-- MyBatis-Plus -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-jsqlparser</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <!-- Sa-Token -->
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-spring-boot3-starter</artifactId>
+                <version>${sa-token.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-redis-template</artifactId>
+                <version>${sa-token.version}</version>
+            </dependency>
+            <!-- TTL -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${ttl.version}</version>
+            </dependency>
+            <!-- OkHttp -->
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp.version}</version>
+            </dependency>
+            <!-- Milvus -->
+            <dependency>
+                <groupId>io.milvus</groupId>
+                <artifactId>milvus-sdk-java</artifactId>
+                <version>${milvus-sdk.version}</version>
+            </dependency>
+            <!-- Tika -->
+            <dependency>
+                <groupId>org.apache.tika</groupId>
+                <artifactId>tika-bom</artifactId>
+                <version>${tika.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- AWS S3 -->
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>s3</artifactId>
+                <version>${aws-s3.version}</version>
             </dependency>
 
         </dependencies>
