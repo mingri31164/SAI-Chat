@@ -1,0 +1,3 @@
+com.sai.chat.agent.framework.config.ExecutorAutoConfiguration
+com.sai.chat.agent.framework.config.WebAutoConfiguration
+com.sai.chat.agent.framework.config.RedisStreamAutoConfiguration

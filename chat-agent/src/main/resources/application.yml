@@ -5,11 +5,31 @@ spring:
   application:
     name: chat-agent
 
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 100MB
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/sai_chat?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/sai_chat?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=Asia%2FShanghai&allowPublicKeyRetrieval=true
     username: root
     password: root
+    hikari:
+      connection-timeout: 5000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      maximum-pool-size: 10
+      minimum-idle: 2
+      pool-name: ChatAgentHikariPool
+
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password: ${REDIS_PASSWORD:}
+      database: 0
 
 mybatis-plus:
   configuration:
@@ -21,3 +41,110 @@ mybatis-plus:
       logic-delete-field: deleted
       logic-delete-value: 1
       logic-not-delete-value: 0
+
+# ================== Milvus 向量数据库配置 ==================
+milvus:
+  uri: ${MILVUS_URI:http://localhost:19530}
+  token: ${MILVUS_TOKEN:}
+  collection:
+    default-name: rag_default_store
+    dimension: 4096
+    metric-type: COSINE
+    index-type: FLAT
+    vector-field: embedding
+    primary-field: doc_id
+    content-field: content
+
+# ================== AI 模型配置 ==================
+ai:
+  providers:
+    ollama:
+      url: ${OLLAMA_URL:http://localhost:11434}
+      endpoints:
+        chat: /api/chat
+        embedding: /api/embed
+    bailian:
+      url: ${BAILIAN_URL:https://dashscope.aliyuncs.com}
+      api-key: ${BAILIAN_API_KEY:}
+      endpoints:
+        chat: /compatible-mode/v1/chat/completions
+        rerank: /api/v1/services/rerank/text-rerank/text-rerank
+    siliconflow:
+      url: ${SILICONFLOW_URL:https://api.siliconflow.cn}
+      api-key: ${SILICONFLOW_API_KEY:}
+      endpoints:
+        chat: /v1/chat/completions
+        embedding: /v1/embeddings
+
+  selection:
+    failure-threshold: 2
+    open-duration-ms: 30000
+
+  stream:
+    message-chunk-size: 1
+
+  # ================== Chat 模型配置 ==================
+  chat:
+    default-model: qwen3-max
+    deep-thinking-model: qwen3-max
+    candidates:
+      - id: qwen-plus
+        provider: bailian
+        model: qwen-plus-latest
+        priority: 1
+      - id: qwen3-max
+        provider: bailian
+        model: qwen3-max
+        supports-thinking: true
+        priority: 3
+      - id: siliconflow-glm
+        provider: siliconflow
+        model: Pro/zai-org/GLM-4.7
+        supports-thinking: true
+        priority: 0
+      - id: qwen3-local
+        provider: ollama
+        model: qwen3:8b-fp16
+        priority: 2
+
+  # ================== Embedding 模型配置 ==================
+  embedding:
+    default-model: qwen-emb-8b
+    candidates:
+      - id: qwen-emb-8b
+        provider: siliconflow
+        model: Qwen/Qwen3-Embedding-8B
+        dimension: 4096
+        priority: 1
+      - id: qwen-emb-local
+        provider: ollama
+        model: qwen3-embedding:8b-fp16
+        dimension: 4096
+        priority: 2
+
+  # ================== Rerank 模型配置 ==================
+  rerank:
+    default-model: qwen3-rerank
+    candidates:
+      - id: qwen3-rerank
+        provider: bailian
+        model: qwen3-rerank
+        priority: 1
+      - id: rerank-noop
+        provider: noop
+        model: noop
+        priority: 100
+
+# ================== Sa-Token 配置 ==================
+sa-token:
+  token-name: Authorization
+  timeout: 2592000
+  is-concurrent: true
+  is-share: false
+  token-style: simple-uuid
+  is-log: false
+  is-print: false
+
+# ================== 应用配置 ==================
+app:
+  demo-mode: false
