@@ -16,7 +16,7 @@
     <modules>
         <module>chat-api</module>
         <module>chat-service</module>
-        <module>chat-ai</module>
+        <module>chat-example-rag</module>
         <module>chat-core</module>
         <module>chat-frameworks</module>
         <module>chat-agent-framework</module>

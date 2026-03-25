@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>chat-ai</artifactId>
+    <artifactId>chat-example-rag</artifactId>
 
 
     <dependencies>
