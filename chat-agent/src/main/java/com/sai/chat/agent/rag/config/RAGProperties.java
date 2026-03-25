@@ -46,6 +46,11 @@ public class RAGProperties {
      */
     private GuidanceConfig guidance = new GuidanceConfig();
 
+    /**
+     * MCP 工具调用配置
+     */
+    private MCPConfig mcp = new MCPConfig();
+
     @Data
     public static class QueryRewriteConfig {
         /**
@@ -117,5 +122,33 @@ public class RAGProperties {
          * 单次最多展示的选项数量
          */
         private int maxOptions = 6;
+    }
+
+    @Data
+    public static class MCPConfig {
+        /**
+         * 是否启用 MCP 工具调用
+         */
+        private boolean enabled = false;
+
+        /**
+         * MCP Server HTTP 端点
+         */
+        private String serverUrl = "http://localhost:9099/mcp";
+
+        /**
+         * HTTP 请求超时（毫秒）
+         */
+        private int timeout = 30000;
+
+        /**
+         * Server 名称
+         */
+        private String serverName = "default";
+
+        /**
+         * 是否启用 LLM 参数提取（关闭后使用正则匹配）
+         */
+        private boolean llmParameterExtract = true;
     }
 }

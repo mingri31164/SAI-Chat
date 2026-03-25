@@ -33,6 +33,10 @@ import com.sai.chat.agent.rag.core.intent.IntentClassifier;
 import com.sai.chat.agent.rag.core.intent.IntentGuidanceService;
 import com.sai.chat.agent.rag.core.memory.ConversationMemoryService;
 import com.sai.chat.agent.rag.core.memory.SummaryGenerationService;
+import com.sai.chat.agent.rag.core.mcp.LLMMCPParameterExtractor;
+import com.sai.chat.agent.rag.core.mcp.MCPToolDefinition;
+import com.sai.chat.agent.rag.core.mcp.MCPToolRegistry;
+import com.sai.chat.agent.rag.core.mcp.RemoteMCPToolExecutor;
 import com.sai.chat.agent.rag.core.retrieval.MultiChannelRetrievalEngine;
 import com.sai.chat.agent.rag.core.retrieval.RerankService;
 import com.sai.chat.agent.rag.core.rewrite.QueryRewriteService;
@@ -73,6 +77,9 @@ public class RAGPipelineServiceImpl implements RAGPipelineService {
     private final SummaryGenerationService summaryService;
     private final RAGProperties ragProperties;
     private final ObjectMapper objectMapper;
+    private final MCPToolRegistry mcpToolRegistry;
+    private final RemoteMCPToolExecutor mcpToolExecutor;
+    private final LLMMCPParameterExtractor mcpParamExtractor;
 
     // ================== 同步接口 ==================
 
@@ -90,26 +97,40 @@ public class RAGPipelineServiceImpl implements RAGPipelineService {
         // 3. 查询改写
         RewriteResult rewriteResult = queryRewriteService.rewrite(question, sessionId);
 
-        // 4. 多路检索
+        // 4. MCP 工具调用路由
+        if (ragProperties.getMcp().isEnabled() && !nodeScores.isEmpty()) {
+            NodeScore top = nodeScores.get(0);
+            if (top.getNode() != null && top.getNode().isMCP()) {
+                String mcpAnswer = handleMCPTool(question, rewriteResult, top.getNode().getMcpToolId());
+                memoryService.saveUserMessage(sessionId, question);
+                memoryService.saveAssistantMessage(sessionId, mcpAnswer);
+                if (memoryService.needSummary(sessionId)) {
+                    summaryService.generateSummary(sessionId);
+                }
+                return mcpAnswer;
+            }
+        }
+
+        // 5. 多路检索
         int topK = ragProperties.getSearch().getIntentDirected().getTopKMultiplier()
                 * RAGConstant.DEFAULT_TOP_K;
         List<RetrievedChunk> chunks = retrievalEngine.retrieve(
                 rewriteResult.getRewrittenQuestion(), sessionId, topK);
 
-        // 5. 重排序（可选）
+        // 6. 重排序（可选）
         if (rerankService != null && !chunks.isEmpty()) {
             chunks = rerankService.rerank(rewriteResult.getRewrittenQuestion(), chunks, RAGConstant.DEFAULT_TOP_K);
         }
 
-        // 6. LLM 生成
+        // 7. LLM 生成
         String contextText = buildContextText(chunks);
         String answer = callLLM(question, rewriteResult, contextText, sessionId);
 
-        // 7. 保存对话记忆
+        // 8. 保存对话记忆
         memoryService.saveUserMessage(sessionId, question);
         memoryService.saveAssistantMessage(sessionId, answer);
 
-        // 8. 摘要触发检查
+        // 9. 摘要触发检查
         if (memoryService.needSummary(sessionId)) {
             summaryService.generateSummary(sessionId);
         }
@@ -295,5 +316,70 @@ public class RAGPipelineServiceImpl implements RAGPipelineService {
                         "score", ns.getScore()
                 ))
                 .toList();
+    }
+
+    // ================== MCP 工具调用 ==================
+
+    /**
+     * 执行 MCP 工具调用并生成回答
+     */
+    private String handleMCPTool(String question, RewriteResult rewrite, String toolId) {
+        if (toolId == null || toolId.isBlank()) {
+            return "无法确定要调用的 MCP 工具";
+        }
+
+        try {
+            // 1. 获取工具定义
+            var toolOpt = mcpToolRegistry.getTool(toolId);
+            if (toolOpt.isEmpty()) {
+                return "MCP 工具 [" + toolId + "] 未找到";
+            }
+
+            MCPToolDefinition tool = toolOpt.get();
+
+            // 2. LLM 参数提取
+            Map<String, Object> params;
+            if (ragProperties.getMcp().isLlmParameterExtract()) {
+                params = mcpParamExtractor.extractParameters(tool, question);
+            } else {
+                params = Map.of();
+            }
+
+            // 3. 调用远程 MCP 工具
+            String serverName = ragProperties.getMcp().getServerName();
+            String toolResult = mcpToolExecutor.execute(serverName, toolId, params);
+
+            // 4. 将工具结果转换为自然语言回答
+            return buildMCPAnswer(question, toolResult, tool);
+
+        } catch (Exception e) {
+            log.error("MCP 工具调用失败, toolId={}", toolId, e);
+            return "MCP 工具 [" + toolId + "] 调用失败: " + e.getMessage();
+        }
+    }
+
+    /**
+     * 将 MCP 工具结果转换为自然语言回答
+     */
+    private String buildMCPAnswer(String question, String toolResult, MCPToolDefinition tool) {
+        String prompt = buildMCPAnswerPrompt(question, toolResult, tool);
+
+        try {
+            return llmService.chat(ChatRequest.builder()
+                    .messages(List.of(ChatMessage.user(prompt)))
+                    .temperature(0.3D)
+                    .thinking(false)
+                    .build());
+        } catch (Exception e) {
+            log.warn("MCP 结果转换失败，直接返回原始结果", e);
+            return toolResult;
+        }
+    }
+
+    private String buildMCPAnswerPrompt(String question, String toolResult, MCPToolDefinition tool) {
+        return "【工具名称】\n" + tool.getName() + "\n\n" +
+               "【工具执行结果】\n" + toolResult + "\n\n" +
+               "【用户原始问题】\n" + question + "\n\n" +
+               "请根据上述工具执行结果，用简洁自然的方式回答用户问题。";
     }
 }
