@@ -148,3 +148,71 @@ sa-token:
 # ================== 应用配置 ==================
 app:
   demo-mode: false
+
+# ================== RAG 配置 ==================
+rag:
+  # 查询改写配置
+  query-rewrite:
+    enabled: true
+    max-history-messages: 4
+    max-history-chars: 500
+
+  # 检索配置
+  search:
+    vector-global:
+      enabled: true
+      confidence-threshold: 0.6
+      top-k-multiplier: 3
+      min-intent-score: 0.4
+    intent-directed:
+      enabled: true
+      confidence-threshold: 0.6
+      top-k-multiplier: 3
+      min-intent-score: 0.4
+
+  # 歧义引导配置
+  guidance:
+    enabled: true
+    ambiguity-score-ratio: 0.8
+    max-options: 6
+
+  # MCP 工具配置
+  mcp:
+    enabled: false
+    server-url: http://localhost:9099/mcp
+    timeout: 30000
+    server-name: default
+    llm-parameter-extract: true
+
+  # 记忆配置
+  memory:
+    history-keep-turns: 8
+    summary-start-turns: 9
+    summary-enabled: false
+    ttl-minutes: 60
+    summary-max-chars: 200
+    title-max-length: 30
+
+  # Agent 配置
+  agent:
+    enabled: true
+    default-mode: REACT
+    max-iterations: 10
+    max-tokens: 8000
+    max-budget: 1.0
+    temperature: 0.7
+    deep-thinking-enabled: false
+    reflection-enabled: true
+    streaming-enabled: true
+    thinking-timeout-ms: 30000
+    tool-call-timeout-ms: 60000
+
+# ================== MCP 客户端配置 ==================
+sai:
+  mcp:
+    enabled: true
+    clients:
+      - name: default
+        url: ${MCP_SERVER_URL:http://localhost:9099/mcp}
+        timeout: 30000
+        enabled: true
