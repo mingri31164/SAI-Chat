@@ -50,26 +50,30 @@ public class MCPClientProperties {
      */
     private List<MCPClientConfig> clients = new ArrayList<>();
 
-    @Data
+    /**
+     * 获取启用的 Server 配置
+     */
+    public List<MCPClientConfig> getEnabledClients() {
+        return clients.stream().filter(MCPClientConfig::isEnabled).toList();
+    }
+
     public static class MCPClientConfig {
-        /**
-         * Server 实例名称（用于区分多个 MCP Server）
-         */
+
         private String name = "default";
 
-        /**
-         * MCP Server HTTP 端点
-         */
         private String url = "http://localhost:9099/mcp";
 
-        /**
-         * HTTP 请求超时（毫秒）
-         */
         private int timeout = 30000;
 
-        /**
-         * 是否启用此 Server
-         */
         private boolean enabled = true;
+
+        public String getName() { return name; }
+        public void setName(String name) { this.name = name; }
+        public String getUrl() { return url; }
+        public void setUrl(String url) { this.url = url; }
+        public int getTimeout() { return timeout; }
+        public void setTimeout(int timeout) { this.timeout = timeout; }
+        public boolean isEnabled() { return enabled; }
+        public void setEnabled(boolean enabled) { this.enabled = enabled; }
     }
 }

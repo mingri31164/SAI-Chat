@@ -109,6 +109,56 @@ public class ToolCallResult {
     }
 
     /**
+     * 创建成功结果（带耗时）
+     */
+    public static ToolCallResult success(String toolId, String toolName, String content, long durationMs) {
+        return ToolCallResult.builder()
+                .success(true)
+                .toolId(toolId)
+                .toolName(toolName)
+                .content(content)
+                .durationMs(durationMs)
+                .build();
+    }
+
+    /**
+     * 创建失败结果（带耗时）
+     */
+    public static ToolCallResult failure(String toolId, String content, long durationMs, Map<String, Object> structuredData) {
+        return ToolCallResult.builder()
+                .success(false)
+                .toolId(toolId)
+                .content(content)
+                .errorMessage(content)
+                .durationMs(durationMs)
+                .structuredData(structuredData)
+                .build();
+    }
+
+    /**
+     * 创建失败结果（简化版）
+     */
+    public static ToolCallResult failure(String toolId, String errorMessage) {
+        return ToolCallResult.builder()
+                .success(false)
+                .toolId(toolId)
+                .errorMessage(errorMessage)
+                .build();
+    }
+
+    /**
+     * 创建失败结果（带耗时）
+     */
+    public static ToolCallResult failure(String toolId, String errorMessage, long durationMs) {
+        return ToolCallResult.builder()
+                .success(false)
+                .toolId(toolId)
+                .errorMessage(errorMessage)
+                .durationMs(durationMs)
+                .build();
+    }
+
+    /**
      * 创建失败结果
      */
     public static ToolCallResult failure(String toolId, String toolName, String errorMessage) {
