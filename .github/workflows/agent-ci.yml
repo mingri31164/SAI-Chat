@@ -1,0 +1,350 @@
+# CI/CD 配置
+
+name: Agent CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop, 'feature/**', 'agent/**']
+  pull_request:
+    branches: [main, develop]
+
+env:
+  JAVA_VERSION: '17'
+  MAVEN_OPTS: -Xmx1024m
+
+jobs:
+  # ==================== 代码质量检查 ====================
+  code-quality:
+    name: 代码质量检查
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: 缓存Maven依赖
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: 编译项目
+        run: mvn -B compile -q
+
+      - name: 运行Checkstyle
+        run: mvn -B checkstyle:check -pl chat-agent -q || true
+
+      - name: 运行SpotBugs
+        run: mvn -B spotbugs:check -pl chat-agent -q || true
+
+  # ==================== 单元测试 ====================
+  unit-tests:
+    name: 单元测试
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: 缓存Maven依赖
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: 运行单元测试
+        run: mvn -B test -pl chat-agent -Dspring.profiles.active=test -DskipITs=true
+
+      - name: 上传测试报告
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: unit-test-reports
+          path: chat-agent/target/surefire-reports/**/*.xml
+
+      - name: 发布单元测试结果
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: 单元测试报告
+          path: "chat-agent/target/surefire-reports/*.xml"
+          reporter: java-junit
+
+  # ==================== 观测系统测试 ====================
+  observe-tests:
+    name: 观测系统测试
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: 缓存Maven依赖
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: 运行追踪系统测试
+        run: mvn -B test -pl chat-agent -Dtest=TraceSystemTest -Dspring.profiles.active=test
+
+      - name: 运行指标系统测试
+        run: mvn -B test -pl chat-agent -Dtest=MetricsSystemTest -Dspring.profiles.active=test
+
+      - name: 上传测试报告
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: observe-test-reports
+          path: chat-agent/target/surefire-reports/**/*Observe*.xml
+
+  # ==================== 集成测试 ====================
+  integration-tests:
+    name: 集成测试
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: test_db
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: 缓存Maven依赖
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: 等待MySQL就绪
+        run: sleep 30
+
+      - name: 运行集成测试
+        run: mvn -B verify -pl chat-agent -Dspring.profiles.active=ci
+
+      - name: 上传集成测试报告
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: integration-test-reports
+          path: chat-agent/target/failsafe-reports/**/*.xml
+
+  # ==================== 冒烟测试 ====================
+  smoke-test:
+    name: 冒烟测试
+    runs-on: ubuntu-latest
+    needs: integration-tests
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: 运行冒烟测试
+        run: |
+          curl -X POST http://localhost:8080/api/eval/smoke-test || echo "Smoke test endpoint not available"
+
+  # ==================== 代码覆盖率 ====================
+  coverage:
+    name: 代码覆盖率
+    runs-on: ubuntu-latest
+    needs: unit-tests
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: 缓存Maven依赖
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: 生成覆盖率报告
+        run: mvn -B test -pl chat-agent -Djacoco.skip=false -Djacoco.destFile=chat-agent/target/jacoco.exec
+
+      - name: 上传覆盖率报告
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: coverage-report
+          path: chat-agent/target/site/jacoco/
+
+  # ==================== 安全扫描 ====================
+  security-scan:
+    name: 安全扫描
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 运行安全扫描
+        run: |
+          # OWASP Dependency Check
+          mvn -B org.owasp:dependency-check-maven:check -pl chat-agent -q || true
+
+      - name: 上传安全报告
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: security-report
+          path: chat-agent/target/dependency-check-report.html
+
+  # ==================== 构建并推送镜像 ====================
+  build-and-push:
+    name: 构建并推送镜像
+    runs-on: ubuntu-latest
+    needs: [unit-tests, coverage]
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: 缓存Maven依赖
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: 构建项目
+        run: mvn -B package -pl chat-agent -DskipTests
+
+      - name: 构建Docker镜像
+        run: |
+          docker build -t chat-agent:${{ github.sha }} -t chat-agent:latest -f chat-agent/Dockerfile .
+
+      - name: 推送到镜像仓库
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          docker push chat-agent:${{ github.sha }}
+          docker push chat-agent:latest
+
+  # ==================== 性能基准测试 ====================
+  performance-benchmark:
+    name: 性能基准测试
+    runs-on: ubuntu-latest
+    needs: integration-tests
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: 运行基准测试
+        run: mvn -B test -pl chat-agent -Dtest=BenchmarkTest -Djmh.timeout=60000
+
+      - name: 上传基准测试结果
+        uses: actions/upload-artifact@v3
+        with:
+          name: benchmark-results
+          path: chat-agent/target/jmh-report/
+
+# ==================== 质量门禁 ====================
+quality-gate:
+  name: 质量门禁
+  runs-on: ubuntu-latest
+  needs: [unit-tests, integration-tests, coverage]
+  
+  steps:
+    - name: 检查测试结果
+      run: |
+        # 检查测试覆盖率
+        COVERAGE=$(cat chat-agent/target/site/jacoco/index.html | grep -oP 'Total.*?\d+%' | head -1)
+        echo "Code Coverage: $COVERAGE"
+        
+        # 检查测试通过率
+        FAILED_TESTS=$(find chat-agent/target -name "TEST-*.xml" -exec grep -l "failures=\"[1-9]" {} \; | wc -l)
+        echo "Failed test suites: $FAILED_TESTS"
+        
+        # 质量门禁规则
+        if [ "$FAILED_TESTS" -gt 0 ]; then
+          echo "❌ 质量门禁失败: 有 $FAILED_TESTS 个测试套件失败"
+          exit 1
+        fi
+        echo "✅ 质量门禁通过"

@@ -1,0 +1,51 @@
+# CI/CD 配置 - 开发者快速验证
+
+name: Agent CI - Quick Verify
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+env:
+  JAVA_VERSION: '17'
+
+jobs:
+  # 快速验证（编译+单元测试）
+  quick-verify:
+    name: 快速验证
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: 缓存Maven依赖
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: 编译
+        run: mvn -B compile -q
+
+      - name: 运行单元测试
+        run: mvn -B test -pl chat-agent -Dtest=TraceSystemTest,MetricsSystemTest -Dspring.profiles.active=test
+
+      - name: 测试结果
+        if: always()
+        run: |
+          echo "=== 测试结果摘要 ==="
+          if [ -f chat-agent/target/surefire-reports/TEST*.xml ]; then
+            PASSED=$(grep -c 'testcase.*time' chat-agent/target/surefire-reports/*.xml 2>/dev/null || echo 0)
+            FAILED=$(grep -c 'failures="[1-9]' chat-agent/target/surefire-reports/*.xml 2>/dev/null || echo 0)
+            echo "通过: $PASSED, 失败: $FAILED"
+          fi

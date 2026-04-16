@@ -216,3 +216,16 @@ sai:
         url: ${MCP_SERVER_URL:http://localhost:9099/mcp}
         timeout: 30000
         enabled: true
+
+  # ================== 观测配置 ==================
+  observe:
+    trace-enabled: true
+    metrics-enabled: true
+    max-trace-store-size: 1000
+    metrics-report-interval-seconds: 60
+    console-metrics-enabled: true
+    metrics-retention-hours: 24
+    percentiles:
+      p50-threshold: 1000
+      p95-threshold: 3000
+      p99-threshold: 5000
