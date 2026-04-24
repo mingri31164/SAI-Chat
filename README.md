@@ -101,4 +101,4 @@ SAI-Chat
 
 ## AI Agent智能体
 
-![12](https://github.com/mingri31164/SAI-Chat/blob/main/docs/.github/rag.png)
+![12](https://github.com/mingri31164/SAI-Chat/blob/main/docs/.github/sai-agent-rag.png)

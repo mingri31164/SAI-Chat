@@ -13,7 +13,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3306/sai_chat?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=Asia%2FShanghai&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/sai-chat?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=Asia%2FShanghai&allowPublicKeyRetrieval=true
     username: root
     password: root
     hikari:
@@ -28,7 +28,7 @@ spring:
     redis:
       host: 127.0.0.1
       port: 6379
-      password: ${REDIS_PASSWORD:}
+      password: 123456
       database: 0
 
 mybatis-plus:
@@ -44,7 +44,7 @@ mybatis-plus:
 
 # ================== Milvus 向量数据库配置 ==================
 milvus:
-  uri: ${MILVUS_URI:http://localhost:19530}
+  uri: ${MILVUS_URI:http://49.232.249.164:19530}
   token: ${MILVUS_TOKEN:}
   collection:
     default-name: rag_default_store

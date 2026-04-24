@@ -1,2 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.sai.chat.agent.rag.core.observe.config.ObserveAutoConfiguration
+com.sai.chat.agent.rag.core.observe.config.ObserveAutoConfiguration
