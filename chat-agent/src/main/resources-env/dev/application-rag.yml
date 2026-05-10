@@ -1,0 +1,52 @@
+# ================== RAG 配置 ==================
+
+rag:
+  query-rewrite:
+    enabled: ${agent.rag-query-rewrite.enabled}
+    max-history-messages: ${agent.rag-query-rewrite.max-history-messages}
+    max-history-chars: ${agent.rag-query-rewrite.max-history-chars}
+
+  search:
+    vector-global:
+      enabled: ${agent.rag-search-vector-global.enabled}
+      confidence-threshold: ${agent.rag-search-vector-global.confidence-threshold}
+      top-k-multiplier: ${agent.rag-search-vector-global.top-k-multiplier}
+      min-intent-score: ${agent.rag-search-vector-global.min-intent-score}
+    intent-directed:
+      enabled: ${agent.rag-search-intent-directed.enabled}
+      confidence-threshold: ${agent.rag-search-intent-directed.confidence-threshold}
+      top-k-multiplier: ${agent.rag-search-intent-directed.top-k-multiplier}
+      min-intent-score: ${agent.rag-search-intent-directed.min-intent-score}
+
+  guidance:
+    enabled: ${agent.rag-guidance.enabled}
+    ambiguity-score-ratio: ${agent.rag-guidance.ambiguity-score-ratio}
+    max-options: ${agent.rag-guidance.max-options}
+
+  mcp:
+    enabled: ${agent.mcp.enabled}
+    server-url: ${agent.mcp.server-url}
+    timeout: ${agent.mcp.timeout}
+    server-name: ${agent.mcp.server-name}
+    llm-parameter-extract: true
+
+  memory:
+    history-keep-turns: ${agent.rag-memory.history-keep-turns}
+    summary-start-turns: ${agent.rag-memory.summary-start-turns}
+    summary-enabled: ${agent.rag-memory.summary-enabled}
+    ttl-minutes: ${agent.rag-memory.ttl-minutes}
+    summary-max-chars: ${agent.rag-memory.summary-max-chars}
+    title-max-length: ${agent.rag-memory.title-max-length}
+
+  agent:
+    enabled: ${agent.rag-agent.enabled}
+    default-mode: ${agent.rag-agent.default-mode}
+    max-iterations: ${agent.rag-agent.max-iterations}
+    max-tokens: ${agent.rag-agent.max-tokens}
+    max-budget: ${agent.rag-agent.max-budget}
+    temperature: ${agent.rag-agent.temperature}
+    deep-thinking-enabled: ${agent.rag-agent.deep-thinking-enabled}
+    reflection-enabled: ${agent.rag-agent.reflection-enabled}
+    streaming-enabled: ${agent.rag-agent.streaming-enabled}
+    thinking-timeout-ms: ${agent.rag-agent.thinking-timeout-ms}
+    tool-call-timeout-ms: ${agent.rag-agent.tool-call-timeout-ms}

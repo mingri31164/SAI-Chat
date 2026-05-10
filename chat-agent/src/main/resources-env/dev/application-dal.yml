@@ -1,0 +1,52 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: ${agent.upload.max-file-size}
+      max-request-size: ${agent.upload.max-request-size}
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://${agent.datasource.host}:${agent.datasource.port}/${agent.datasource.name}?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=Asia%2FSHANGHAI&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+    username: ${agent.datasource.username}
+    password: ${agent.datasource.password}
+    hikari:
+      connection-timeout: ${agent.datasource.hikari.connection-timeout}
+      idle-timeout: ${agent.datasource.hikari.idle-timeout}
+      max-lifetime: ${agent.datasource.hikari.max-lifetime}
+      maximum-pool-size: ${agent.datasource.hikari.maximum-pool-size}
+      minimum-idle: ${agent.datasource.hikari.minimum-idle}
+      pool-name: ${agent.datasource.hikari.pool-name}
+
+  data:
+    redis:
+      host: ${agent.redis.host}
+      port: ${agent.redis.port}
+      password: ${agent.redis.password}
+      database: ${agent.redis.database}
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+sa-token:
+  token-name: Authorization
+  timeout: 2592000
+  is-concurrent: true
+  is-share: false
+  token-style: simple-uuid
+  is-log: false
+  is-print: false
+
+app:
+  demo-mode: ${agent.app.demo-mode}
+
+server:
+  port: ${agent.server.port}

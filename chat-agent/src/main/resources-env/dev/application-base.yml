@@ -1,0 +1,136 @@
+# ============================================================
+# chat-agent 配置入口
+# 修改此文件即可运行，无需其他额外操作
+# ============================================================
+
+agent:
+  # ========== 服务配置 ==========
+  server:
+    port: 8080
+
+  # ========== 数据源配置 ==========
+  datasource:
+    host: 127.0.0.1
+    port: 3306
+    username: root
+    password: root
+    name: sai-chat
+    hikari:
+      connection-timeout: 5000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      maximum-pool-size: 10
+      minimum-idle: 2
+      pool-name: ChatAgentHikariPool
+
+  # ========== Redis 配置 ==========
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+    database: 4
+
+  # ========== Milvus 向量数据库配置 ==========
+  milvus:
+    uri: http://localhost:19530
+    token:
+    collection:
+      default-name: rag_default_store
+      dimension: 4096
+      metric-type: COSINE
+      index-type: FLAT
+      vector-field: embedding
+      primary-field: doc_id
+      content-field: content
+
+  # ========== AI 模型配置 ==========
+  ai:
+    ollama:
+      url: http://localhost:11434
+      chat-model: qwen3:8b-fp16
+      embedding-model: qwen3-embedding:8b-fp16
+    bailian:
+      url: https://dashscope.aliyuncs.com
+      api-key:
+      chat-model: qwen3-max
+      rerank-model: qwen3-rerank
+    siliconflow:
+      url: https://api.siliconflow.cn
+      api-key:
+      chat-model: Pro/zai-org/GLM-4.7
+      embedding-model: Qwen/Qwen3-Embedding-8B
+
+  # ========== 应用配置 ==========
+  app:
+    demo-mode: false
+
+  # ========== MCP 配置 ==========
+  mcp:
+    enabled: false
+    server-url: http://localhost:9099/mcp
+    timeout: 30000
+    server-name: default
+
+  # ========== RAG 查询改写 ==========
+  rag-query-rewrite:
+    enabled: true
+    max-history-messages: 4
+    max-history-chars: 500
+
+  # ========== RAG 检索 ==========
+  rag-search-vector-global:
+    enabled: true
+    confidence-threshold: 0.6
+    top-k-multiplier: 3
+    min-intent-score: 0.4
+  rag-search-intent-directed:
+    enabled: true
+    confidence-threshold: 0.6
+    top-k-multiplier: 2
+    min-intent-score: 0.4
+
+  # ========== RAG 歧义引导 ==========
+  rag-guidance:
+    enabled: true
+    ambiguity-score-ratio: 0.8
+    max-options: 6
+
+  # ========== RAG 记忆 ==========
+  rag-memory:
+    history-keep-turns: 8
+    summary-start-turns: 9
+    summary-enabled: false
+    ttl-minutes: 60
+    summary-max-chars: 200
+    title-max-length: 30
+
+  # ========== RAG Agent 执行 ==========
+  rag-agent:
+    enabled: true
+    default-mode: REACT
+    max-iterations: 10
+    max-tokens: 8000
+    max-budget: 1.0
+    temperature: 0.7
+    deep-thinking-enabled: false
+    reflection-enabled: true
+    streaming-enabled: true
+    thinking-timeout-ms: 30000
+    tool-call-timeout-ms: 60000
+
+  # ========== 观测系统 ==========
+  observe:
+    trace-enabled: true
+    metrics-enabled: true
+    max-trace-store-size: 1000
+    metrics-report-interval-seconds: 60
+    console-metrics-enabled: true
+    metrics-retention-hours: 24
+    p50-threshold: 1000
+    p95-threshold: 3000
+    p99-threshold: 5000
+
+  # ========== 上传配置 ==========
+  upload:
+    max-file-size: 50MB
+    max-request-size: 100MB

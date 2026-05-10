@@ -1,0 +1,10 @@
+# ================== MCP 客户端配置 ==================
+
+sai:
+  mcp:
+    enabled: ${agent.mcp.enabled}
+    clients:
+      - name: ${agent.mcp.server-name}
+        url: ${agent.mcp.server-url}
+        timeout: ${agent.mcp.timeout}
+        enabled: ${agent.mcp.enabled}

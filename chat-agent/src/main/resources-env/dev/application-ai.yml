@@ -1,0 +1,90 @@
+# ================== AI 模型配置 ==================
+
+ai:
+  providers:
+    ollama:
+      url: ${agent.ai.ollama.url}
+      endpoints:
+        chat: /api/chat
+        embedding: /api/embed
+    bailian:
+      url: ${agent.ai.bailian.url}
+      api-key: ${agent.ai.bailian.api-key}
+      endpoints:
+        chat: /compatible-mode/v1/chat/completions
+        rerank: /api/v1/services/rerank/text-rerank/text-rerank
+    siliconflow:
+      url: ${agent.ai.siliconflow.url}
+      api-key: ${agent.ai.siliconflow.api-key}
+      endpoints:
+        chat: /v1/chat/completions
+        embedding: /v1/embeddings
+
+  selection:
+    failure-threshold: 2
+    open-duration-ms: 30000
+
+  stream:
+    message-chunk-size: 1
+
+  chat:
+    default-model: ${agent.ai.bailian.chat-model}
+    deep-thinking-model: ${agent.ai.bailian.chat-model}
+    candidates:
+      - id: qwen-plus
+        provider: bailian
+        model: qwen-plus-latest
+        priority: 1
+      - id: qwen3-max
+        provider: bailian
+        model: ${agent.ai.bailian.chat-model}
+        supports-thinking: true
+        priority: 3
+      - id: siliconflow-glm
+        provider: siliconflow
+        model: ${agent.ai.siliconflow.chat-model}
+        supports-thinking: true
+        priority: 0
+      - id: qwen3-local
+        provider: ollama
+        model: ${agent.ai.ollama.chat-model}
+        priority: 2
+
+  embedding:
+    default-model: qwen-emb-8b
+    candidates:
+      - id: qwen-emb-8b
+        provider: siliconflow
+        model: ${agent.ai.siliconflow.embedding-model}
+        dimension: 4096
+        priority: 1
+      - id: qwen-emb-local
+        provider: ollama
+        model: ${agent.ai.ollama.embedding-model}
+        dimension: 4096
+        priority: 2
+
+  rerank:
+    default-model: qwen3-rerank
+    candidates:
+      - id: qwen3-rerank
+        provider: bailian
+        model: ${agent.ai.bailian.rerank-model}
+        priority: 1
+      - id: rerank-noop
+        provider: noop
+        model: noop
+        priority: 100
+
+# ================== Milvus 向量数据库配置 ==================
+milvus:
+  uri: ${agent.milvus.uri}
+  token: ${agent.milvus.token}
+  collection:
+    default-name: ${agent.milvus.collection.default-name}
+    dimension: ${agent.milvus.collection.dimension}
+    metric-type: ${agent.milvus.collection.metric-type}
+    index-type: ${agent.milvus.collection.index-type}
+    vector-field: ${agent.milvus.collection.vector-field}
+    primary-field: ${agent.milvus.collection.primary-field}
+    content-field: ${agent.milvus.collection.content-field}

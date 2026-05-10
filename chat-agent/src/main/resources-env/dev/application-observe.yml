@@ -1,0 +1,14 @@
+# ================== 观测能力配置 ==================
+
+sai:
+  observe:
+    trace-enabled: ${agent.observe.trace-enabled}
+    metrics-enabled: ${agent.observe.metrics-enabled}
+    max-trace-store-size: ${agent.observe.max-trace-store-size}
+    metrics-report-interval-seconds: ${agent.observe.metrics-report-interval-seconds}
+    console-metrics-enabled: ${agent.observe.console-metrics-enabled}
+    metrics-retention-hours: ${agent.observe.metrics-retention-hours}
+    percentiles:
+      p50-threshold: ${agent.observe.p50-threshold}
+      p95-threshold: ${agent.observe.p95-threshold}
+      p99-threshold: ${agent.observe.p99-threshold}
