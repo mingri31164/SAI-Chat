@@ -31,15 +31,11 @@ ai:
     default-model: ${agent.ai.bailian.chat-model}
     deep-thinking-model: ${agent.ai.bailian.chat-model}
     candidates:
-      - id: qwen-plus
+      - id: deepseek-v3
         provider: bailian
-        model: qwen-plus-latest
-        priority: 1
-      - id: qwen3-max
-        provider: bailian
-        model: ${agent.ai.bailian.chat-model}
+        model: deepseek-v3
         supports-thinking: true
-        priority: 3
+        priority: 1
       - id: siliconflow-glm
         provider: siliconflow
         model: ${agent.ai.siliconflow.chat-model}

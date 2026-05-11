@@ -23,17 +23,17 @@ package com.sai.chat.agent.framework.convention.rag.enums;
 public enum IntentLevel {
 
     /**
-     * 顶层：集团信息化 / 业务系统 / 中间件环境信息
+     * 顶层（领域）：集团信息化 / 业务系统 / 中间件环境信息
      */
     DOMAIN(0),
 
     /**
-     * 第二层：人事 / 行政 / OA系统 / Redis ...
+     * 第二层（类别）：人事 / 行政 / OA系统 / Redis ...
      */
     CATEGORY(1),
 
     /**
-     * 第三层：更具体的 Topic，如 系统介绍 / 数据安全 / 架构设计
+     * 第三层（主题）：更具体的 Topic，如 系统介绍 / 数据安全 / 架构设计
      */
     TOPIC(2);
 

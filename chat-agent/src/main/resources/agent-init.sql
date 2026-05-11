@@ -3,8 +3,8 @@
 -- 适用于 MySQL 8.0+
 -- ================================================================
 
-CREATE DATABASE IF NOT EXISTS sai_chat DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE sai_chat;
+CREATE DATABASE IF NOT EXISTS sai_agent DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE sai_agent;
 
 -- ================================================================
 -- 1. 追踪记录表

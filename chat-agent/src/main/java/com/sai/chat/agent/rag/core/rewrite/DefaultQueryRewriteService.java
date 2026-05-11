@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -72,20 +73,37 @@ public class DefaultQueryRewriteService implements QueryRewriteService {
             return simpleResult(trimmed);
         }
 
-        // 获取对话历史作为上下文
+        // 先做规则级改写（清理问候语/结束语）
+        String cleaned = rewriteByRule(trimmed);
+
+        // 检测问题中是否包含代词，有代词则需要做指代消解
+        boolean hasPronoun = containsPronoun(cleaned);
+
+        // 获取对话历史
         List<ChatMessage> history = memoryService.getRecentHistory(
                 sessionId,
                 ragProperties.getQueryRewrite().getMaxHistoryMessages()
         );
 
-        if (history.isEmpty()) {
-            // 无历史时做简单规则改写
-            String cleaned = rewriteByRule(trimmed);
-            return simpleResult(cleaned);
+        // 有代词且有历史 → 走 LLM 增强路径做指代消解
+        // 无代词但有历史 → 走 LLM 增强路径做问题拆分
+        // 无代词也无历史 → 走规则路径（快速）
+        if (hasPronoun || !history.isEmpty()) {
+            return rewriteWithLLM(cleaned, history);
         }
 
-        // 有历史时调用 LLM 进行深度改写
-        return rewriteWithLLM(trimmed, history);
+        return simpleResult(cleaned);
+    }
+
+    /**
+     * 检测问题中是否包含代词，需要做指代消解
+     */
+    private boolean containsPronoun(String question) {
+        if (question == null || question.isBlank()) {
+            return false;
+        }
+        Matcher matcher = PRONOUN_PATTERN.matcher(question);
+        return matcher.find();
     }
 
     @Override
@@ -102,8 +120,7 @@ public class DefaultQueryRewriteService implements QueryRewriteService {
         // 删除结束语后缀
         result = ENDING_PATTERN.matcher(result).replaceFirst("");
 
-        // 代词标记（不替换，保留供 LLM 进一步处理）
-        // 这里仅做基本清理
+        // 空白规范化
         result = result.replaceAll("\\s+", " ").trim();
 
         return result.isEmpty() ? question : result;
