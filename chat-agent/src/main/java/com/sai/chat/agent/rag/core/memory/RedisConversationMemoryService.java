@@ -128,6 +128,17 @@ public class RedisConversationMemoryService implements ConversationMemoryService
     }
 
     @Override
+    public void clearMessages(String sessionId) {
+        try {
+            redisTemplate.delete(MSG_KEY_PREFIX + sessionId);
+            redisTemplate.delete(TURNS_KEY_PREFIX + sessionId);
+            log.debug("会话消息列表和轮数已清除, sessionId={}", sessionId);
+        } catch (Exception e) {
+            log.warn("清除会话消息列表失败, sessionId={}", sessionId, e);
+        }
+    }
+
+    @Override
     public void clearSession(String sessionId) {
         try {
             redisTemplate.delete(MSG_KEY_PREFIX + sessionId);

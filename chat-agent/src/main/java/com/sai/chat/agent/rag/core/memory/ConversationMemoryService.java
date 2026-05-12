@@ -92,7 +92,18 @@ public interface ConversationMemoryService {
     String getHistoryForSummary(String sessionId, int maxChars);
 
     /**
-     * 清除会话记忆
+     * 清除会话记忆中的原始消息列表
+     * <p>
+     * 仅删除消息列表，保留摘要和轮数计数。用于摘要生成后压缩历史。
+     *
+     * @param sessionId 会话 ID
+     */
+    void clearMessages(String sessionId);
+
+    /**
+     * 清除会话记忆（完整清理，包括摘要和轮数）
+     * <p>
+     * 用于会话真正结束时彻底清理所有数据。
      *
      * @param sessionId 会话 ID
      */

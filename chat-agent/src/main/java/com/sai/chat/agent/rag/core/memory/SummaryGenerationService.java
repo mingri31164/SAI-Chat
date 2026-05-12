@@ -84,8 +84,8 @@ public class SummaryGenerationService {
             memoryService.saveSummary(sessionId, summary);
             log.info("会话 {} 摘要生成成功, 长度={}", sessionId, summary != null ? summary.length() : 0);
 
-            // 摘要生成后清理旧消息
-            memoryService.clearSession(sessionId);
+            // 摘要生成后清理旧消息并重置轮数，摘要本身保留供后续使用
+            memoryService.clearMessages(sessionId);
 
             return summary;
 
