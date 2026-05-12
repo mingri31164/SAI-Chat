@@ -269,6 +269,14 @@ public class RAGPipelineServiceImpl implements RAGPipelineService {
             sb.append("【对话摘要】\n").append(summary).append("\n\n");
         }
 
+        int maxLLMHistory = ragProperties.getQueryRewrite().getMaxLLMHistoryMessages();
+        if (maxLLMHistory > 0) {
+            String recentHistory = memoryService.getRecentHistoryText(sessionId, maxLLMHistory);
+            if (!recentHistory.isBlank()) {
+                sb.append("【最近对话】\n").append(recentHistory).append("\n\n");
+            }
+        }
+
         sb.append("【用户问题】\n").append(question);
 
         return sb.toString();

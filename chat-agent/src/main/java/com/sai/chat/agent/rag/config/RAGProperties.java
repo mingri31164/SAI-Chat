@@ -67,6 +67,11 @@ public class RAGProperties {
          * 改写时用于承接上下文的最大字符数
          */
         private int maxHistoryChars = 500;
+
+        /**
+         * 最终 LLM 生成回答时，携带的最近对话历史轮数（每轮 = user + assistant）
+         */
+        private int maxLLMHistoryMessages = 3;
     }
 
     @Data

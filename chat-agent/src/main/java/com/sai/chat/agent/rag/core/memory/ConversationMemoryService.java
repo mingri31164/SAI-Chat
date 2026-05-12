@@ -92,6 +92,15 @@ public interface ConversationMemoryService {
     String getHistoryForSummary(String sessionId, int maxChars);
 
     /**
+     * 获取最近 N 轮对话的纯文本格式（用于追加到 LLM Prompt）
+     *
+     * @param sessionId 会话 ID
+     * @param maxTurns  最大轮数（每轮包含 user + assistant）
+     * @return 格式化后的历史文本，无历史时返回空字符串
+     */
+    String getRecentHistoryText(String sessionId, int maxTurns);
+
+    /**
      * 清除会话记忆中的原始消息列表
      * <p>
      * 仅删除消息列表，保留摘要和轮数计数。用于摘要生成后压缩历史。

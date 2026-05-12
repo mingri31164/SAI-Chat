@@ -128,6 +128,22 @@ public class RedisConversationMemoryService implements ConversationMemoryService
     }
 
     @Override
+    public String getRecentHistoryText(String sessionId, int maxTurns) {
+        List<ChatMessage> recent = getRecentHistory(sessionId, maxTurns);
+        if (recent.isEmpty()) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (ChatMessage msg : recent) {
+            if (sb.length() > 0) {
+                sb.append("\n");
+            }
+            sb.append(msg.getRole().name().toLowerCase()).append(": ").append(msg.getContent());
+        }
+        return sb.toString();
+    }
+
+    @Override
     public void clearMessages(String sessionId) {
         try {
             redisTemplate.delete(MSG_KEY_PREFIX + sessionId);
