@@ -23,7 +23,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -106,40 +109,5 @@ public class MCPToolRegistry {
      */
     public Set<String> getAllToolIds() {
         return Set.copyOf(toolById.keySet());
-    }
-
-    /**
-     * 判断问题是否包含工具调用意图
-     * <p>
-     * 通过关键词匹配判断用户问题是否可能需要调用 MCP 工具
-     */
-    public List<String> matchTools(String question) {
-        if (question == null || question.isBlank()) {
-            return List.of();
-        }
-
-        List<String> matched = new ArrayList<>();
-        String lower = question.toLowerCase();
-
-        for (MCPToolDefinition tool : toolById.values()) {
-            if (containsRelevantKeyword(tool, lower)) {
-                matched.add(tool.getToolId());
-            }
-        }
-
-        return matched;
-    }
-
-    private boolean containsRelevantKeyword(MCPToolDefinition tool, String question) {
-        String desc = tool.getDescription();
-        if (desc == null) return false;
-
-        String[] keywords = desc.toLowerCase().split("[，。、,\\s]+");
-        for (String kw : keywords) {
-            if (kw.length() >= 2 && question.contains(kw)) {
-                return true;
-            }
-        }
-        return false;
     }
 }
