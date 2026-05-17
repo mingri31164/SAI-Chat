@@ -11,8 +11,8 @@ ai:
       url: ${agent.ai.bailian.url}
       api-key: ${agent.ai.bailian.api-key}
       endpoints:
-        chat: /compatible-mode/v1/chat/completions
-        rerank: /api/v1/services/rerank/text-rerank/text-rerank
+        chat: /chat/completions
+        rerank: /rerank
     siliconflow:
       url: ${agent.ai.siliconflow.url}
       api-key: ${agent.ai.siliconflow.api-key}
@@ -36,15 +36,6 @@ ai:
         model: deepseek-v3
         supports-thinking: true
         priority: 1
-      - id: siliconflow-glm
-        provider: siliconflow
-        model: ${agent.ai.siliconflow.chat-model}
-        supports-thinking: true
-        priority: 0
-      - id: qwen3-local
-        provider: ollama
-        model: ${agent.ai.ollama.chat-model}
-        priority: 2
 
   embedding:
     default-model: qwen-emb-8b
