@@ -28,6 +28,7 @@ import io.milvus.v2.service.collection.response.DescribeCollectionResp;
 import io.milvus.v2.service.collection.response.ListCollectionsResp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,10 +38,13 @@ import java.util.List;
  * Milvus 向量空间管理实现
  * <p>
  * 实现 {@link VectorStoreAdmin} 接口，负责 Collection 的 DDL 操作
+ * <p>
+ * 默认禁用，如需启用请设置 {@code agent.milvus.enabled=true}
  */
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@ConditionalOnProperty(prefix = "agent", name = "milvus.enabled", havingValue = "true", matchIfMissing = false)
 public class MilvusVectorStoreAdmin implements VectorStoreAdmin {
 
     private final MilvusClientV2 milvusClient;

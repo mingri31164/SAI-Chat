@@ -53,14 +53,14 @@ public class SnowflakeIdInitializer {
 
         try {
             // 执行 Lua 脚本获取 workerId 和 datacenterId
-            List<Long> result = stringRedisTemplate.execute(script, Collections.emptyList());
+            List<String> strResult = stringRedisTemplate.execute(script, Collections.emptyList());
 
-            if (CollUtil.isEmpty(result) || result.size() != 2) {
+            if (CollUtil.isEmpty(strResult) || strResult.size() != 2) {
                 throw new RuntimeException("从Redis获取WorkerId和DataCenterId失败");
             }
 
-            Long workerId = result.get(0);
-            Long datacenterId = result.get(1);
+            Long workerId = Long.parseLong(strResult.get(0));
+            Long datacenterId = Long.parseLong(strResult.get(1));
 
             // 注册到 Hutool 的 IdUtil
             Snowflake snowflake = new Snowflake(workerId, datacenterId);

@@ -44,7 +44,7 @@ public interface SearchChannel {
     /**
      * 通道是否可用
      * <p>
-     * 例如：当 Milvus 连接失败时，全局向量通道不可用
+     * 例如：当向量数据库连接失败时，向量检索通道不可用
      *
      * @return true 表示通道可用
      */

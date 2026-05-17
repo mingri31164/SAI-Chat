@@ -22,7 +22,7 @@ import com.sai.chat.agent.framework.convention.rag.SearchChannelResult;
 import com.sai.chat.agent.framework.convention.rag.SearchContext;
 import com.sai.chat.agent.framework.convention.rag.enums.SearchChannelType;
 import com.sai.chat.agent.infra.embedding.EmbeddingService;
-import com.sai.chat.agent.infra.vector.MilvusProperties;
+import com.sai.chat.agent.infra.vector.PgVectorProperties;
 import com.sai.chat.agent.infra.vector.VectorStoreService;
 import com.sai.chat.agent.rag.config.RAGProperties;
 import com.sai.chat.agent.rag.constant.RAGConstant;
@@ -52,7 +52,7 @@ public class VectorGlobalSearchChannel implements SearchChannel {
     private final EmbeddingService embeddingService;
     private final VectorStoreService vectorStoreService;
     private final RAGProperties ragProperties;
-    private final MilvusProperties milvusProperties;
+    private final PgVectorProperties pgVectorProperties;
 
     @Override
     public SearchChannelResult search(SearchContext ctx, IntentNode node, int topK) {
@@ -61,7 +61,7 @@ public class VectorGlobalSearchChannel implements SearchChannel {
         try {
             String question = ctx.getMainQuestion();
             int effectiveTopK = computeTopK(topK);
-            String collection = milvusProperties.getCollection().getDefaultName();
+            String collection = pgVectorProperties.getTable().getDefaultName();
 
             // 1. 问题向量化
             List<Float> embeddingVector = embeddingService.embed(question);

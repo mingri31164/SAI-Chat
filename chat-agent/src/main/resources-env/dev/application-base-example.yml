@@ -1,6 +1,5 @@
 # ============================================================
 # chat-agent 配置入口
-# 修改此文件即可运行，无需其他额外操作
 # ============================================================
 
 agent:
@@ -10,11 +9,11 @@ agent:
 
   # ========== 数据源配置 ==========
   datasource:
-    host: 127.0.0.1
+    host: localhost
     port: 3306
     username: root
     password: root
-    name: sai-chat
+    name: my_database
     hikari:
       connection-timeout: 5000
       idle-timeout: 600000
@@ -25,40 +24,41 @@ agent:
 
   # ========== Redis 配置 ==========
   redis:
-    host: 127.0.0.1
+    host: localhost
     port: 6379
-    password: 123456
-    database: 4
+    password: ""
+    database: 0
 
-  # ========== Milvus 向量数据库配置 ==========
-  milvus:
-    uri: http://localhost:19530
-    token:
-    collection:
-      default-name: rag_default_store
-      dimension: 4096
-      metric-type: COSINE
-      index-type: FLAT
-      vector-field: embedding
-      primary-field: doc_id
-      content-field: content
+  # ========== PgVector 向量数据库配置 ==========
+  pgvector:
+    jdbc-url: jdbc:postgresql://localhost:5432/pgvector_db
+    username: postgres
+    password: postgres
+    table:
+      default-name: rag_vector_store
+      dimension: 1536
+      metric-type: cosine_dist
+      index-type: hnsw
+      m: 16
+      ef-construction: 64
+      ef-search: 64
 
   # ========== AI 模型配置 ==========
   ai:
     ollama:
       url: http://localhost:11434
-      chat-model: qwen3:8b-fp16
-      embedding-model: qwen3-embedding:8b-fp16
+      chat-model: your-chat-model
+      embedding-model: your-embedding-model
     bailian:
-      url: https://dashscope.aliyuncs.com
-      api-key:
-      chat-model: qwen3-max
-      rerank-model: qwen3-rerank
+      url: https://example.com/api
+      api-key: your-api-key
+      chat-model: your-chat-model
+      rerank-model: your-rerank-model
     siliconflow:
-      url: https://api.siliconflow.cn
-      api-key:
-      chat-model: Pro/zai-org/GLM-4.7
-      embedding-model: Qwen/Qwen3-Embedding-8B
+      url: https://example.com/api
+      api-key: your-api-key
+      chat-model: your-chat-model
+      embedding-model: your-embedding-model
 
   # ========== 应用配置 ==========
   app:

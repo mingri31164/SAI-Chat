@@ -34,7 +34,7 @@ import lombok.NoArgsConstructor;
 public class VectorChunk {
 
     /**
-     * Chunk 唯一标识（对应 Milvus 主键 doc_id）
+     * Chunk 唯一标识（对应 pgvector 主键 doc_id）
      */
     private String chunkId;
 

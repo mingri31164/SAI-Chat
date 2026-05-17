@@ -20,6 +20,7 @@ package com.sai.chat.agent.infra.vector;
 import io.milvus.v2.client.ConnectConfig;
 import io.milvus.v2.client.MilvusClientV2;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,9 +29,12 @@ import org.springframework.context.annotation.Configuration;
  * <p>
  * 通过 Spring 容器统一创建并管理 {@link MilvusClientV2} 实例，用于向量数据的增删改查、索引管理等操作
  * 支持通过配置文件设置连接地址与可选的访问令牌
+ * <p>
+ * 默认禁用，如需启用请设置 {@code agent.milvus.enabled=true}
  */
 @Configuration
 @RequiredArgsConstructor
+@ConditionalOnProperty(prefix = "agent", name = "milvus.enabled", havingValue = "true", matchIfMissing = false)
 public class MilvusConfig {
 
     private final MilvusProperties milvusProperties;

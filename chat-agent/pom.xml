@@ -45,12 +45,6 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
-        <!-- Milvus -->
-        <dependency>
-            <groupId>io.milvus</groupId>
-            <artifactId>milvus-sdk-java</artifactId>
-        </dependency>
-
         <!-- Tika -->
         <dependency>
             <groupId>org.apache.tika</groupId>

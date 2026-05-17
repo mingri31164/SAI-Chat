@@ -19,6 +19,8 @@ local datacenterId = redis.call('GET', datacenter_key)
 if not datacenterId then
     datacenterId = math.floor(math.random() * 32)  -- 随机选择 0-31
     redis.call('SET', datacenter_key, datacenterId)
+else
+    datacenterId = tonumber(datacenterId)
 end
 
 return {workerId, datacenterId}
