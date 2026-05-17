@@ -25,6 +25,8 @@ import java.util.List;
  * 向量存储服务接口
  * <p>
  * 定义文档向量索引的写入、更新、删除操作
+ * <p>
+ * 支持 pgvector（默认）和 Milvus（通过 {@code agent.milvus.enabled=true} 启用）
  */
 public interface VectorStoreService {
 
@@ -78,7 +80,7 @@ public interface VectorStoreService {
      * @param collection Collection 名称
      * @param queryVector 查询向量
      * @param topK       返回的最相似结果数量
-     * @param filterExpr Milvus 过滤表达式（如 metadata["kb_id"] == "xxx"）
+     * @param filterExpr 过滤表达式（pgvector 格式，如 metadata->>'kb_id' = 'xxx'）
      * @return 检索结果列表
      */
     List<RetrievedChunk> searchWithFilter(String collection, float[] queryVector, int topK, String filterExpr);

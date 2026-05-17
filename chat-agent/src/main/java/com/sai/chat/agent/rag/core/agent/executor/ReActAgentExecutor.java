@@ -40,6 +40,7 @@ import com.sai.chat.agent.rag.core.mcp.MCPToolRegistry;
 import com.sai.chat.agent.rag.core.mcp.RemoteMCPToolExecutor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -67,6 +68,7 @@ import java.util.Optional;
  */
 @Slf4j
 @Component
+@Primary
 @RequiredArgsConstructor
 public class ReActAgentExecutor implements AgentExecutor {
 

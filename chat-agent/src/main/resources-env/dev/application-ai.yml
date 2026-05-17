@@ -72,15 +72,16 @@ ai:
         model: noop
         priority: 100
 
-# ================== Milvus 向量数据库配置 ==================
-milvus:
-  uri: ${agent.milvus.uri}
-  token: ${agent.milvus.token}
-  collection:
-    default-name: ${agent.milvus.collection.default-name}
-    dimension: ${agent.milvus.collection.dimension}
-    metric-type: ${agent.milvus.collection.metric-type}
-    index-type: ${agent.milvus.collection.index-type}
-    vector-field: ${agent.milvus.collection.vector-field}
-    primary-field: ${agent.milvus.collection.primary-field}
-    content-field: ${agent.milvus.collection.content-field}
+# ================== PgVector 向量数据库配置 ==================
+pgvector:
+  jdbc-url: ${agent.pgvector.jdbc-url}
+  username: ${agent.pgvector.username}
+  password: ${agent.pgvector.password}
+  table:
+    default-name: ${agent.pgvector.table.default-name}
+    dimension: ${agent.pgvector.table.dimension}
+    metric-type: ${agent.pgvector.table.metric-type}
+    index-type: ${agent.pgvector.table.index-type}
+    m: ${agent.pgvector.table.m}
+    ef-construction: ${agent.pgvector.table.ef-construction}
+    ef-search: ${agent.pgvector.table.ef-search}

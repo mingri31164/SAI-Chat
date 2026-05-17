@@ -51,7 +51,7 @@
         <sa-token.version>1.43.0</sa-token.version>
         <ttl.version>2.14.5</ttl.version>
         <okhttp.version>4.12.0</okhttp.version>
-        <milvus-sdk.version>2.6.6</milvus-sdk.version>
+        <pgvector.version>0.1.6</pgvector.version>
         <tika.version>3.2.3</tika.version>
         <aws-s3.version>2.40.2</aws-s3.version>
     </properties>
@@ -252,11 +252,11 @@
                 <artifactId>okhttp</artifactId>
                 <version>${okhttp.version}</version>
             </dependency>
-            <!-- Milvus -->
+            <!-- PgVector -->
             <dependency>
-                <groupId>io.milvus</groupId>
-                <artifactId>milvus-sdk-java</artifactId>
-                <version>${milvus-sdk.version}</version>
+                <groupId>com.pgvector</groupId>
+                <artifactId>pgvector</artifactId>
+                <version>${pgvector.version}</version>
             </dependency>
             <!-- Tika -->
             <dependency>
@@ -271,6 +271,18 @@
                 <groupId>software.amazon.awssdk</groupId>
                 <artifactId>s3</artifactId>
                 <version>${aws-s3.version}</version>
+            </dependency>
+            <!-- Milvus -->
+            <dependency>
+                <groupId>io.milvus</groupId>
+                <artifactId>milvus-sdk-java</artifactId>
+                <version>2.4.8</version>
+            </dependency>
+            <!-- PostgreSQL JDBC -->
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>42.7.3</version>
             </dependency>
 
         </dependencies>

@@ -35,6 +35,7 @@ import io.milvus.v2.service.vector.response.DeleteResp;
 import io.milvus.v2.service.vector.response.SearchResp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -45,10 +46,13 @@ import java.util.Map;
  * Milvus 向量存储服务实现
  * <p>
  * 实现 {@link VectorStoreService} 接口，封装 Milvus SDK v2 的增删改查操作
+ * <p>
+ * 默认禁用，如需启用请设置 {@code agent.milvus.enabled=true}
  */
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@ConditionalOnProperty(prefix = "agent", name = "milvus.enabled", havingValue = "true", matchIfMissing = false)
 public class MilvusVectorStoreService implements VectorStoreService {
 
     private final MilvusClientV2 milvusClient;

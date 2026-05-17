@@ -20,43 +20,49 @@ package com.sai.chat.agent.infra.vector;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Milvus 向量数据库配置属性
- * <p>
- * 默认禁用，如需启用请设置 {@code agent.milvus.enabled=true}
+ * PgVector 向量数据库配置属性
  */
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "milvus")
-@ConditionalOnProperty(prefix = "agent", name = "milvus.enabled", havingValue = "true", matchIfMissing = false)
-public class MilvusProperties {
+@ConfigurationProperties(prefix = "pgvector")
+public class PgVectorProperties {
 
     /**
-     * Milvus 服务访问地址，例如 http://localhost:19530
+     * pgvector JDBC 连接地址，例如 jdbc:postgresql://localhost:5432/sai_chat
      */
-    private String uri;
+    private String jdbcUrl;
 
     /**
-     * 访问令牌（可选，未开启鉴权时可为空）
+     * 数据库用户名
      */
-    private String token;
+    private String username;
 
     /**
-     * 默认 Collection 配置
+     * 数据库密码
      */
-    private CollectionConfig collection = new CollectionConfig();
+    private String password;
+
+    /**
+     * 默认表配置
+     */
+    private TableConfig table = new TableConfig();
+
+    /**
+     * 多租户表映射
+     */
+    private List<TenantTable> tenants = new ArrayList<>();
 
     @Data
-    public static class CollectionConfig {
+    public static class TableConfig {
         /**
-         * 默认 Collection 名称
+         * 默认表名
          */
-        private String defaultName = "rag_default_store";
+        private String defaultName = "rag_vector_store";
 
         /**
          * 默认向量维度
@@ -64,48 +70,42 @@ public class MilvusProperties {
         private int dimension = 4096;
 
         /**
-         * 距离度量类型：COSINE、IP、L2
+         * 距离度量类型：cosine_dist、ip、l2
          */
-        private String metricType = "COSINE";
+        private String metricType = "cosine_dist";
 
         /**
-         * 索引类型：FLAT、IVF_FLAT、HNSW 等
+         * 索引类型：none、ivfflat、hnsw
          */
-        private String indexType = "FLAT";
+        private String indexType = "hnsw";
 
         /**
-         * 向量字段名
+         * HNSW 构建参数 - 连接数（默认 16）
          */
-        private String vectorField = "embedding";
+        private int m = 16;
 
         /**
-         * 主键字段名
+         * HNSW 构建参数 - 搜索邻居数（默认 64）
          */
-        private String primaryField = "doc_id";
+        private int efConstruction = 64;
 
         /**
-         * 内容字段名
+         * HNSW 搜索参数 ef（默认 64）
          */
-        private String contentField = "content";
+        private int efSearch = 64;
     }
 
-    /**
-     * 多租户 Collection 映射
-     * key: 知识库 ID / 租户 ID，value: Collection 配置
-     */
-    private List<TenantCollection> tenants = new ArrayList<>();
-
     @Data
-    public static class TenantCollection {
+    public static class TenantTable {
         /**
          * 知识库 ID / 租户 ID
          */
         private String tenantId;
 
         /**
-         * Collection 名称
+         * 表名
          */
-        private String collectionName;
+        private String tableName;
 
         /**
          * 向量维度（可覆盖默认值）
