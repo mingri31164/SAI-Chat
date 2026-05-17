@@ -18,8 +18,8 @@
 package com.sai.chat.agent.infra.vector;
 
 import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.IdUtil;
 import com.google.gson.JsonObject;
+import com.mingri.toolkit.SnowflakeIdUtil;
 import com.sai.chat.agent.framework.convention.RetrievedChunk;
 import com.sai.chat.agent.framework.exception.ClientException;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +54,7 @@ public class PgVectorStoreService implements VectorStoreService {
         List<Object[]> batch = new ArrayList<>();
         for (VectorChunk chunk : chunks) {
             float[] vector = resolveVector(chunk, dimension);
-            String chunkPk = chunk.getChunkId() != null ? chunk.getChunkId() : IdUtil.getSnowflakeNextIdStr();
+            String chunkPk = chunk.getChunkId() != null ? chunk.getChunkId() : SnowflakeIdUtil.nextIdStr();
             String content = truncateContent(chunk.getContent());
             JsonObject metadata = buildMetadata(docId, chunk);
             String embedding = toPgVectorString(vector);
@@ -83,7 +83,7 @@ public class PgVectorStoreService implements VectorStoreService {
         Assert.notNull(chunk, () -> new ClientException("Chunk 对象不能为空"));
         int dimension = resolveDimension(tableName);
         float[] vector = resolveVector(chunk, dimension);
-        String chunkPk = chunk.getChunkId() != null ? chunk.getChunkId() : IdUtil.getSnowflakeNextIdStr();
+        String chunkPk = chunk.getChunkId() != null ? chunk.getChunkId() : SnowflakeIdUtil.nextIdStr();
         String content = truncateContent(chunk.getContent());
         JsonObject metadata = buildMetadata(docId, chunk);
         String embedding = toPgVectorString(vector);

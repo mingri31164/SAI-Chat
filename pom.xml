@@ -37,7 +37,7 @@
         <jjwt>0.9.1</jjwt>
         <jaxb-api>2.3.1</jaxb-api>
         <poi>3.16</poi>
-        <jsqlparser.version>4.4</jsqlparser.version>
+        <jsqlparser.version>4.9</jsqlparser.version>
         <java.version>17</java.version>
         <spring-ai.version>0.8.1</spring-ai.version>
         <hutool-all.version>5.8.20</hutool-all.version>

@@ -18,9 +18,9 @@
 package com.sai.chat.agent.infra.vector;
 
 import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.IdUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mingri.toolkit.SnowflakeIdUtil;
 import com.sai.chat.agent.framework.convention.RetrievedChunk;
 import com.sai.chat.agent.framework.exception.ClientException;
 import io.milvus.v2.client.MilvusClientV2;
@@ -78,7 +78,7 @@ public class MilvusVectorStoreService implements VectorStoreService {
     public void updateChunk(String collection, String docId, VectorChunk chunk) {
         Assert.notNull(chunk, () -> new ClientException("Chunk 对象不能为空"));
         int dimension = resolveDimension(collection);
-        String chunkPk = chunk.getChunkId() != null ? chunk.getChunkId() : IdUtil.getSnowflakeNextIdStr();
+            String chunkPk = chunk.getChunkId() != null ? chunk.getChunkId() : SnowflakeIdUtil.nextIdStr();
 
         List<JsonObject> rows = buildSingleChunkRow(chunk, docId, chunkPk, collection, dimension);
 
@@ -164,7 +164,7 @@ public class MilvusVectorStoreService implements VectorStoreService {
         List<JsonObject> rows = new ArrayList<>(chunks.size());
         for (VectorChunk chunk : chunks) {
             float[] vector = resolveVector(chunk, dimension);
-            String chunkPk = chunk.getChunkId() != null ? chunk.getChunkId() : IdUtil.getSnowflakeNextIdStr();
+            String chunkPk = chunk.getChunkId() != null ? chunk.getChunkId() : SnowflakeIdUtil.nextIdStr();
             rows.add(buildRow(chunkPk, docId, chunk, collection, vector));
         }
         return rows;

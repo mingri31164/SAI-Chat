@@ -17,24 +17,24 @@
 
 package com.sai.chat.agent.framework.distributedid;
 
-import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
+import com.mingri.toolkit.SnowflakeIdUtil;
 import org.springframework.stereotype.Component;
 
 /**
  * 自定义 ID 生成器
- * 基于 Hutool 的 Snowflake 算法，替换 MyBatisPlus 默认的分布式 ID 生成策略
+ * 基于 distributedid-spring-boot-starter 的 SnowflakeIdUtil，替换 MyBatisPlus 默认的分布式 ID 生成策略
  */
 @Component
 public class CustomIdentifierGenerator implements IdentifierGenerator {
 
     @Override
     public Number nextId(Object entity) {
-        return IdUtil.getSnowflakeNextId();
+        return SnowflakeIdUtil.nextId();
     }
 
     @Override
     public String nextUUID(Object entity) {
-        return IdUtil.getSnowflakeNextIdStr();
+        return SnowflakeIdUtil.nextIdStr();
     }
 }
