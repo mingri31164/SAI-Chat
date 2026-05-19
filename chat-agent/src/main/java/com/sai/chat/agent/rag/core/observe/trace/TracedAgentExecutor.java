@@ -96,8 +96,18 @@ public class TracedAgentExecutor implements AgentExecutor {
             }
 
             @Override
-            public void onComplete(boolean success, String finalAnswer, int iterations, int tokens) {
-                traceCallback.onComplete(success, finalAnswer, iterations, tokens);
+            public void onComplete(boolean success, String status, String finalAnswer, int iterations, int tokens) {
+                traceCallback.onComplete(success, status, finalAnswer, iterations, tokens);
+            }
+
+            @Override
+            public void onReasoningContent(String content) {
+                // tracing does not need reasoning content
+            }
+
+            @Override
+            public void onParsedResult(String actionType, String finalAnswer, String waitMessage, String thought) {
+                // tracing does not need parsed result
             }
 
             @Override
@@ -143,9 +153,9 @@ public class TracedAgentExecutor implements AgentExecutor {
             }
 
             @Override
-            public void onComplete(boolean success, String finalAnswer, int iterations, int tokens) {
-                first.onComplete(success, finalAnswer, iterations, tokens);
-                second.onComplete(success, finalAnswer, iterations, tokens);
+            public void onComplete(boolean success, String status, String finalAnswer, int iterations, int tokens) {
+                first.onComplete(success, status, finalAnswer, iterations, tokens);
+                second.onComplete(success, status, finalAnswer, iterations, tokens);
             }
 
             @Override
@@ -158,6 +168,18 @@ public class TracedAgentExecutor implements AgentExecutor {
             public void onAnswerContent(String content) {
                 first.onAnswerContent(content);
                 second.onAnswerContent(content);
+            }
+
+            @Override
+            public void onReasoningContent(String content) {
+                first.onReasoningContent(content);
+                second.onReasoningContent(content);
+            }
+
+            @Override
+            public void onParsedResult(String actionType, String finalAnswer, String waitMessage, String thought) {
+                first.onParsedResult(actionType, finalAnswer, waitMessage, thought);
+                second.onParsedResult(actionType, finalAnswer, waitMessage, thought);
             }
         };
     }

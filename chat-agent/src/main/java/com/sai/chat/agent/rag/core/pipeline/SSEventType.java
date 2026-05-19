@@ -48,6 +48,11 @@ public final class SSEventType {
     public static final String THINKING = "thinking";
 
     /**
+     * Agent 推理流式内容事件（ReAct 格式输出）
+     */
+    public static final String REASONING = "reasoning";
+
+    /**
      * LLM 回复流式内容事件
      */
     public static final String ANSWER = "answer";

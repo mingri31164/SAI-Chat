@@ -54,18 +54,20 @@ public class UserContextInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        String loginId = StpUtil.getLoginIdAsString();
-        if (StrUtil.isBlank(loginId)) {
-            return true;
+        try {
+            String loginId = StpUtil.getLoginIdAsString();
+            if (StrUtil.isBlank(loginId)) {
+                return true;
+            }
+            UserContext.set(LoginUser.builder()
+                    .userId(loginId)
+                    .username(loginId)
+                    .role("user")
+                    .avatar(DEFAULT_AVATAR)
+                    .build());
+        } catch (Exception e) {
+            // Not logged in — proceed without user context
         }
-
-        // 默认简化实现：写入 loginId，后续由 bootstrap 层的服务替换为完整用户信息
-        UserContext.set(LoginUser.builder()
-                .userId(loginId)
-                .username(loginId)
-                .role("user")
-                .avatar(DEFAULT_AVATAR)
-                .build());
 
         return true;
     }

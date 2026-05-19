@@ -81,24 +81,73 @@ public class ReActResponseParser {
         }
 
         try {
-            // 提取 Thought
             String thought = extractThought(rawOutput);
-
-            // 提取 Action
             String actionStr = extractAction(rawOutput);
-
-            // 提取 Action Input
             String actionInputStr = extractActionInput(rawOutput);
 
-            // 解析 Action 类型和参数
             ReActAction action = parseAction(actionStr, actionInputStr);
+
+            if (!action.isValid() && actionInputStr.isBlank()) {
+                // 模型未遵循格式：检查原始输出中是否有完整答案内容
+                String fullContent = extractFullContent(rawOutput);
+                if (fullContent != null && !fullContent.isBlank()) {
+                    // 用完整内容作为答案，而不是只取 thought（第一行）
+                    return ReActReasoning.success(
+                            thought != null ? thought : "模型未按格式输出",
+                            ReActAction.answer(fullContent),
+                            rawOutput
+                    );
+                }
+                // 无法提取内容，才使用 thought 作为最后回退
+                return ReActReasoning.success(
+                        thought,
+                        ReActAction.answer(thought != null ? thought : rawOutput),
+                        rawOutput
+                );
+            }
 
             return ReActReasoning.success(thought, action, rawOutput);
 
         } catch (Exception e) {
             log.warn("ReAct 响应解析失败: {}", e.getMessage());
+            // 即使解析异常，也尝试从原始输出中提取内容作为答案
+            String content = extractFullContent(rawOutput);
+            if (content != null && !content.isBlank()) {
+                return ReActReasoning.success(
+                        extractThought(rawOutput),
+                        ReActAction.answer(content),
+                        rawOutput
+                );
+            }
             return ReActReasoning.failure(rawOutput);
         }
+    }
+
+    /**
+     * 从原始输出中提取完整内容（用于解析失败时的回退）
+     * 移除 Thought/Action/Action Input 等结构化标记，保留实际回复内容
+     */
+    private static String extractFullContent(String raw) {
+        if (raw == null || raw.isBlank()) {
+            return null;
+        }
+        // 移除 markdown 代码块标记
+        String cleaned = raw.trim();
+        cleaned = cleaned.replaceAll("(?i)```(?:json)?\\s*", "");
+
+        // 移除 Thought: ... 行（只移除第一行，因为这是格式化的 thought）
+        cleaned = cleaned.replaceFirst("(?i)^\\s*Thought:\\s*.+?(\\n|$)", "");
+        // 移除 Action: ... 行
+        cleaned = cleaned.replaceFirst("(?i)^\\s*Action:\\s*.+?(\\n|$)", "");
+        // 移除 Action Input: ... 行及其后续内容
+        cleaned = cleaned.replaceFirst("(?i)^\\s*Action\\s*Input:\\s*", "");
+
+        // 清理多余空白
+        cleaned = cleaned.trim();
+
+        // 如果剩余内容太短，说明没有提取到有意义的内容
+        // 但注意：如果原始内容本身就短（如纯文本问候语），直接使用
+        return cleaned.isEmpty() ? null : cleaned;
     }
 
     /**
@@ -151,7 +200,7 @@ public class ReActResponseParser {
         } else if (actionStr.contains("WAIT_INPUT") || actionStr.contains("ASK") || actionStr.contains("CLARIFY")) {
             return parseWaitInputAction(actionInputStr);
         } else if (actionStr.contains("REFLECT") || actionStr.contains("THINK")) {
-            // 继续推理
+            // 继续推理但不产生有效动作
             return ReActAction.unknown();
         }
 
@@ -269,8 +318,15 @@ public class ReActResponseParser {
             }
         }
 
-        // 非 JSON 格式，视为最终答案
-        return ReActAction.answer(actionInputStr.trim());
+        // 非 JSON 格式或无法解析：优先检查是否为有效的 ANSWER 内容（而非空白或垃圾）
+        String trimmed = actionInputStr.trim();
+        if (!trimmed.isEmpty() && trimmed.length() > 2) {
+            // 可能是完整的自然语言答案
+            return ReActAction.answer(trimmed);
+        }
+
+        // 内容太短或为空，返回 unknown
+        return ReActAction.unknown();
     }
 
     /**

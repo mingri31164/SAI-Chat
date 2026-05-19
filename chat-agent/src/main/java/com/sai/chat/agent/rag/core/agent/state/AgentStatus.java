@@ -66,6 +66,11 @@ public enum AgentStatus {
     REFLECTING(5, true),
 
     /**
+     * 等待用户输入，已暂停等待
+     */
+    WAITING(5, false),
+
+    /**
      * 已完成，任务成功结束
      */
     COMPLETED(6, false),
@@ -113,7 +118,7 @@ public enum AgentStatus {
      * 是否为成功终止
      */
     public boolean isSuccess() {
-        return this == COMPLETED;
+        return this == COMPLETED || this == WAITING;
     }
 
     /**

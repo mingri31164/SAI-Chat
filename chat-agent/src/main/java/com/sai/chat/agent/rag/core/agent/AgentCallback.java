@@ -70,6 +70,25 @@ public interface AgentCallback {
     }
 
     /**
+     * 推理过程片段回调（ReAct 格式输出，逐字流式）
+     *
+     * @param content 推理内容片段
+     */
+    default void onReasoningContent(String content) {
+    }
+
+    /**
+     * 推理解析完成回调（解析后得到最终结果）
+     *
+     * @param actionType  动作类型 ANSWER / WAIT_INPUT / TOOL_CALL
+     * @param finalAnswer 最终答案（ANSWER 时）
+     * @param waitMessage 等待消息（WAIT_INPUT 时）
+     * @param thought     思考过程
+     */
+    default void onParsedResult(String actionType, String finalAnswer, String waitMessage, String thought) {
+    }
+
+    /**
      * 错误回调
      *
      * @param error   错误信息
@@ -82,10 +101,11 @@ public interface AgentCallback {
      * 完成回调
      *
      * @param success      是否成功
+     * @param status       最终状态
      * @param answer       最终答案
      * @param totalSteps   总步骤数
      * @param totalTokens  总 Token 消耗
      */
-    default void onComplete(boolean success, String answer, int totalSteps, int totalTokens) {
+    default void onComplete(boolean success, String status, String answer, int totalSteps, int totalTokens) {
     }
 }

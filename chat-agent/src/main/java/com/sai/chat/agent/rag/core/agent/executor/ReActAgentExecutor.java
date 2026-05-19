@@ -20,8 +20,12 @@ package com.sai.chat.agent.rag.core.agent.executor;
 import com.sai.chat.agent.framework.convention.ChatMessage;
 import com.sai.chat.agent.framework.convention.ChatRequest;
 import com.sai.chat.agent.infra.chat.LLMService;
+import com.sai.chat.agent.infra.chat.StreamCallback;
+import com.sai.chat.agent.rag.config.AgentProperties;
+import com.sai.chat.agent.rag.config.MemoryProperties;
 import com.sai.chat.agent.rag.core.agent.AgentCallback;
 import com.sai.chat.agent.rag.core.agent.AgentExecutor;
+import com.sai.chat.agent.rag.core.agent.memory.MemoryContextBuilder;
 import com.sai.chat.agent.rag.core.agent.reasoning.ReActAction;
 import com.sai.chat.agent.rag.core.agent.reasoning.ReActPromptBuilder;
 import com.sai.chat.agent.rag.core.agent.reasoning.ReActReasoning;
@@ -38,6 +42,8 @@ import com.sai.chat.agent.rag.core.agent.state.ToolCallResult;
 import com.sai.chat.agent.rag.core.mcp.MCPToolDefinition;
 import com.sai.chat.agent.rag.core.mcp.MCPToolRegistry;
 import com.sai.chat.agent.rag.core.mcp.RemoteMCPToolExecutor;
+import com.sai.chat.agent.rag.core.memory.ConversationMemoryService;
+import com.sai.chat.agent.rag.core.memory.SummaryGenerationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
@@ -47,6 +53,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * ReAct Agent 执行器
@@ -79,6 +89,11 @@ public class ReActAgentExecutor implements AgentExecutor {
     private final MCPToolRegistry mcpToolRegistry;
     private final RemoteMCPToolExecutor mcpToolExecutor;
     private final ReflectionEngine reflectionEngine;
+    private final ConversationMemoryService memoryService;
+    private final MemoryContextBuilder memoryContextBuilder;
+    private final SummaryGenerationService summaryService;
+    private final AgentProperties agentProperties;
+    private final MemoryProperties memoryProperties;
 
     @Override
     public AgentResponse execute(AgentRequest request) {
@@ -119,6 +134,7 @@ public class ReActAgentExecutor implements AgentExecutor {
             if (callback != null) {
                 callback.onComplete(
                         state.getStatus().isSuccess(),
+                        state.getStatus().name(),
                         state.getFinalAnswer(),
                         state.getCurrentIterationCount(),
                         state.getTokensConsumedCount()
@@ -133,7 +149,7 @@ public class ReActAgentExecutor implements AgentExecutor {
 
             if (callback != null) {
                 callback.onError(e.getMessage(), true);
-                callback.onComplete(false, null, state.getCurrentIterationCount(), 
+                callback.onComplete(false, AgentStatus.FAILED.name(), null, state.getCurrentIterationCount(),
                         state.getTokensConsumedCount());
             }
 
@@ -157,20 +173,38 @@ public class ReActAgentExecutor implements AgentExecutor {
      * 初始化 Agent 状态
      */
     private AgentState initializeState(AgentRequest request) {
-        return AgentState.builder()
+        AgentState state = AgentState.builder()
                 .sessionId(request.getSessionId())
                 .userId(request.getUserId())
                 .originalQuestion(request.getQuestion())
                 .status(AgentStatus.IDLE)
-                .maxIterations(request.getMaxIterations())
-                .maxTokens(request.getMaxTokens())
-                .maxBudget(request.getMaxBudget())
+                .maxIterations(request.getMaxIterations() > 0 ? request.getMaxIterations() : agentProperties.getMaxIterations())
+                .maxTokens(request.getMaxTokens() > 0 ? request.getMaxTokens() : agentProperties.getMaxTokens())
+                .maxBudget(request.getMaxBudget() > 0 ? request.getMaxBudget() : agentProperties.getMaxBudget())
                 .conversationHistory(new ArrayList<>())
                 .thoughtHistory(new ArrayList<>())
                 .observationHistory(new ArrayList<>())
                 .toolCallTrace(new ArrayList<>())
                 .workingMemory(new java.util.HashMap<>(8))
+                .startTimeMs(System.currentTimeMillis())
                 .build();
+
+        // ===== 第一层记忆：加载 Redis 中的近期对话历史 =====
+        int keepTurns = memoryProperties.getHistoryKeepTurns();
+        if (keepTurns > 0) {
+            try {
+                List<ChatMessage> history = memoryService.getRecentHistory(
+                        request.getSessionId(), keepTurns);
+                if (history != null && !history.isEmpty()) {
+                    state.getConversationHistory().addAll(history);
+                    log.debug("加载对话历史 {} 条, sessionId={}", history.size(), request.getSessionId());
+                }
+            } catch (Exception e) {
+                log.warn("加载对话历史失败, sessionId={}: {}", request.getSessionId(), e.getMessage());
+            }
+        }
+
+        return state;
     }
 
     /**
@@ -182,6 +216,9 @@ public class ReActAgentExecutor implements AgentExecutor {
 
         // 获取上下文摘要
         String contextSummary = buildContextSummary(state);
+
+        // ===== 构建三层记忆上下文 =====
+        String memoryContext = buildMemoryContext(state);
 
         // 获取初始观察（首次执行为用户问题）
         String observation = "用户问题: " + request.getQuestion();
@@ -199,8 +236,8 @@ public class ReActAgentExecutor implements AgentExecutor {
                     "正在推理步骤 " + currentStep);
 
             // ===== 阶段 1: THINKING - LLM 推理 =====
-            ReActReasoning reasoning = think(state, request, observation, 
-                    availableTools, contextSummary, currentStep == 1);
+            ReActReasoning reasoning = think(state, request, observation,
+                    availableTools, contextSummary, memoryContext, currentStep == 1, callback);
 
             if (!reasoning.isSuccess()) {
                 log.warn("推理解析失败, step={}, sessionId={}", currentStep, state.getSessionId());
@@ -265,13 +302,16 @@ public class ReActAgentExecutor implements AgentExecutor {
                 // 直接回答，任务完成
                 state.setStatus(AgentStatus.COMPLETED);
                 state.setFinalAnswer(action.getAnswer());
-                log.info("Agent 任务完成, sessionId={}, iterations={}", 
+                log.info("Agent 任务完成, sessionId={}, iterations={}",
                         state.getSessionId(), currentStep);
+
+                // ===== 保存本次对话到记忆 =====
+                persistConversationMemory(state, request.getQuestion(), action.getAnswer());
                 return;
 
             } else if (action.isWaitInput()) {
                 // 等待用户输入
-                state.setStatus(AgentStatus.COMPLETED);
+                state.setStatus(AgentStatus.WAITING);
                 state.setFinalAnswer(action.getWaitMessage());
                 return;
 
@@ -284,8 +324,9 @@ public class ReActAgentExecutor implements AgentExecutor {
             if (state.isIterationExceeded()) {
                 state.setStatus(AgentStatus.EXCEEDED);
                 state.setFinalAnswer(generateExceededAnswer(state));
-                log.warn("Agent 达到最大迭代次数, sessionId={}, iterations={}", 
+                log.warn("Agent 达到最大迭代次数, sessionId={}, iterations={}",
                         state.getSessionId(), currentStep);
+                persistConversationMemory(state, request.getQuestion(), state.getFinalAnswer());
                 return;
             }
         }
@@ -293,6 +334,7 @@ public class ReActAgentExecutor implements AgentExecutor {
         // 达到限制但未完成任务
         state.setStatus(AgentStatus.EXCEEDED);
         state.setFinalAnswer(generateExceededAnswer(state));
+        persistConversationMemory(state, request.getQuestion(), state.getFinalAnswer());
     }
 
     /**
@@ -304,49 +346,121 @@ public class ReActAgentExecutor implements AgentExecutor {
             String observation,
             List<MCPToolDefinition> tools,
             String contextSummary,
-            boolean isFirstStep) {
+            String memoryContext,
+            boolean isFirstStep,
+            AgentCallback callback) {
 
         List<ChatMessage> messages;
 
         if (isFirstStep) {
-            // 首次推理
             messages = ReActPromptBuilder.buildInitialPrompt(
                     request.getQuestion(),
                     tools,
-                    contextSummary
+                    contextSummary,
+                    memoryContext
             );
         } else {
-            // 后续推理
             messages = ReActPromptBuilder.buildContinuationPrompt(
                     state,
                     observation,
-                    request.getQuestion()
+                    request.getQuestion(),
+                    memoryContext
             );
         }
 
         try {
-            // 调用 LLM
             ChatRequest llmRequest = ChatRequest.builder()
                     .messages(messages)
-                    .temperature(0.7)
+                    .temperature(0.3)
                     .thinking(request.isDeepThinking())
                     .enableTools(false)
                     .maxTokens(request.getMaxTokens() / 2)
                     .build();
 
-            String rawOutput = llmService.chat(llmRequest);
-
-            // 更新 Token 消耗（粗略估计）
-            int estimatedTokens = estimateTokens(rawOutput);
-            state.addTokenConsumption(estimatedTokens);
-
-            // 解析响应
-            return ReActResponseParser.parse(rawOutput);
+            if (callback != null) {
+                return streamThink(state, llmRequest, callback);
+            } else {
+                String rawOutput = llmService.chat(llmRequest);
+                int estimatedTokens = estimateTokens(rawOutput);
+                state.addTokenConsumption(estimatedTokens);
+                return ReActResponseParser.parse(rawOutput);
+            }
 
         } catch (Exception e) {
             log.error("LLM 推理失败, sessionId={}", state.getSessionId(), e);
             return ReActReasoning.failure("LLM 调用失败: " + e.getMessage());
         }
+    }
+
+    private ReActReasoning streamThink(AgentState state, ChatRequest llmRequest, AgentCallback callback) {
+        StringBuilder fullContent = new StringBuilder();
+        AtomicReference<ReActReasoning> reasoningRef = new AtomicReference<>();
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicBoolean streamCompleted = new AtomicBoolean(false);
+
+        llmService.streamChat(llmRequest, new StreamCallback() {
+            @Override
+            public void onContent(String content) {
+                fullContent.append(content);
+                if (callback != null) {
+                    callback.onReasoningContent(content);
+                }
+            }
+
+            @Override
+            public void onThinking(String content) {
+                if (callback != null) {
+                    callback.onStatusChange(AgentStatus.THINKING, "深度思考: " + content);
+                }
+            }
+
+            @Override
+            public void onComplete() {
+                streamCompleted.set(true);
+                latch.countDown();
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                log.error("流式推理异常, sessionId={}", state.getSessionId(), t);
+                reasoningRef.set(ReActReasoning.failure("LLM 调用失败: " + t.getMessage()));
+                latch.countDown();
+            }
+        });
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return ReActReasoning.failure("LLM 调用被中断");
+        }
+
+        ReActReasoning failed = reasoningRef.get();
+        if (failed != null) {
+            return failed;
+        }
+
+        if (!streamCompleted.get()) {
+            return ReActReasoning.failure("LLM 流式推理未正常完成");
+        }
+
+        String rawOutput = fullContent.toString();
+        int estimatedTokens = estimateTokens(rawOutput);
+        state.addTokenConsumption(estimatedTokens);
+
+        ReActReasoning reasoning = ReActResponseParser.parse(rawOutput);
+
+        if (callback != null && reasoning.isSuccess()) {
+            ReActAction action = reasoning.getAction();
+            callback.onParsedResult(
+                    action.getActionType().name(),
+                    action.getAnswer() != null ? action.getAnswer() : "",
+                    action.getWaitMessage() != null ? action.getWaitMessage() : "",
+                    reasoning.getThought() != null ? reasoning.getThought() : ""
+            );
+        }
+
+        return reasoning;
     }
 
     /**
@@ -452,6 +566,47 @@ public class ReActAgentExecutor implements AgentExecutor {
     }
 
     /**
+     * 构建多层记忆上下文
+     * <p>
+     * 第一层（Working Memory）：当前会话近期对话（从 Redis 加载）
+     * 第二层（Episodic Memory）：当前会话的历史经验摘要（从 Redis 加载）
+     * 第三层（Semantic Memory）：用户跨会话的持久化知识（从 Redis 加载）
+     */
+    private String buildMemoryContext(AgentState state) {
+        StringBuilder sb = new StringBuilder();
+
+        // ===== 第一层：Working Memory — 近期对话 =====
+        var history = state.getConversationHistory();
+        if (history != null && !history.isEmpty()) {
+            sb.append("【第一层记忆 · 近期对话】\n");
+            for (var msg : history) {
+                sb.append(msg.getRole().name().toLowerCase()).append(": ")
+                  .append(truncate(msg.getContent(), 200)).append("\n");
+            }
+            sb.append("\n");
+        }
+
+        // ===== 第二层：Episodic Memory — 会话摘要 =====
+        try {
+            String summary = memoryService.getSummary(state.getSessionId());
+            if (summary != null && !summary.isBlank()) {
+                sb.append("【第二层记忆 · 会话摘要】\n");
+                sb.append(summary).append("\n\n");
+            }
+        } catch (Exception e) {
+            log.debug("获取会话摘要失败: {}", e.getMessage());
+        }
+
+        // ===== 第三层：Semantic Memory — 跨会话知识（暂时保留结构，待后续实现持久化）=====
+        // 此层需要基于用户 ID 从持久化存储中加载跨会话知识
+        // 目前 semantic memory 暂未接入持久化层，预留接口
+        // sb.append("【第三层记忆 · 跨会话知识】\n");
+        // sb.append(...).append("\n");
+
+        return sb.toString();
+    }
+
+    /**
      * 生成超限回答
      */
     private String generateExceededAnswer(AgentState state) {
@@ -474,6 +629,39 @@ public class ReActAgentExecutor implements AgentExecutor {
 
         sb.append("\n请您提供更具体的问题，或者将问题拆分成几个小问题，我会更好地为您解答。");
         return sb.toString();
+    }
+
+    /**
+     * 将本次对话保存到记忆系统
+     */
+    private void persistConversationMemory(AgentState state, String question, String answer) {
+        if (state.getSessionId() == null || question == null) {
+            return;
+        }
+        try {
+            // 保存用户问题和助手回答
+            memoryService.saveUserMessage(state.getSessionId(), question);
+            if (answer != null && !answer.isBlank()) {
+                memoryService.saveAssistantMessage(state.getSessionId(), answer);
+            }
+
+            // 检查是否需要生成摘要（长对话压缩）
+            if (memoryProperties.isSummaryEnabled() && memoryService.needSummary(state.getSessionId())) {
+                log.debug("对话轮数超限，触发摘要生成, sessionId={}", state.getSessionId());
+                // 异步生成摘要，避免阻塞主流程
+                CompletableFuture.runAsync(() -> {
+                    try {
+                        summaryService.generateSummary(state.getSessionId());
+                    } catch (Exception e) {
+                        log.warn("摘要生成失败, sessionId={}: {}", state.getSessionId(), e.getMessage());
+                    }
+                });
+            }
+
+            log.debug("对话记忆已保存, sessionId={}", state.getSessionId());
+        } catch (Exception e) {
+            log.warn("保存对话记忆失败, sessionId={}: {}", state.getSessionId(), e.getMessage());
+        }
     }
 
     // ==================== 响应构建 ====================

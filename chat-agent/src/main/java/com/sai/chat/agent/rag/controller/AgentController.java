@@ -253,6 +253,34 @@ public class AgentController {
         }
 
         @Override
+        public void onReasoningContent(String content) {
+            try {
+                sender.sendEvent(SSEventType.REASONING, Map.of(
+                        "content", content
+                ));
+            } catch (Exception e) {
+                log.warn("SSE 推理内容发送失败: {}", e.getMessage());
+            }
+        }
+
+        @Override
+        public void onParsedResult(String actionType, String finalAnswer, String waitMessage, String thought) {
+            try {
+                if ("ANSWER".equals(actionType)) {
+                    sender.sendEvent(SSEventType.ANSWER, Map.of(
+                            "content", finalAnswer
+                    ));
+                } else if ("WAIT_INPUT".equals(actionType)) {
+                    sender.sendEvent(SSEventType.THINKING, Map.of(
+                            "content", "[等待用户输入] " + waitMessage
+                    ));
+                }
+            } catch (Exception e) {
+                log.warn("SSE 解析结果发送失败: {}", e.getMessage());
+            }
+        }
+
+        @Override
         public void onError(String error, boolean retryable) {
             try {
                 sender.sendEvent(SSEventType.ERROR, Map.of(
@@ -265,10 +293,11 @@ public class AgentController {
         }
 
         @Override
-        public void onComplete(boolean success, String answer, int totalSteps, int totalTokens) {
+        public void onComplete(boolean success, String status, String answer, int totalSteps, int totalTokens) {
             try {
                 sender.sendEvent(SSEventType.DONE, Map.of(
                         "success", success,
+                        "status", status,
                         "answer", answer != null ? answer : "",
                         "totalSteps", totalSteps,
                         "totalTokens", totalTokens

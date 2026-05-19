@@ -47,21 +47,28 @@ public final class ReActPromptBuilder {
      * 系统提示词模板
      */
     private static final String SYSTEM_PROMPT_TEMPLATE = """
-            你是一个智能助手，可以通过调用工具来完成任务。
+            你是一个严格遵循 ReAct (Reasoning + Acting) 模式的智能助手。
+
+            核心规则：你必须严格按照以下格式输出，**每一轮都必须输出 Thought 和 Action 两部分**。
 
             ## 可用工具
             你可以调用以下工具来帮助你回答用户问题：
 
             %s
 
-            ## 输出格式
-            请严格按照以下格式输出你的推理过程和动作：
-
+            ## 输出格式（必须严格遵守）
+            ```
             Thought: [你的思考过程，分析用户问题，决定下一步行动]
-            Action: [动作类型，TOOL_CALL 或 ANSWER 或 WAIT_INPUT]
-            Action Input: [如果选择 TOOL_CALL，填写 {"toolId": "工具ID", "parameters": {...}} 的 JSON 格式]
-            # 如果选择 ANSWER，填写 {"answer": "你的回答"}
-            # 如果选择 WAIT_INPUT，填写 {"message": "你想要用户提供的补充信息"}
+            Action: [TOOL_CALL | ANSWER]
+            Action Input: [TOOL_CALL 时填写 {"toolId": "工具ID", "parameters": {...}} 的 JSON 格式]
+                          [ANSWER 时填写 {"answer": "你的回答"} 的 JSON 格式]
+            ```
+
+            重要规则：
+            - 如果有可用工具且问题需要信息检索，第一轮应先调用工具
+            - 如果没有可用工具，或问题明显属于通用知识，直接使用 ANSWER
+            - 绝对不能在没有工具可用时强行调用工具
+            - ANSWER 的 content 中直接写出你要回复给用户的完整内容
 
             开始：
             """;
@@ -80,22 +87,29 @@ public final class ReActPromptBuilder {
             %s
 
             请基于以上信息，继续你的推理过程。
-            记住：如果你已经收集到足够的信息来回答用户问题，请使用 ANSWER 动作。
-            如果你需要用户提供更多信息才能继续，请使用 WAIT_INPUT 动作。
+            重要：必须使用以下格式输出，**不要直接输出答案**：
+            ```
+            Thought: [继续分析]
+            Action: [TOOL_CALL | ANSWER]
+            Action Input: [对应格式的 JSON]
+            ```
+            如果已收集到足够信息，使用 ANSWER；否则使用 TOOL_CALL 继续获取信息。
             """;
 
     /**
      * 构建初始 Prompt（第一次推理）
      *
-     * @param question    用户问题
+     * @param question     用户问题
      * @param tools       可用工具列表
      * @param agentContext Agent 上下文摘要
+     * @param memoryContext 多层记忆上下文（三层记忆整合后的文本）
      * @return 构建好的 ChatMessage 列表
      */
     public static List<ChatMessage> buildInitialPrompt(
             String question,
             List<MCPToolDefinition> tools,
-            String agentContext) {
+            String agentContext,
+            String memoryContext) {
 
         String toolsDescription = formatToolsDescription(tools);
         String systemPrompt = String.format(SYSTEM_PROMPT_TEMPLATE, toolsDescription);
@@ -106,7 +120,10 @@ public final class ReActPromptBuilder {
 
         List<ChatMessage> messages = new ArrayList<>();
         messages.add(ChatMessage.system(systemPrompt));
-        messages.add(ChatMessage.user(question));
+
+        // 追加记忆上下文作为用户消息的前缀
+        String userMessage = buildUserMessageWithMemory(question, memoryContext);
+        messages.add(ChatMessage.user(userMessage));
 
         return messages;
     }
@@ -117,27 +134,53 @@ public final class ReActPromptBuilder {
      * @param state           Agent 状态
      * @param observation     当前观察结果
      * @param question        用户问题
+     * @param memoryContext  多层记忆上下文
      * @return 构建好的 ChatMessage 列表
      */
     public static List<ChatMessage> buildContinuationPrompt(
             AgentState state,
             String observation,
-            String question) {
+            String question,
+            String memoryContext) {
 
         List<ChatMessage> messages = new ArrayList<>();
 
-        // 添加系统提示词
+        // 必须复用与初始 Prompt 一致的严格系统提示词，确保模型始终遵守格式
         String systemPrompt = """
-                你是一个智能助手，正在通过推理和调用工具来回答用户问题。
-                请基于历史推理轨迹和当前观察结果，继续推理过程。
+                你是一个严格遵循 ReAct (Reasoning + Acting) 模式的智能助手。
+
+                核心规则：你必须严格按照以下格式输出每一轮，**每一轮都必须输出 Thought 和 Action 两部分**。
+
+                ## 输出格式（必须严格遵守）
+                ```
+                Thought: [你的思考过程，分析当前观察，决定下一步行动]
+                Action: [TOOL_CALL | ANSWER]
+                Action Input: [TOOL_CALL 时填写 {"toolId": "工具ID", "parameters": {...}} 的 JSON 格式]
+                              [ANSWER 时填写 {"answer": "你的回答"} 的 JSON 格式]
+                ```
+
+                重要规则：
+                - 如果已收集到足够信息，使用 ANSWER
+                - 如果需要额外信息才能回答，使用 TOOL_CALL
+                - ANSWER 的 content 中直接写出你要回复给用户的完整内容
                 """;
         messages.add(ChatMessage.system(systemPrompt));
 
-        // 添加历史轨迹
+        var history = state.getConversationHistory();
+        if (history != null && !history.isEmpty()) {
+            for (ChatMessage msg : history) {
+                messages.add(msg);
+            }
+        }
+
         String historyText = formatHistory(state);
         String historyBlock = historyText.isBlank() ? "（首次推理，无历史）" : historyText;
 
-        // 构建带历史的输入
+        // 追加记忆上下文
+        String memoryBlock = (memoryContext != null && !memoryContext.isBlank())
+                ? "\n## 历史记忆\n" + memoryContext + "\n"
+                : "";
+
         String continuation = String.format(
                 WITH_HISTORY_TEMPLATE,
                 historyBlock,
@@ -145,9 +188,19 @@ public final class ReActPromptBuilder {
                 question
         );
 
-        messages.add(ChatMessage.user(continuation));
+        messages.add(ChatMessage.user(continuation + memoryBlock));
 
         return messages;
+    }
+
+    /**
+     * 将记忆上下文附加到用户消息前缀
+     */
+    private static String buildUserMessageWithMemory(String question, String memoryContext) {
+        if (memoryContext == null || memoryContext.isBlank()) {
+            return question;
+        }
+        return "## 历史记忆\n" + memoryContext + "\n\n## 当前问题\n" + question;
     }
 
     /**

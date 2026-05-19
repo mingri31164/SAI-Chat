@@ -13,6 +13,7 @@ ai:
       endpoints:
         chat: /chat/completions
         rerank: /rerank
+        embedding: /embeddings
     siliconflow:
       url: ${agent.ai.siliconflow.url}
       api-key: ${agent.ai.siliconflow.api-key}
@@ -38,18 +39,23 @@ ai:
         priority: 1
 
   embedding:
-    default-model: qwen-emb-8b
+    default-model: text-embedding-v3
     candidates:
+      - id: text-embedding-v3
+        provider: bailian
+        model: text-embedding-v3
+        dimension: 1024
+        priority: 1
       - id: qwen-emb-8b
         provider: siliconflow
         model: ${agent.ai.siliconflow.embedding-model}
         dimension: 4096
-        priority: 1
+        priority: 2
       - id: qwen-emb-local
         provider: ollama
         model: ${agent.ai.ollama.embedding-model}
         dimension: 4096
-        priority: 2
+        priority: 3
 
   rerank:
     default-model: qwen3-rerank

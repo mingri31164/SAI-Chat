@@ -189,7 +189,7 @@ public class RedisConversationMemoryService implements ConversationMemoryService
                 if (sep < 0) continue;
                 String role = item.substring(0, sep);
                 String content = item.substring(sep + 1);
-                messages.add(new ChatMessage(ChatMessage.Role.valueOf(role), content));
+                messages.add(new ChatMessage(ChatMessage.Role.fromString(role), content));
             }
             return messages;
         } catch (Exception e) {

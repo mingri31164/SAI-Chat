@@ -49,8 +49,8 @@ public class TraceCallback implements AgentCallback {
     }
 
     @Override
-    public void onComplete(boolean success, String finalAnswer, int iterations, int tokens) {
-        context.addEvent("agent_complete: success=" + success + ", iterations=" + iterations + ", tokens=" + tokens,
+    public void onComplete(boolean success, String status, String finalAnswer, int iterations, int tokens) {
+        context.addEvent("agent_complete: success=" + success + ", status=" + status + ", iterations=" + iterations + ", tokens=" + tokens,
                 success ? AgentTrace.TraceEvent.EventType.AGENT_COMPLETED : AgentTrace.TraceEvent.EventType.AGENT_FAILED);
     }
 

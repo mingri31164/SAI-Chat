@@ -67,16 +67,16 @@ public class SaTokenConfig implements WebMvcConfigurer {
                     StpUtil.checkLogin();
                 }))
                 .addPathPatterns("/**")
-                .excludePathPatterns("/auth/**", "/error");
+                .excludePathPatterns("/auth/**", "/api/rag/chat/sse", "/agent/chat/stream", "/error");
 
         // 体验环境只读模式拦截器
         registry.addInterceptor(demoModeInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/auth/**", "/error");
+                .excludePathPatterns("/auth/**", "/api/rag/chat/sse", "/agent/chat/stream", "/error");
 
         // 用户上下文拦截器
         registry.addInterceptor(userContextInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/auth/**", "/error");
+                .excludePathPatterns("/auth/**", "/api/rag/chat/sse", "/agent/chat/stream", "/error");
     }
 }

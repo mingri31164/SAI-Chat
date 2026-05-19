@@ -164,7 +164,7 @@ public class PgVectorStoreService implements VectorStoreService {
                     ORDER BY embedding <=> ?::vector
                     LIMIT %d
                     """.formatted(tableName, topK);
-            return pgVectorJdbcTemplate.query(sql, new RetrievedChunkRowMapper(), embedding);
+            return pgVectorJdbcTemplate.query(sql, new RetrievedChunkRowMapper(), embedding, embedding);
         }
     }
 
