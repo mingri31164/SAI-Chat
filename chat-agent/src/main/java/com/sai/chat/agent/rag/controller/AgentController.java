@@ -192,6 +192,7 @@ public class AgentController {
         @Override
         public void onStatusChange(AgentStatus status, String message) {
             try {
+                log.debug("[SSE] 发送 intent 事件: status={}, message={}", status, message);
                 sender.sendEvent(SSEventType.INTENT, Map.of(
                         "status", status.name(),
                         "message", message
@@ -204,6 +205,7 @@ public class AgentController {
         @Override
         public void onThought(String thought, int stepIndex) {
             try {
+                log.debug("[SSE] 发送 thinking 事件: step={}, thought={}", stepIndex, thought);
                 sender.sendEvent(SSEventType.THINKING, Map.of(
                         "step", stepIndex,
                         "thought", thought
@@ -255,6 +257,7 @@ public class AgentController {
         @Override
         public void onReasoningContent(String content) {
             try {
+                log.debug("[SSE] 发送 reasoning 事件: content={}", content);
                 sender.sendEvent(SSEventType.REASONING, Map.of(
                         "content", content
                 ));

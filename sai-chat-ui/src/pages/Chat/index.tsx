@@ -66,12 +66,23 @@ export default function Chat() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [currentSession?.messages, currentSession?.streamEvents]);
 
+  const { addMessage } = useChatStore();
+
   const handleSend = async () => {
     if (!inputValue.trim() || isStreaming) return;
 
     const question = inputValue.trim();
     setInputValue('');
     inputRef.current?.focus();
+
+    // Add user message to the chat list
+    if (currentSessionId) {
+      addMessage(currentSessionId, {
+        role: 'user',
+        content: question,
+        timestamp: Date.now(),
+      });
+    }
 
     if (chatMode === 'RAG') {
       ragStream.startStream(question, 'guest', deepThinking);
@@ -117,9 +128,9 @@ export default function Chat() {
   const toolCalls = currentSession?.toolCalls || [];
 
   return (
-    <div className="flex gap-4 h-[calc(100vh-140px)]">
+    <div className="flex gap-4" style={{ height: 'calc(100vh - 88px)' }}>
       {/* Main chat area */}
-      <div className="flex-1 flex flex-col gap-3">
+      <div className="flex-1 min-w-0 flex flex-col gap-3">
         {/* Mode selector + settings */}
         <Card size="small" className="flex-shrink-0">
           <div className="flex items-center justify-between flex-wrap gap-3">
@@ -210,36 +221,36 @@ export default function Chat() {
           />
         )}
 
-        {/* Messages */}
-        <Card
-          className="flex-1 overflow-y-auto"
-          bodyStyle={{ padding: 0, height: '100%' }}
-          styles={{ body: { height: '100%', overflowY: 'auto', padding: '16px' } }}
-        >
-          {messages.length === 0 && !isStreaming ? (
-            <div className="flex flex-col items-center justify-center h-full text-center">
-              <RobotOutlined style={{ fontSize: 48, color: '#d9d9d9' }} />
-              <Title level={5} type="secondary" className="mt-4">
-                {chatMode === 'RAG' ? 'RAG 智能问答' : 'ReAct Agent'}
-              </Title>
-              <Text type="secondary">
-                {chatMode === 'RAG'
-                  ? '发送问题，体验多路检索 · 意图识别 · 问题改写'
-                  : '发送问题，体验思考-执行-观察循环 · MCP 工具调用'}
-              </Text>
-            </div>
-          ) : (
-            <div className="space-y-4 pb-16">
-              {messages.map((msg, i) => (
-                <MessageBubble key={i} message={msg} />
-              ))}
-              {isStreaming && messages[messages.length - 1]?.role === 'assistant' && (
-                <div className="text-sm text-gray-400">正在生成回答...</div>
+        {/* Messages — fills remaining space, scrolls independently */}
+        <div className="flex-1 min-h-0 overflow-hidden">
+          <Card bodyStyle={{ padding: 0 }} className="h-full w-full" styles={{ body: { height: '100%', overflow: 'hidden' } }}>
+            <div className="h-full overflow-y-auto overflow-x-hidden px-4 py-3">
+              {messages.length === 0 && !isStreaming ? (
+                <div className="flex flex-col items-center justify-center h-full text-center">
+                  <RobotOutlined style={{ fontSize: 48, color: '#d9d9d9' }} />
+                  <Title level={5} type="secondary" className="mt-4">
+                    {chatMode === 'RAG' ? 'RAG 智能问答' : 'ReAct Agent'}
+                  </Title>
+                  <Text type="secondary">
+                    {chatMode === 'RAG'
+                      ? '发送问题，体验多路检索 · 意图识别 · 问题改写'
+                      : '发送问题，体验思考-执行-观察循环 · MCP 工具调用'}
+                  </Text>
+                </div>
+              ) : (
+                <div className="space-y-4 min-w-0">
+                  {messages.map((msg, i) => (
+                    <MessageBubble key={i} message={msg} />
+                  ))}
+                  {isStreaming && (
+                    <div className="text-sm text-gray-400">正在生成回答...</div>
+                  )}
+                </div>
               )}
+              <div ref={bottomRef} />
             </div>
-          )}
-          <div ref={bottomRef} />
-        </Card>
+          </Card>
+        </div>
 
         {/* Input area */}
         <Card size="small" className="flex-shrink-0">
@@ -284,7 +295,7 @@ export default function Chat() {
       </div>
 
       {/* Right sidebar */}
-      <div className="w-80 flex-shrink-0 flex flex-col gap-3 overflow-y-auto">
+      <div className="w-80 flex-shrink-0 min-w-0 flex flex-col gap-3 overflow-y-auto">
         {/* Stream detail panel */}
         <StreamPanel session={currentSession} chatMode={chatMode} />
 
@@ -370,14 +381,18 @@ export default function Chat() {
   );
 }
 
-function MessageBubble({ message }: { message: { role: string; content: string; timestamp: number } }) {
+function MessageBubble({ message }: { message: { role: string; content: string; timestamp: number; reasoning?: string } }) {
+  const [reasoningExpanded, setReasoningExpanded] = useState(true);
   const isUser = message.role === 'user';
+  const hasReasoning = !!message.reasoning && message.reasoning.length > 0;
+
   return (
-    <div className={`flex gap-3 ${isUser ? 'flex-row-reverse' : ''}`}>
+    <div className={`flex gap-3 min-w-0 ${isUser ? 'flex-row-reverse' : ''}`}>
       <div
         className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-          isUser ? 'bg-blue-500' : 'bg-gray-200'
+          isUser ? 'text-gray-600' : 'text-gray-600'
         }`}
+        style={{ backgroundColor: isUser ? '#edf3fe' : '#f3f4f6' }}
       >
         {isUser ? (
           <UserOutlined style={{ color: 'white', fontSize: 14 }} />
@@ -386,18 +401,45 @@ function MessageBubble({ message }: { message: { role: string; content: string; 
         )}
       </div>
       <div
-        className={`max-w-[75%] rounded-2xl px-4 py-2 ${
+        className={`min-w-0 max-w-[75%] rounded-2xl px-4 py-2 w-full break-words overflow-wrap-break-word ${
           isUser
-            ? 'bg-blue-500 text-white'
+            ? 'text-gray-800'
             : 'bg-gray-100 text-gray-800'
         }`}
+        style={{
+          backgroundColor: isUser ? '#edf3fe' : undefined,
+          wordBreak: 'break-word',
+          overflowWrap: 'break-word',
+        }}
       >
-        <div className="markdown-body text-sm">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.content}</ReactMarkdown>
-        </div>
+        {/* Inline thinking/reasoning — collapsible */}
+        {hasReasoning && (
+          <div className="mb-2">
+            <button
+              onClick={() => setReasoningExpanded(!reasoningExpanded)}
+              className="flex items-center gap-1 text-xs opacity-60 hover:opacity-100 transition-opacity mb-1"
+            >
+              <span>{reasoningExpanded ? '▼' : '▶'}</span>
+              <span>{reasoningExpanded ? '收起思考过程' : '展开思考过程'}</span>
+            </button>
+            {reasoningExpanded && (
+              <div className="bg-purple-50 border-l-2 border-purple-300 rounded px-3 py-2 text-xs text-gray-700 whitespace-pre-wrap break-words overflow-x-auto max-h-60 overflow-y-auto">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.reasoning}</ReactMarkdown>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Final answer content */}
+        {message.content && (
+          <div className="markdown-body text-sm">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.content}</ReactMarkdown>
+          </div>
+        )}
+
         <Text
           type={isUser ? undefined : 'secondary'}
-          className={`text-xs block mt-1 ${isUser ? 'text-blue-100' : ''}`}
+          className={`text-xs block mt-1 ${isUser ? 'text-gray-400' : ''}`}
         >
           {new Date(message.timestamp).toLocaleTimeString('zh-CN', {
             hour: '2-digit',

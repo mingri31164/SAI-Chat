@@ -245,6 +245,7 @@ export interface ChatMessage {
   role: 'user' | 'assistant' | 'system';
   content: string;
   timestamp: number;
+  reasoning?: string;  // 流式思考内容（思考完成后保留）
 }
 
 export interface ConversationSummary {

@@ -49,7 +49,9 @@ SAI-Chat
 └── chat-web # 项目启动入口，Web模块
 ```
 
+## Agent智能体
 
+![0](https://github.com/mingri31164/SAI-Chat/blob/agent/docs/.github/SAI-Agent.png)
 
 # 客户端截图
 
@@ -99,6 +101,4 @@ SAI-Chat
 
 ![11](https://github.com/mingri31164/SAI-Chat/blob/main/docs/.github/threadpool.png)
 
-## AI Agent智能体
 
-![12](https://github.com/mingri31164/SAI-Chat/blob/agent/docs/.github/sai-agent-rag.png)

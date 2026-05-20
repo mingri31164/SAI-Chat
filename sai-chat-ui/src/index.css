@@ -12,7 +12,17 @@
 
 body {
   margin: 0;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Constrain the entire layout to viewport height, no stretching */
+.ant-layout {
+  height: 100vh;
+  overflow: hidden;
+}
+.ant-layout-content {
+  overflow: hidden;
 }
 
 /* Custom scrollbar */
@@ -41,6 +51,21 @@ pre code {
 .markdown-body {
   line-height: 1.7;
   color: #374151;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+.markdown-body table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.markdown-body img {
+  max-width: 100%;
+  height: auto;
 }
 .markdown-body h1,
 .markdown-body h2,
@@ -75,6 +100,7 @@ pre code {
   border-radius: 8px;
   overflow-x: auto;
   margin: 1em 0;
+  max-width: 100%;
 }
 .markdown-body pre code {
   background: none;
@@ -129,9 +155,4 @@ pre code {
 .card-hover:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
-
-/* Smooth transitions */
-* {
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }

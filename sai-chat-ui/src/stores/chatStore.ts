@@ -24,6 +24,7 @@ export interface ChatSession {
   retrievedChunks?: unknown[];
   intentScores?: unknown[];
   rewriteResult?: { rewrittenQuestion: string; subQuestions: string[] };
+  currentThinking?: string;
   stats?: {
     durationMs: number;
     totalTokens: number;
@@ -50,6 +51,7 @@ interface ChatStore {
   // Message management
   addMessage: (sessionId: string, message: ChatMessage) => void;
   appendToLastMessage: (sessionId: string, content: string) => void;
+  appendReasoningToLast: (sessionId: string, content: string) => void;
 
   // Stream event management
   addStreamEvent: (sessionId: string, event: StreamEvent) => void;
@@ -65,6 +67,7 @@ interface ChatStore {
   setRetrievedChunks: (sessionId: string, chunks: unknown[]) => void;
   setIntentScores: (sessionId: string, scores: unknown[]) => void;
   setRewriteResult: (sessionId: string, result: { rewrittenQuestion: string; subQuestions: string[] }) => void;
+  setCurrentThinking: (sessionId: string, content: string) => void;
   setStats: (sessionId: string, stats: ChatSession['stats']) => void;
 
   // Settings
@@ -133,6 +136,7 @@ export const useChatStore = create<ChatStore>((set) => ({
           retrievedChunks: undefined,
           intentScores: undefined,
           rewriteResult: undefined,
+          currentThinking: undefined,
           stats: undefined,
         },
       },
@@ -161,6 +165,24 @@ export const useChatStore = create<ChatStore>((set) => ({
         messages[messages.length - 1] = { ...last, content: last.content + content };
       } else {
         messages.push({ role: 'assistant', content, timestamp: Date.now() });
+      }
+      return {
+        sessions: { ...state.sessions, [sessionId]: { ...session, messages } },
+      };
+    });
+  },
+
+  appendReasoningToLast: (sessionId, content) => {
+    set((state) => {
+      const session = state.sessions[sessionId];
+      if (!session || session.messages.length === 0) return state;
+      const messages = [...session.messages];
+      const last = messages[messages.length - 1];
+      if (last.role === 'assistant') {
+        messages[messages.length - 1] = {
+          ...last,
+          reasoning: (last.reasoning || '') + content,
+        };
       }
       return {
         sessions: { ...state.sessions, [sessionId]: { ...session, messages } },
@@ -277,6 +299,15 @@ export const useChatStore = create<ChatStore>((set) => ({
       sessions: {
         ...state.sessions,
         [sessionId]: { ...(state.sessions[sessionId]), rewriteResult: result },
+      },
+    }));
+  },
+
+  setCurrentThinking: (sessionId, content) => {
+    set((state) => ({
+      sessions: {
+        ...state.sessions,
+        [sessionId]: { ...(state.sessions[sessionId]), currentThinking: content },
       },
     }));
   },

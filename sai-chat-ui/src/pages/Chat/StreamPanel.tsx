@@ -1,6 +1,8 @@
 import {
   Card, Typography, Tag, Space, Divider, Progress
 } from 'antd';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { getAgentStatusColor, getScoreColor } from '@/utils/format';
 import type { ChatSession } from '@/stores/chatStore';
 import type { NodeScore } from '@/types/agent';
@@ -153,6 +155,20 @@ export default function StreamPanel({ session, chatMode }: Props) {
                 <Tag color="blue">等待用户输入</Tag>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Streaming thinking content */}
+        {chatMode === 'Agent' && session.currentThinking && (
+          <div>
+            <Divider className="my-2" />
+            <Space>
+              <Text strong className="text-xs">思考过程</Text>
+              {session.agentStatus === 'THINKING' && <Tag color="purple" className="text-xs">流式输出中</Tag>}
+            </Space>
+            <div className="mt-2 bg-purple-50 rounded p-2 text-xs max-h-48 overflow-y-auto whitespace-pre-wrap">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{session.currentThinking}</ReactMarkdown>
+            </div>
           </div>
         )}
 

@@ -97,6 +97,7 @@ export function useSSE(options: SSEOptions = {}) {
           } catch {
             data = e.data;
           }
+          console.log(`[SSE] event=${name} data=${JSON.stringify(data).slice(0, 200)}`);
           setState((prev) => ({ ...prev, lastEvent: { name, data } }));
           handlersRef.current.get(name)?.(data);
           if (name === 'done') {

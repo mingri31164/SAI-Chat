@@ -247,9 +247,8 @@ public class ReActAgentExecutor implements AgentExecutor {
                 continue;
             }
 
-            // 记录思考
+            // 记录思考（状态中保留，流式过程中已通过 callback 发送过，这里不再重复发送）
             state.addThought(reasoning.getThought());
-            fireThought(callback, reasoning.getThought(), currentStep);
 
             ReActAction action = reasoning.getAction();
 
@@ -394,6 +393,8 @@ public class ReActAgentExecutor implements AgentExecutor {
 
     private ReActReasoning streamThink(AgentState state, ChatRequest llmRequest, AgentCallback callback) {
         StringBuilder fullContent = new StringBuilder();
+        StringBuilder lineBuffer = new StringBuilder();
+        int stepIndex = state.getCurrentIterationCount();
         AtomicReference<ReActReasoning> reasoningRef = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
         AtomicBoolean streamCompleted = new AtomicBoolean(false);
@@ -404,6 +405,22 @@ public class ReActAgentExecutor implements AgentExecutor {
                 fullContent.append(content);
                 if (callback != null) {
                     callback.onReasoningContent(content);
+
+                    // 边接收 token，边按换行缓冲
+                    for (char c : content.toCharArray()) {
+                        lineBuffer.append(c);
+                        if (c == '\n') {
+                            String line = lineBuffer.toString().trim();
+                            // 检测到完整的 Thought 行，发送 thinking 事件给前端
+                            if (line.toLowerCase().startsWith("thought:")) {
+                                String thoughtText = line.substring(7).trim();
+                                if (!thoughtText.isEmpty()) {
+                                    fireThought(callback, thoughtText, stepIndex);
+                                }
+                            }
+                            lineBuffer.setLength(0);
+                        }
+                    }
                 }
             }
 

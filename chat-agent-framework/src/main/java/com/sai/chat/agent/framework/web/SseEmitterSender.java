@@ -29,6 +29,8 @@ public class SseEmitterSender {
         }
         pendingSends.incrementAndGet();
         try {
+            String json = data instanceof String ? (String) data : new com.google.gson.Gson().toJson(data);
+            log.debug("[SseEmitterSender] 发送事件: eventName={}, data={}", eventName, json);
             emitter.send(SseEmitter.event().name(eventName).data(data));
         } catch (Exception e) {
             fail(e);

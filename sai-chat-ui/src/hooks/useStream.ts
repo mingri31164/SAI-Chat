@@ -159,6 +159,7 @@ export function useAgentStream(sessionId: string) {
   const {
     addMessage,
     appendToLastMessage,
+    appendReasoningToLast,
     setAgentStatus,
     addToolCall,
     updateToolCall,
@@ -179,14 +180,47 @@ export function useAgentStream(sessionId: string) {
       })
     );
 
+    // 思考事件 → 直接追加到消息气泡的 reasoning 字段
+    unsubs.push(
+      on('thinking', (data) => {
+        setCurrentStage(sessionId, 'thinking');
+        const ev = data as SSEThinkingEvent;
+        if (appendRef.current === '') {
+          addMessage(sessionId, {
+            role: 'assistant',
+            content: '',
+            timestamp: Date.now(),
+            reasoning: ev.thought,
+          });
+          appendRef.current = '@reasoning';
+        } else if (appendRef.current === '@reasoning') {
+          appendReasoningToLast(sessionId, ev.thought);
+        }
+        addStreamEvent(sessionId, { type: 'thinking', data: ev, timestamp: Date.now() });
+      })
+    );
+
+    // reasoning 原始 token 事件 → 同样追加到 reasoning 字段
     unsubs.push(
       on('reasoning', (data) => {
         setCurrentStage(sessionId, 'thinking');
         const ev = data as { content: string };
+        if (appendRef.current === '') {
+          addMessage(sessionId, {
+            role: 'assistant',
+            content: '',
+            timestamp: Date.now(),
+            reasoning: ev.content,
+          });
+          appendRef.current = '@reasoning';
+        } else if (appendRef.current === '@reasoning') {
+          appendReasoningToLast(sessionId, ev.content);
+        }
         addStreamEvent(sessionId, { type: 'reasoning', data: ev, timestamp: Date.now() });
       })
     );
 
+    // 工具开始 → 不再输出 thinking，进入执行阶段
     unsubs.push(
       on('tool_start', (data) => {
         setAgentStatus(sessionId, AgentStatus.EXECUTING);
@@ -218,12 +252,13 @@ export function useAgentStream(sessionId: string) {
       })
     );
 
+    // 回答事件 → 覆盖到 content 字段，thinking 内容保留在 reasoning 字段
     unsubs.push(
       on('answer', (data) => {
         setCurrentStage(sessionId, 'answer');
         const ev = data as SSEAnswerEvent;
         const text = ev?.content ?? '';
-        if (appendRef.current === '') {
+        if (appendRef.current === '' || appendRef.current === '@reasoning') {
           addMessage(sessionId, { role: 'assistant', content: text, timestamp: Date.now() });
           appendRef.current = text;
         } else {
@@ -268,7 +303,7 @@ export function useAgentStream(sessionId: string) {
     return () => {
       unsubs.forEach((unsub) => unsub());
     };
-  }, [sessionId, on, addMessage, appendToLastMessage, setAgentStatus, addToolCall, updateToolCall, setCurrentStage, setStreaming, setStats, addStreamEvent]);
+  }, [sessionId, on, addMessage, appendToLastMessage, appendReasoningToLast, setAgentStatus, addToolCall, updateToolCall, setCurrentStage, setStreaming, setStats, addStreamEvent]);
 
   const startStream = useCallback(
     (question: string, userId: string, deepThinking = false, maxIterations = 10) => {

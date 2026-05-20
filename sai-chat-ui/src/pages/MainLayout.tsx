@@ -120,7 +120,7 @@ export default function MainLayout() {
   ];
 
   return (
-    <Layout className="min-h-screen">
+    <Layout hasSider className="min-h-screen">
       <Sider
         collapsible
         collapsed={collapsed}
